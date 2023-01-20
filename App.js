@@ -1,8 +1,8 @@
-import Login from './screens/Login.jsx'; 
+import MainStack from './navigation/MainStack'
 
 export default function App() {
   return (
-    <Login/>
+    <MainStack/>
   );
 }
 
