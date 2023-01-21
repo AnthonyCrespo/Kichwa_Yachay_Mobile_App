@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity  } from 'react-native';
 
 
-const Login = ({navigation}) => {
+const Home = ({navigation}) => {
     return (
         <View style={styles.container}>
         {/* <SvgTop/> */}
@@ -12,7 +12,7 @@ const Login = ({navigation}) => {
                 style={styles.logoApp}
          />
 
-        <Text style={styles.subTitle}>Ingresa tus datos </Text>
+        <Text style={styles.subTitle}>ESTE ES EL HOME </Text>
         <TextInput style={styles.textInput}
         placeholder="Usuario o correo" 
         />
@@ -20,9 +20,8 @@ const Login = ({navigation}) => {
         placeholder="Contraseña"
         secureTextEntry={true} 
         />
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.buttonText}> 
-          Ingresar </Text> 
+        <TouchableOpacity style={styles.buttonContainer}>
+          <Text style={styles.buttonText}> Ingresar </Text>
         </TouchableOpacity>
   
         <View style={styles.messageContainer}>
@@ -116,4 +115,4 @@ const styles = StyleSheet.create({
     },
   })
 
-  export default Login
+  export default Home
