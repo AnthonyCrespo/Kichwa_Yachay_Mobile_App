@@ -1,31 +1,95 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity  } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Button, FlatList, Dimensions   } from 'react-native';
 
 
 const Home = ({navigation}) => {
+  const [units, setUnits] = useState([
+    {
+      id: 1,
+      title: 'Unidad 1',
+      lessons: [
+        { id: 1, title: 'Lección 1' },
+        { id: 2, title: 'Lección 2' },
+        { id: 3, title: 'Lección 3' },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Unidad 2',
+      lessons: [
+        { id: 4, title: 'Lección 1' },
+        { id: 5, title: 'Lección 2' },
+        { id: 6, title: 'Lección 3' },
+      ],
+    },
+  ]);
+  const [currentUnit, setCurrentUnit] = useState(0);
+  const { height, width } = Dimensions.get('window');
+  const topPadding = Platform.OS === 'ios' ? 0 : StatusBar.currentHeight;
     return (
-        <View style={styles.container}>
-          <Text> ESTE ES EL HOME </Text>
-          <View style={styles.bottomBar}>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Image style={styles.icon} source={require('../assets/home_icon.png')} />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('Perfil')}>
-            <Image style={styles.icon} source={require('../assets/profile_icon.png')} />
+    <View style={styles.container}>
+      <View style={{ backgroundColor: '#383A45', width: '100%', height: 50, alignItems: 'center', justifyContent: 'center', paddingTop:topPadding}}>
+        <Text style={{ color: 'white', fontSize:20, fontWeight: 'bold' }}>{units[currentUnit].title}</Text>
+      </View>
+      <FlatList
+        data={units[currentUnit].lessons}
+        renderItem={({ item }) => (
+          <View style={{ alignItems: 'center' }}>
+            <TouchableOpacity
+              onPress={() => {
+                // navigate to lesson screen
+              }}
+              style={{ width: 130, height: 130, borderRadius: 65, backgroundColor: '#00bfff', padding: 30, marginVertical:20, alignItems: 'center', justifyContent: 'center'  }}
+            >
+              <Text style={{ color: 'white', fontWeight:'bold' }}>{item.title}</Text>
             </TouchableOpacity>
+          </View>
+        )}
+        keyExtractor={item => item.id.toString()}
+      />
 
-         </View>
-        <StatusBar style="auto" />
-        </View>     
+{/*----------------- Button for pass lesson -----------------*/}
+{/*       <View style={{ alignItems: 'center', marginBottom:100 }}>
+        <TouchableOpacity
+          onPress={() => {
+            if (currentUnit < units.length - 1) {
+              setCurrentUnit(currentUnit + 1);
+            }
+          }}
+          style={{ backgroundColor: '#00bfff', padding: 10 }}
+        >
+          <Text style={{ color: 'white' }}>Next Unit fgdgfdfdgdfg</Text>
+        </TouchableOpacity>
+      </View> */}
+
+
+      {/* -----------Bottom Bar ---------------------------*/}
+      <View style={styles.bottomBar}>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <Image style={styles.icon} source={require('../assets/home_icon.png')} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('Perfil')}>
+        <Image style={styles.icon} source={require('../assets/profile_icon.png')} />
+        </TouchableOpacity>
+      </View>
+      <StatusBar style="auto" />   
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+    unitText: {
+      fontSize: 18,
+      color: '292D3E',
+      alignSelf: "center"
+    },
+
     container: {
       flex: 1,
+      paddingTop:40, 
       backgroundColor: '#F5F5F8',
       alignItems: 'center',
       justifyContent: 'center',
