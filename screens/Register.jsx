@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
-import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity  } from 'react-native';
+import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
 
 const Register = ({navigation}) => {
+    
     return (
         <View style={styles.container}>
         {/* <SvgTop/> */}
@@ -35,33 +36,15 @@ const Register = ({navigation}) => {
         placeholder="Fecha de Nacimiento"
         />
 
-{/*         <TouchableOpacity onPress={() => setDatePickerVisible(true)}>
-          <Text>{date.toString()}</Text>
-          <DateTimePicker
-  value={date}
-  mode='datetime'
-  is24Hour={true}
-  display="default"
-  onChange={onChange}
-  minimumDate={new Date()}
-  maximumDate={new Date(2030, 12, 31)}
-  locale="es"
-  visible={datePickerVisible}
-  onClose={() => setDatePickerVisible(false)}
-  onCancel={() => setDatePickerVisible(false)}
-/>
-        </TouchableOpacity>
- */}
-
         <TouchableOpacity style={styles.buttonContainer}>
           <Text style={styles.buttonText}>  Registrarse </Text>
         </TouchableOpacity>
   
         <View style={styles.messageContainer}>
-          <Text style={{color:'gray'}}>Ala registrarte en Kichwa Yachay, aceptas nuestros
+          <Text style={{color:'gray'}}>Al registrarte en Kichwa Yachay, aceptas nuestros
             <Text
               style={{color: 'gray',fontWeight: 'bold'}}
-/*               onPress={() => navigation.navigate('')} */
+              onPress={() => Linking.openURL('https://www.google.com')}
             >
             Términos y Política de privacidad.
             </Text>
