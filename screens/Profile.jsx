@@ -3,10 +3,10 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity  } from 'react-native';
 
 
-const Home = ({navigation}) => {
+const Profile = ({navigation}) => {
     return (
         <View style={styles.container}>
-          <Text> ESTE ES EL HOME </Text>
+          <Text> ESTE ES EL PROFILE </Text>
           <View style={styles.bottomBar}>
 
           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
       }
   })
 
-  export default Home
+  export default Profile
