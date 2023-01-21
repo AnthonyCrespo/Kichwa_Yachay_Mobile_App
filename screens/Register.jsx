@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React,  { useState } from 'react';
 import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity  } from 'react-native';
-
 
 const Register = ({navigation}) => {
     return (
@@ -12,25 +11,59 @@ const Register = ({navigation}) => {
                 style={styles.logoApp}
          />
 
-        <Text style={styles.subTitle}>REGISTRO: Ingresa tus datos </Text>
+        <Text style={styles.subTitle}> Regístrate </Text>
+        {/* <Text style={styles.subTitle}>REGISTRO: Ingresa tus datos </Text> */}
+
         <TextInput style={styles.textInput}
-        placeholder="Usuario o correo" 
+        placeholder="Nombre"
         />
+
+        <TextInput style={styles.textInput}
+        placeholder="Correo"
+        />
+
+        <TextInput style={styles.textInput}
+        placeholder="Nombre de usuario"
+        />
+
         <TextInput style={styles.textInput}
         placeholder="Contraseña"
-        secureTextEntry={true} 
+        secureTextEntry={true}
         />
+
+        <TextInput style={styles.textInput}
+        placeholder="Fecha de Nacimiento"
+        />
+
+{/*         <TouchableOpacity onPress={() => setDatePickerVisible(true)}>
+          <Text>{date.toString()}</Text>
+          <DateTimePicker
+  value={date}
+  mode='datetime'
+  is24Hour={true}
+  display="default"
+  onChange={onChange}
+  minimumDate={new Date()}
+  maximumDate={new Date(2030, 12, 31)}
+  locale="es"
+  visible={datePickerVisible}
+  onClose={() => setDatePickerVisible(false)}
+  onCancel={() => setDatePickerVisible(false)}
+/>
+        </TouchableOpacity>
+ */}
+
         <TouchableOpacity style={styles.buttonContainer}>
-          <Text style={styles.buttonText}> Ingresar </Text>
+          <Text style={styles.buttonText}>  Registrarse </Text>
         </TouchableOpacity>
   
         <View style={styles.messageContainer}>
-          <Text style={{color:'gray'}}>No tienes cuenta aún?⠀
+          <Text style={{color:'gray'}}>Ala registrarte en Kichwa Yachay, aceptas nuestros
             <Text
               style={{color: 'gray',fontWeight: 'bold'}}
 /*               onPress={() => navigation.navigate('')} */
             >
-            Regístrate
+            Términos y Política de privacidad.
             </Text>
           </Text>
           </View>
@@ -64,7 +97,11 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
-
+    Title: {
+      fontSize: 30,
+      color: 'gray',
+      fontWeight: 'bold'
+    },
     subTitle: {
       fontSize: 20,
       color: 'gray'
@@ -88,12 +125,14 @@ const styles = StyleSheet.create({
       },
 
     socialButtonsContainer: {
-        marginTop: 100
+        marginTop: 50
       },
       
     messageContainer: {
       marginTop: 10,
-      alignSelf: 'center'
+      marginLeft:35,
+      marginRight:35,
+      textAlign: 'center'
     },
     
     buttonText: {

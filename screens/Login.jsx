@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity  } from 'react-native';
 
 
-const Login = () => {
+const Login = ({navigation}) => {
     return (
         <View style={styles.container}>
         {/* <SvgTop/> */}
@@ -28,7 +28,7 @@ const Login = () => {
           <Text style={{color:'gray'}}>No tienes cuenta aún?⠀
             <Text
               style={{color: 'gray',fontWeight: 'bold'}}
-              onPress={() => navigation.navigate('Register')}
+              onPress={() => navigation.navigate('Registro')}
             >
             Regístrate
             </Text>
