@@ -31,11 +31,15 @@ const Lessons= ({route}) => {
             </View>
 
             {filteredActivities.map((activity) => (            
-            <View style={{flexDirection: 'column'}}>
-                <TouchableOpacity /*key={activity.id}  onPress={() => navigation.navigate('Home')} */> 
+            <View key={activity.id} style={{flexDirection: 'column'}}>
+                <TouchableOpacity /*  onPress={() => navigation.navigate('Home')} */> 
                     <View style={styles.buttonContainer}>
-                        <Text style={styles.buttonTittle}> Actividad {(activity.id-1)%3+1}</Text>
-                        <Text style={styles.buttonText}>{activity.title}</Text>
+                        <Text style={styles.buttonTittle}> 
+                            Actividad {(activity.id-1)%3+1}
+                        </Text>
+                        <Text style={styles.buttonText}>
+                            {activity.title}
+                        </Text>
                     </View>
                 </TouchableOpacity>
             </View>
