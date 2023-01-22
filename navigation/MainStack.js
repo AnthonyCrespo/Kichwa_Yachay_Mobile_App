@@ -5,6 +5,7 @@ import Login from '../screens/Login'
 import Register from '../screens/Register'
 import Home from '../screens/Home'
 import Profile from '../screens/Profile'
+import Lessons from '../screens/Lessons'
 
 
 const Stack = createNativeStackNavigator()
@@ -16,14 +17,16 @@ const MainStack = () => {
             screenOptions={{headerShown: false}}>
                 <Stack.Screen
                     name = 'Login'
-                    component = {Login}/>
-                    
+                    component = {Login}/>         
                 <Stack.Screen
                     name = 'Registro'
                     component = {Register}/>
                 <Stack.Screen
                     name = 'Home'
                     component = {Home}/>
+                <Stack.Screen
+                    name = 'Lessons'
+                    component = {Lessons}/>
                 <Stack.Screen
                     name = 'Perfil'
                     component = {Profile}/>

@@ -39,7 +39,7 @@ const Home = ({navigation}) => {
           <View style={{ alignItems: 'center' }}>
             <TouchableOpacity
               onPress={() => {
-                // navigate to lesson screen
+                navigation.navigate('Lessons')
               }}
               style={{ width: 130, height: 130, borderRadius: 65, backgroundColor: '#00bfff', padding: 30, marginVertical:20, alignItems: 'center', justifyContent: 'center'  }}
             >
