@@ -7,7 +7,7 @@ const Home = ({navigation}) => {
   const [units, setUnits] = useState([
     {
       id: 1,
-      title: 'Unidad 1',
+      title: 'UNIDAD 1',
       lessons: [
         { id: 1, title: 'Lección 1' },
         { id: 2, title: 'Lección 2' },
@@ -16,7 +16,7 @@ const Home = ({navigation}) => {
     },
     {
       id: 2,
-      title: 'Unidad 2',
+      title: 'UNIDAD 2',
       lessons: [
         { id: 4, title: 'Lección 1' },
         { id: 5, title: 'Lección 2' },
@@ -30,8 +30,8 @@ const Home = ({navigation}) => {
     return (
 
     <View style={styles.container}>
-      <View style={{ backgroundColor: '#383A45', width: '100%', height: 50, alignItems: 'center', justifyContent: 'center', paddingTop:topPadding}}>
-        <Text style={{ color: 'white', fontSize:20, fontWeight: 'bold' }}>{units[currentUnit].title}</Text>
+      <View style={{ backgroundColor: '#383A45', width: '100%', height: 65, alignItems: 'center', justifyContent: 'center', paddingTop:topPadding}}>
+        <Text style={{ color: 'white', fontSize:25, fontWeight: 'bold' }}>{units[currentUnit].title}</Text>
       </View>
       <FlatList
         data={units[currentUnit].lessons}
@@ -41,9 +41,9 @@ const Home = ({navigation}) => {
               onPress={() => {
                 navigation.navigate('Lessons')
               }}
-              style={{ width: 130, height: 130, borderRadius: 65, backgroundColor: '#00bfff', padding: 30, marginVertical:20, alignItems: 'center', justifyContent: 'center'  }}
+              style={{ width: 130, height: 130, borderRadius: 65, marginVertical:25, backgroundColor: '#00bfff', padding: 20, alignItems: 'center', justifyContent: 'center'  }}
             >
-              <Text style={{ color: 'white', fontWeight:'bold' }}>{item.title}</Text>
+              <Text style={{ color: 'white', fontWeight:'bold',  fontSize:18 }}>{item.title}</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 
     container: {
       flex: 1,
-      paddingTop:40, 
+      paddingTop: 50, 
       backgroundColor: '#F5F5F8',
       alignItems: 'center',
       justifyContent: 'center',
