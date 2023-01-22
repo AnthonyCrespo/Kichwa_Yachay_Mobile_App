@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Button, FlatList, Dimensions   } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 
 const Home = ({navigation}) => {
   const [units, setUnits] = useState([
@@ -9,9 +9,9 @@ const Home = ({navigation}) => {
       id: 1,
       title: 'UNIDAD 1',
       lessons: [
-        { id: 1, title: 'Lección 1' },
-        { id: 2, title: 'Lección 2' },
-        { id: 3, title: 'Lección 3' },
+        { id: 1, title: 'Lección 1', subtitle:'Colores/Tullpukuna' },
+        { id: 2, title: 'Lección 2', subtitle:'Animales/Wiwakuna' },
+        { id: 3, title: 'Lección 3' ,subtitle:' ' },
       ],
     },
     {
@@ -24,6 +24,16 @@ const Home = ({navigation}) => {
       ],
     },
   ]);
+
+  /* const navigation = useNavigation(); */
+  const [selectedLesson, setSelectedLesson] = useState(null);
+  const handlePress = (lesson,subtitle) => {
+    setSelectedLesson(lesson);
+    // navegar a la vista de actividades y pasar la lección seleccionada como parámetro
+    navigation.navigate('Lessons', { lesson, subtitle });
+  };
+
+
   const [currentUnit, setCurrentUnit] = useState(0);
   const { height, width } = Dimensions.get('window');
   const topPadding = Platform.OS === 'ios' ? 0 : StatusBar.currentHeight;
@@ -38,9 +48,8 @@ const Home = ({navigation}) => {
         renderItem={({ item }) => (
           <View style={{ alignItems: 'center' }}>
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Lessons')
-              }}
+                 onPress={() => handlePress(item.id, item.subtitle)
+              }
               style={{ width: 130, height: 130, borderRadius: 65, marginVertical:25, backgroundColor: '#00bfff', padding: 20, alignItems: 'center', justifyContent: 'center'  }}
             >
               <Text style={{ color: 'white', fontWeight:'bold',  fontSize:18 }}>{item.title}</Text>
