@@ -104,8 +104,7 @@ const styles = StyleSheet.create({
       marginTop: 25,
       borderRadius: 10,
       paddingVertical: 10,
-      paddingHorizontal: 125
-      },
+      paddingHorizontal: 110     },
 
     socialButtonsContainer: {
         marginTop: 50
