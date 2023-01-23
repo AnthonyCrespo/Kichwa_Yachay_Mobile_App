@@ -86,7 +86,6 @@ const AppContainer = createAppContainer(createStackNavigator({
   initialRouteName: 'MainStack',
 }));
 
-
 export default AppContainer;
 
  */
