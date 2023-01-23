@@ -1,10 +1,6 @@
 {
-  "expoServerPort": null,
-<<<<<<< Updated upstream
+  "expoServerPort": 19000,
   "packagerPort": 19000,
-=======
-  "packagerPort": null,
->>>>>>> Stashed changes
   "packagerPid": null,
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
