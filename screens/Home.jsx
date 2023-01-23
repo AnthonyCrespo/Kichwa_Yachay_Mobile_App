@@ -30,7 +30,7 @@ const Home = ({navigation}) => {
   const handlePress = (lesson,subtitle) => {
     setSelectedLesson(lesson);
     // navegar a la vista de actividades y pasar la lección seleccionada como parámetro
-    navigation.navigate('Lessons', { lesson, subtitle });
+    navigation.navigate('Lessons', {lesson, subtitle });
   };
 
 

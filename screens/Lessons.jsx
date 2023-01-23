@@ -1,23 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity  } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 
 const Lessons= ({route}) => {
-    const { lesson, subtitle } = route.params;
+    const {lesson, subtitle} = route.params;
+    const navigation = useNavigation();
     const activities = [
-        { id: 1, title: 'Seleccionar', lessonId: 1 },
-        { id: 2, title: 'Traducir', lessonId: 1 },
-        { id: 3, title: 'Escuchar', lessonId: 1 },
-        { id: 4, title: 'Seleccionar', lessonId: 2 },
-        { id: 5, title: 'Completar', lessonId: 2 },
-        { id: 6, title: 'Ordenar', lessonId: 2 },
-        { id: 7, title: 'Seleccionar', lessonId: 3 },
-        { id: 8, title: 'Completar', lessonId: 3 },
-        { id: 9, title: 'Relacionar', lessonId: 3 }
+        { id: 1, title: 'Seleccionar', lessonId: 1, name_screen: ' ' },
+        { id: 2, title: 'Traducir', lessonId: 1, name_screen: 'L1A2Q1' },
+        { id: 3, title: 'Escuchar', lessonId: 1, name_screen: ''},
+        { id: 4, title: 'Seleccionar', lessonId: 2, name_screen: ' ' },
+        { id: 5, title: 'Completar', lessonId: 2, name_screen: 'L2A2Q1' },
+        { id: 6, title: 'Ordenar', lessonId: 2, name_screen: 'L2A3Q1'},
+        { id: 7, title: 'Seleccionar', lessonId: 3, name_screen: '' },
+        { id: 8, title: 'Completar', lessonId: 3, name_screen: 'L3A2Q1' },
+        { id: 9, title: 'Relacionar', lessonId: 3 , name_screen: ''}
       ];
       const filteredActivities = activities.filter((activity) => activity.lessonId === lesson);
-
 
     return (
         <View  style={styles.container}>
@@ -32,7 +32,7 @@ const Lessons= ({route}) => {
 
             {filteredActivities.map((activity) => (            
             <View key={activity.id} style={{flexDirection: 'column'}}>
-                <TouchableOpacity /*  onPress={() => navigation.navigate('Home')} */> 
+                <TouchableOpacity   onPress={() => navigation.navigate(activity.name_screen)} >
                     <View style={styles.buttonContainer}>
                         <Text style={styles.buttonTittle}> 
                             Actividad {(activity.id-1)%3+1}

@@ -1,7 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-function A1Pregunta1({navigation}) {
+
+
+const navigation = useNavigation();  
+
+function A1Pregunta1() {
   return (
     <View style= {styles.AppContainer}>
 
@@ -231,5 +236,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export {A1Pregunta1, A1Pregunta2, A1Pregunta3};
+export default {A1Pregunta1, A1Pregunta2, A1Pregunta3};
 

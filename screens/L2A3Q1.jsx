@@ -1,33 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
 import { StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
-const Lesson1_Activity2_Q1 = ({navigation}) => {
+const L2A3Q1 = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={{ margin: 20 }}>
-             <Text style={styles.Title}> Actividad2/Rurana 2</Text>
+             <Text style={styles.Title}> Actividad 3/Rurana 3</Text>
             </View>
             
-            <Text style={styles.subTitle}> Traduce la oracion </Text>
+            <Text style={styles.subTitle}> Ordena la oración </Text>
 
-            
-            <View style={{ flexDirection: 'row',margin: 60 }}>
-              <Text style={styles.instructionText}> Yanami kan </Text>
-              <Image style={styles.icon} source={require('../assets/sonido_icon.png')} />
-            </View>
-            
-            <View style={{ flexDirection: 'row',margin: 60 }}>
-              <TextInput style={styles. textSolution}/>
-              <TextInput style={styles. textSolution}/>
+            <Text style={styles.instructionText}> El perro es negro </Text>
+
+            <View style={{ flexDirection: 'row',margin: 40 }}>
+              <Text style={styles.instructionText}> __________</Text>
+              <Text style={styles.instructionText}> __________ </Text>
+              <Text style={styles.instructionText}> __________ </Text>
             </View>
 
             <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.buttonSolution}>  Blanco </Text>
-              <Text style={styles.buttonSolution}>  Negro  </Text>
-              <Text style={styles.buttonSolution}>  es </Text>
-              
+              <Text style={styles.buttonSolution}>  kan </Text>
+              <Text style={styles.buttonSolution}>  Allkuka  </Text>
+              <Text style={styles.buttonSolution}>  yanami </Text>
             </View>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Lesson2_Activity2_Q1')}>
+
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L2A3Q1')}>
               <Text style={styles.buttonText}> Continuar </Text> 
             </TouchableOpacity>
 
@@ -75,17 +72,6 @@ const styles = StyleSheet.create({
       fontWeight: 'bold'
     },
     
-    textSolution: {
-      padding: 10,
-      paddingStart: 30,
-      width: '35%',
-      height: 40,
-      marginTop: '5%',
-      borderRadius: 10,
-      backgroundColor: '#B9B6B6',
-      marginRight: 20
-    },
-  
     buttonSolution: {
       backgroundColor: "#B9B6B6",
       marginTop: 25,
@@ -124,7 +110,7 @@ const styles = StyleSheet.create({
     icon: {
       width: 30,
       height: 30,
-    }
+    },
   })
 
-  export default Lesson1_Activity2_Q1
+  export default L2A3Q1
