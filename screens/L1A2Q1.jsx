@@ -27,22 +27,9 @@ const L1A2Q1 = ({navigation}) => {
               <Text style={styles.buttonSolution}>  es </Text>
               
             </View>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L2A2Q1')}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q2')}>
               <Text style={styles.buttonText}> Continuar </Text> 
             </TouchableOpacity>
-
-
-          <View style={styles.bottomBar}>
-
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Image style={styles.icon} source={require('../assets/home_icon.png')} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => navigation.navigate('Perfil')}>
-            <Image style={styles.icon} source={require('../assets/profile_icon.png')} />
-            </TouchableOpacity>
-
-          </View>
            
           <StatusBar style="auto" />
         </View>

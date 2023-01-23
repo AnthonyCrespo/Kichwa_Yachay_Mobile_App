@@ -1,38 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
-import { StyleSheet,Text, View,Image, TouchableOpacity } from 'react-native';
-const L2A2Q1 = ({navigation}) => {
+import { StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
+const L1A2Q2 = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={{ margin: 20 }}>
-             <Text style={styles.Title}> Actividad 2/Rurana 2</Text>
+             <Text style={styles.Title}> Actividad2/Rurana 2</Text>
             </View>
             
-            <Text style={styles.subTitle}> Completa la oración </Text>
+            <Text style={styles.subTitle}> Traduce la oracion </Text>
 
             
-            <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.instructionText}> Allku </Text>
-              <Text style={styles.instructionText}> __________ </Text>
-              <Text style={styles.instructionText}> killu </Text>
-              <Text style={styles.instructionText}> __________ </Text>
-              <Text style={styles.instructionText}> kan </Text>
+            <View style={{ flexDirection: 'row',margin: 60 }}>
+              <Text style={styles.instructionText}> Pukami kan </Text>
+              <Image style={styles.icon} source={require('../assets/sonido_icon.png')} />
+            </View>
+            
+            <View style={{ flexDirection: 'row',margin: 60 }}>
+              <TextInput style={styles. textSolution}/>
+              <TextInput style={styles. textSolution}/>
             </View>
 
             <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.buttonSolution}>  mi </Text>
-              <Text style={styles.buttonSolution}>  ta  </Text>
-              <Text style={styles.buttonSolution}>  ka </Text>
+              <Text style={styles.buttonSolution}>  es </Text>
+              <Text style={styles.buttonSolution}>  negro  </Text>
+              <Text style={styles.buttonSolution}>  rojo </Text>
+              
             </View>
-
-            <Image style={styles.imagen} source={require('../assets/Perro.png')} />
-
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L2A2Q2')}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q3')}>
               <Text style={styles.buttonText}> Continuar </Text> 
             </TouchableOpacity>
 
-
-          
            
           <StatusBar style="auto" />
         </View>
@@ -64,6 +62,18 @@ const styles = StyleSheet.create({
       color: 'black',
       fontWeight: 'bold'
     },
+    
+    textSolution: {
+      padding: 10,
+      paddingStart: 30,
+      width: '35%',
+      height: 40,
+      marginTop: '5%',
+      borderRadius: 10,
+      backgroundColor: '#B9B6B6',
+      marginRight: 20
+    },
+  
     buttonSolution: {
       backgroundColor: "#B9B6B6",
       marginTop: 25,
@@ -102,11 +112,7 @@ const styles = StyleSheet.create({
     icon: {
       width: 30,
       height: 30,
-    },
-    imagen: {
-        width: 150,
-        height: 150,
-      }
+    }
   })
 
-  export default L2A2Q1 
+  export default L1A2Q2

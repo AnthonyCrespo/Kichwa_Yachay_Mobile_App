@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
 import { StyleSheet,Text, View,Image, TouchableOpacity } from 'react-native';
-const L2A2Q1 = ({navigation}) => {
+const L2A2Q3 = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={{ margin: 20 }}>
@@ -12,9 +12,9 @@ const L2A2Q1 = ({navigation}) => {
 
             
             <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.instructionText}> Allku </Text>
+              <Text style={styles.instructionText}> Wakra </Text>
               <Text style={styles.instructionText}> __________ </Text>
-              <Text style={styles.instructionText}> killu </Text>
+              <Text style={styles.instructionText}> yurak </Text>
               <Text style={styles.instructionText}> __________ </Text>
               <Text style={styles.instructionText}> kan </Text>
             </View>
@@ -25,14 +25,12 @@ const L2A2Q1 = ({navigation}) => {
               <Text style={styles.buttonSolution}>  ka </Text>
             </View>
 
-            <Image style={styles.imagen} source={require('../assets/Perro.png')} />
+            <Image style={styles.imagen} source={require('../assets/vaca_blanca.png')} />
 
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L2A2Q2')}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L2A2Q4')}>
               <Text style={styles.buttonText}> Continuar </Text> 
             </TouchableOpacity>
 
-
-          
            
           <StatusBar style="auto" />
         </View>
@@ -104,9 +102,9 @@ const styles = StyleSheet.create({
       height: 30,
     },
     imagen: {
-        width: 150,
-        height: 150,
+        width: 250,
+        height: 170,
       }
   })
 
-  export default L2A2Q1 
+  export default L2A2Q3 

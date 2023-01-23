@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
 import { StyleSheet,Text, View,Image, TouchableOpacity } from 'react-native';
-const L2A2Q1 = ({navigation}) => {
+const L2A2Q4 = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={{ margin: 20 }}>
@@ -12,27 +12,24 @@ const L2A2Q1 = ({navigation}) => {
 
             
             <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.instructionText}> Allku </Text>
+              <Text style={styles.instructionText}> Amaru </Text>
               <Text style={styles.instructionText}> __________ </Text>
-              <Text style={styles.instructionText}> killu </Text>
+              <Text style={styles.instructionText}> puka </Text>
               <Text style={styles.instructionText}> __________ </Text>
               <Text style={styles.instructionText}> kan </Text>
             </View>
 
             <View style={{ flexDirection: 'row',margin: 40 }}>
+              <Text style={styles.buttonSolution}>  ta </Text>
+              <Text style={styles.buttonSolution}>  ka  </Text>
               <Text style={styles.buttonSolution}>  mi </Text>
-              <Text style={styles.buttonSolution}>  ta  </Text>
-              <Text style={styles.buttonSolution}>  ka </Text>
             </View>
 
-            <Image style={styles.imagen} source={require('../assets/Perro.png')} />
+            <Image style={styles.imagen} source={require('../assets/serpiente_roja.png')} />
 
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L2A2Q2')}>
-              <Text style={styles.buttonText}> Continuar </Text> 
+            <TouchableOpacity style={styles.buttonContainer}>
+              <Text style={styles.buttonText}> Finalizar </Text> 
             </TouchableOpacity>
-
-
-          
            
           <StatusBar style="auto" />
         </View>
@@ -109,4 +106,4 @@ const styles = StyleSheet.create({
       }
   })
 
-  export default L2A2Q1 
+  export default L2A2Q4 

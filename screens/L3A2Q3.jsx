@@ -1,38 +1,35 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
-import { StyleSheet,Text, View,Image, TouchableOpacity } from 'react-native';
-const L2A2Q1 = ({navigation}) => {
+import { StyleSheet, Button,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
+const L3A2Q3= ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={{ margin: 20 }}>
              <Text style={styles.Title}> Actividad 2/Rurana 2</Text>
             </View>
             
-            <Text style={styles.subTitle}> Completa la oración </Text>
+            <Text style={styles.subTitle}> Ordena la pregunta </Text>
 
             
             <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.instructionText}> Allku </Text>
-              <Text style={styles.instructionText}> __________ </Text>
-              <Text style={styles.instructionText}> killu </Text>
-              <Text style={styles.instructionText}> __________ </Text>
-              <Text style={styles.instructionText}> kan </Text>
+              <Text style={styles.instructionText}> Maykan</Text>
+              <Text style={styles.instructionText}> _____</Text>
+              <Text style={styles.instructionText}> puka</Text>
+              <Text style={styles.instructionText}> ____ </Text>
             </View>
 
-            <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.buttonSolution}>  mi </Text>
-              <Text style={styles.buttonSolution}>  ta  </Text>
-              <Text style={styles.buttonSolution}>  ka </Text>
+            <View style={{ flexDirection: 'row',margin: 20 }}>
+              <Text style={styles.buttonSolution}>  wiwata </Text>
+              <Text style={styles.buttonSolution}>  misi  </Text>
+              <Text style={styles.buttonSolution}>  kan </Text>
             </View>
 
-            <Image style={styles.imagen} source={require('../assets/Perro.png')} />
+            <Text style={styles.buttonSolution}>  kanki </Text>
 
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L2A2Q2')}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L3A2Q4')}>
               <Text style={styles.buttonText}> Continuar </Text> 
             </TouchableOpacity>
 
-
-          
            
           <StatusBar style="auto" />
         </View>
@@ -64,6 +61,7 @@ const styles = StyleSheet.create({
       color: 'black',
       fontWeight: 'bold'
     },
+  
     buttonSolution: {
       backgroundColor: "#B9B6B6",
       marginTop: 25,
@@ -103,10 +101,6 @@ const styles = StyleSheet.create({
       width: 30,
       height: 30,
     },
-    imagen: {
-        width: 150,
-        height: 150,
-      }
   })
 
-  export default L2A2Q1 
+  export default L3A2Q3
