@@ -20,7 +20,7 @@ const Login = ({navigation}) => {
         placeholder="Contraseña"
         secureTextEntry={true} 
         />
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Lesson1_Activity2_Q1')}>
           <Text style={styles.buttonText}> 
           Ingresar </Text> 
         </TouchableOpacity>
