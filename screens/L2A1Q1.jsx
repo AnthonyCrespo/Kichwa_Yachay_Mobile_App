@@ -7,31 +7,45 @@ const L2A1Q1 = ({ navigation }) => {
       
       <Text style={styles.statementText}>¿Cuál es el perro?</Text>
 
-      <View style={styles.optionContainer}>  
-        <Image style={styles.catImage} source={require('../assets/white-cat.jpeg')}/>
+      <View style={styles.optionContainer}>
 
-        <TouchableOpacity
-          style={styles.optionButton}>
-            <Text style={styles.optionText}>missi</Text>
-        </TouchableOpacity>
+        <View style={styles.itemContainer}>
+          <Image style={styles.catImage} source={require('../assets/white-cat.jpeg')}/>
+        </View>
+
+        <View style={styles.itemContainer}>
+          <TouchableOpacity
+            style={styles.optionButton}>
+              <Text style={styles.optionText}>missi</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.optionContainer}>  
-        <Image style={styles.cowImage} source={require('../assets/cow-2.jpeg')}/>
 
-        <TouchableOpacity
-          style={styles.optionButton}>
-            <Text style={styles.optionText}>wakra</Text>
-        </TouchableOpacity>
+        <View style={styles.itemContainer}>
+          <Image style={styles.cowImage} source={require('../assets/cow-2.jpeg')}/>
+        </View>
+
+        <View style={styles.itemContainer}>
+          <TouchableOpacity
+            style={styles.optionButton}>
+              <Text style={styles.optionText}>wakra</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.optionContainer}>  
-        <Image style={styles.dogImage} source={require('../assets/yellow-dog.jpeg')}/>
+        <View style={styles.itemContainer}>
+          <Image style={styles.dogImage} source={require('../assets/yellow-dog.jpeg')}/>
+        </View>
 
-        <TouchableOpacity
-          style={styles.optionButton}>
-            <Text style={styles.optionText}>allku</Text>
-        </TouchableOpacity>
+        <View style={styles.itemContainer}>
+          <TouchableOpacity
+            style={styles.optionButton}>
+              <Text style={styles.optionText}>allku</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <TouchableOpacity
@@ -47,11 +61,12 @@ const L2A1Q1 = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   AppContainer: {
+    flex: 1,
     backgroundColor: '#fff',
     paddingTop:20,
     paddingLeft:5,
     paddingRight:5,
-    justifyContent:'space_around',
+    justifyContent:'space-around',
     alignItems: 'center',
   },
   statementText: {
@@ -60,21 +75,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   optionContainer:{
+    // flex: 1,
     flexDirection: 'row',
-    alignContent: 'space-between',
     justifyContent: 'center',
   },
-  optionButton: {
-    width: 200,
+  optionButton:{
+    flex:1,
+    width: 100,
     height: 40,
-    flexDirection: 'row',
-    alignContent: 'space-between',
+    alignItems: 'center',
+    alignContent: 'center',
     justifyContent: 'center',
   },
   optionText: {
     color: '#000',
     fontSize: 20,
-    marginLeft:20
   },
   continueButton: {
     width: 200,
@@ -87,6 +102,11 @@ const styles = StyleSheet.create({
   continueText:{
     color: '#fff',
     fontSize: 24
+  },
+  itemContainer:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   catImage:{
     width:59,

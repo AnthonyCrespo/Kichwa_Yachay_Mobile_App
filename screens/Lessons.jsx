@@ -7,17 +7,18 @@ const Lessons= ({route}) => {
     const {lesson, subtitle} = route.params;
     const navigation = useNavigation();
     const activities = [
-        { id: 1, title: 'Seleccionar', lessonId: 1, name_screen: ' ' },
+        { id: 1, title: 'Seleccionar', lessonId: 1, name_screen: 'L1A1Q1'},
         { id: 2, title: 'Traducir', lessonId: 1, name_screen: 'L1A2Q1'},
-        { id: 3, title: 'Escuchar', lessonId: 1, name_screen: ' '},
-        { id: 4, title: 'Seleccionar', lessonId: 2, name_screen: ' ' },
+        { id: 3, title: 'Escuchar', lessonId: 1, name_screen: 'L1A3Q1'},
+        { id: 4, title: 'Seleccionar', lessonId: 2, name_screen: 'L2A1Q1' },
         { id: 5, title: 'Completar', lessonId: 2, name_screen: 'L2A2Q1'},
         { id: 6, title: 'Ordenar', lessonId: 2, name_screen: 'L2A3Q1'},
-        { id: 7, title: 'Seleccionar', lessonId: 3, name_screen: ' ' },
+        { id: 7, title: 'Seleccionar', lessonId: 3, name_screen: 'L3A1Q1'},
         { id: 8, title: 'Completar', lessonId: 3, name_screen: 'L3A2Q1'},
-        { id: 9, title: 'Relacionar', lessonId: 3 , name_screen: ' '}
+        { id: 9, title: 'Relacionar', lessonId: 3 , name_screen: ''}
       ];
-      const filteredActivities = activities.filter((activity) => activity.lessonId === lesson);
+
+    const filteredActivities = activities.filter((activity) => activity.lessonId === lesson);
 
     return (
         <View  style={styles.container}>

@@ -8,42 +8,54 @@ const L1A1Q2 = ({navigation}) => {
       <View style={styles.statementContainer}>
         <Text style={styles.statementText}>¿Cuál es el color rojo?</Text>
       </View>
-      
-      <View style={styles.optionsContainer}> 
 
       <View style={styles.optionContainer}>  
-      <View style={styles.redsquare}></View>
-      <TouchableOpacity
-        style={styles.optionButton}>
-        <Text style={styles.optionText}>Puka</Text>
-      </TouchableOpacity>
-      </View>
+        <View style={styles.itemContainer}> 
+          <View style={styles.redsquare}></View>
+        </View> 
 
-      <View style={styles.optionContainer}>  
-      <View style={styles.blacksquare}></View>
-      <TouchableOpacity
-        style={styles.optionButton}>
-        <Text style={styles.optionText}>Yana</Text>
-      </TouchableOpacity>
+        <View style={styles.itemContainer}>
+          <TouchableOpacity
+            onPress={() => {return ('Puka')}}
+            style={styles.optionButton}>
+            <Text style={styles.optionText}>Puka</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.optionContainer}>  
-      <View style={styles.yellowsquare}></View>
+        <View style={styles.itemContainer}>
+            <View style={styles.blacksquare}></View>
+        </View> 
+
+        <View style={styles.itemContainer}>
+          <TouchableOpacity
+            onPress={() => {return ('Yana')}}
+            style={styles.optionButton}>
+            <Text style={styles.optionText}>Yana</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.optionContainer}>  
+        <View style={styles.itemContainer}>
+          <View style={styles.yellowsquare}></View>
+        </View> 
+
+        <View style={styles.itemContainer}>
+          <TouchableOpacity
+            onPress={() => {return ('Killu')}}
+            style={styles.optionButton}>
+            <Text style={styles.optionText}>Killu</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <TouchableOpacity
-        style={styles.optionButton}>
-        <Text style={styles.optionText}>Killu</Text>
+        onPress={() => navigation.navigate('L1A1Q3')}
+        style={styles.continueButton}>
+        <Text style={styles.continueText}>Continuar</Text>
       </TouchableOpacity>
-      </View>
-
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-        //   onPress={() => navigation.navigate('L1A1 Pregunta 3')}
-          style={styles.continueButton}>
-          <Text style={styles.continueText}>Continuar</Text>
-        </TouchableOpacity>
-      </View>
 
       <StatusBar style="auto" />
 
@@ -55,14 +67,14 @@ const styles = StyleSheet.create({
   AppContainer: {
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent: 'space-around',
+    alignItems: 'center',
     paddingTop:20,
     paddingLeft:5,
     paddingRight:5
   },
   statementContainer: {
-    flex:1,
-    flexDirection: 'column',
-    justifyContent:'flex-start',
+    justifyContent:'center',
     alignItems: 'center',
     paddingBottom:15,
     paddingTop:15
@@ -72,17 +84,17 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
   },
-  optionsContainer: {
-    flex: 5,
-    justifyContent: 'flex-start',
-  },
   optionContainer: {
     flexDirection:'row',
-    alignContent:'center',
     justifyContent:'space-between',
     paddingRight:50,
     paddingLeft:30,
     marginBottom:15,
+  },
+  itemContainer:{
+    flex:1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   blacksquare: {
     width: 100,
@@ -112,11 +124,6 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 24,
     fontWeight: 'bold',
-  },
-  buttonContainer:{
-    flex: 3,
-    marginTop: 50,
-    alignItems: 'center',
   },
   continueButton: {
     width: 300,

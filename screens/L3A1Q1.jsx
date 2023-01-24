@@ -33,7 +33,7 @@ const L3A1Q1 = ({navigation}) => {
     </TouchableOpacity>
 
     <TouchableOpacity
-        onPress={() => navigation.navigate('L3A1 Pregunta 2')}
+        onPress={() => navigation.navigate('L3A1Q2')}
         style={styles.continueButton}>
         <Text style={styles.continueText}>Continuar</Text>
     </TouchableOpacity>
@@ -46,11 +46,12 @@ const L3A1Q1 = ({navigation}) => {
 
 const styles = StyleSheet.create({
   AppContainer: {
+    flex: 1,
     backgroundColor: '#fff',
     paddingTop:20,
     paddingLeft:5,
     paddingRight:5,
-    justifyContent:'flex-start',
+    justifyContent:'space-around',
     alignItems: 'center',
   },
   statementText: {
@@ -125,4 +126,3 @@ const styles = StyleSheet.create({
 });
 
 export default L3A1Q1;
-

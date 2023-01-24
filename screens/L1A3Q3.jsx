@@ -2,83 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-function A3Pregunta1({navigation}) {
-  return (
-    <View style= {styles.AppContainer}>
-
-      <View style={styles.statementContainer}>
-        <Text style={styles.statementText}>Escuche y seleccione</Text>
-      </View>
-
-      <View style={styles.audioContainer}> 
-      <TouchableOpacity
-          style={styles.audioButton}>
-          <Icon name="volume-up" size={30} color="black"/>
-          <Text style={{fontSize:25, marginLeft:20}}>
-          Yana
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.optionsContainer}>  
-      <View style={styles.redsquare}></View>
-      <View style={styles.yellowsquare}></View>
-      <View style={styles.blacksquare}></View>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('L1A3 Pregunta 2')}
-          style={styles.continueButton}>
-          <Text style={styles.continueText}>Continuar</Text>
-        </TouchableOpacity>
-      </View>
-
-      <StatusBar style="auto" />
-
-    </View>
-  );
-}
-
-function A3Pregunta2({navigation}) {
-  return (
-    <View style={styles.AppContainer}>
-
-      <View style={styles.statementContainer}>
-        <Text style={styles.statementText}>Escuche y seleccione</Text>
-      </View>
-
-      <View style={styles.audioContainer}> 
-      <TouchableOpacity
-          style={styles.audioButton}>
-          <Icon name="volume-up" size={30} color="black"/>
-          <Text style={{fontSize:25, marginLeft:20}}>
-          Puka
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.optionsContainer}>  
-      <View style={styles.yellowsquare}></View>
-      <View style={styles.blacksquare}></View>
-      <View style={styles.redsquare}></View>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('L1A3 Pregunta 3')}
-          style={styles.continueButton}>
-          <Text style={styles.continueText}>Continuar</Text>
-        </TouchableOpacity>
-      </View>
-
-      <StatusBar style="auto" />
-
-    </View>
-  );
-}
-
-function A3Pregunta3({navigation}) {
+const L1A3Q3 = ({navigation}) => {
   return (
     <View style={styles.AppContainer}>
 
@@ -104,9 +28,9 @@ function A3Pregunta3({navigation}) {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('L1 Resultados')}
+          // onPress={() => navigation.navigate('L1 Resultados')}
           style={styles.continueButton}>
-          <Text style={styles.continueText}>Continuar</Text>
+          <Text style={styles.continueText}>Finalizar</Text>
         </TouchableOpacity>
       </View>
 
@@ -206,5 +130,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export {A3Pregunta1, A3Pregunta2, A3Pregunta3};
+export default L1A3Q3;
 
