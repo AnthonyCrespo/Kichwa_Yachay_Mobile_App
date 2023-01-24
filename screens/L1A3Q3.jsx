@@ -1,8 +1,28 @@
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { Audio } from 'expo-av';
 import { StyleSheet, TouchableOpacity, View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+
+let sound;
 const L1A3Q3 = ({navigation}) => {
+
+  const playAudio = async () => {
+
+    sound = new Audio.Sound();
+    try {
+        await sound.loadAsync(require('../assets/audios/killu.mp3'));
+        await sound.playAsync();
+    } catch (error) {
+        console.log(error);
+    }
+} 
+
+useEffect(() => {
+return () => sound.unloadAsync();
+}, []);
+
   return (
     <View style={styles.AppContainer}>
 
@@ -12,7 +32,7 @@ const L1A3Q3 = ({navigation}) => {
 
       <View style={styles.audioContainer}> 
       <TouchableOpacity
-          style={styles.audioButton}>
+          style={styles.audioButton} onPress={playAudio}>
           <Icon name="volume-up" size={30} color="black"/>
           <Text style={{fontSize:25, marginLeft:20}}>
           Killu
