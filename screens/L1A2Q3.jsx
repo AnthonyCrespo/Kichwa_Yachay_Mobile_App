@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
 import { StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'
 const L1A2Q3 = ({navigation}) => {
     return (
         <View style={styles.container}>
@@ -13,7 +14,9 @@ const L1A2Q3 = ({navigation}) => {
             
             <View style={{ flexDirection: 'row',margin: 60 }}>
               <Text style={styles.instructionText}> Killumi kan </Text>
-              <Image style={styles.icon} source={require('../assets/sonido_icon.png')} />
+              <TouchableOpacity >
+              <Icon name="volume-up" size={30} color="black"/>
+              </TouchableOpacity>
             </View>
             
             <View style={{ flexDirection: 'row',margin: 60 }}>

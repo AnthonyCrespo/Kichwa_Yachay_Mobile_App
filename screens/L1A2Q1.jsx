@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
 import { StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'
 const L1A2Q1 = ({navigation}) => {
     return (
         <View style={styles.container}>
@@ -13,7 +14,10 @@ const L1A2Q1 = ({navigation}) => {
             
             <View style={{ flexDirection: 'row',margin: 60 }}>
               <Text style={styles.instructionText}> Yanami kan </Text>
-              <Image style={styles.icon} source={require('../assets/sonido_icon.png')} />
+              <TouchableOpacity >
+              <Icon name="volume-up" size={30} color="black"/>
+              </TouchableOpacity>
+              
             </View>
             
             <View style={{ flexDirection: 'row',margin: 60 }}>
@@ -90,6 +94,13 @@ const styles = StyleSheet.create({
       paddingVertical: 10,
       paddingHorizontal: 50
       },
+      buttonContainerBotton: {
+        backgroundColor: "#82C0CC",
+        marginTop: 25,
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 50
+        },
     buttonText: {
       fontSize: 20,
       color: "white",
