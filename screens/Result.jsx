@@ -10,8 +10,15 @@ const Result = ({route, navigation}) => {
     <View style={styles.container}>
       <Text style={{fontSize:40, fontWeight: 'bold'}}> Puntaje obtenido:  </Text>
       <Text style={{fontSize:80, marginTop:20, color: '#A43074',fontWeight: 'bold'}}> {puntuation3} </Text>
-{/*       <Text style={{fontSize:20, fontWeight: 'bold'}}> {answer2} </Text>
-      <Text style={{fontSize:20, fontWeight: 'bold'}}> {answer3} </Text> */}
+
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Lessons', {lesson:1,subtitle:'Colores/Tullpukuna'}  )}
+        style={styles.continueButton}>
+        <Text style={styles.continueText}>Continuar</Text>
+      </TouchableOpacity>
+
+
       <StatusBar style="auto" />   
     </View>
   )
@@ -95,6 +102,19 @@ const styles = StyleSheet.create({
       icon: {
         width: 30,
         height: 30,
+      },
+      continueButton: {
+        width: 300,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: "#82C0CC",
+        marginTop:80,
+        borderRadius: 20,
+      },
+      continueText:{
+        color: '#fff',
+        fontSize: 24
       }
   })
 
