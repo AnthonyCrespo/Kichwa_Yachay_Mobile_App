@@ -6,6 +6,9 @@ import Register from '../screens/Register'
 import Home from '../screens/Home'
 import Profile from '../screens/Profile'
 import Lessons from '../screens/Lessons'
+import Result from '../screens/Result'
+
+
 // L1A1
 import L1A1Q1 from '../screens/L1A1Q1'
 import L1A1Q2 from '../screens/L1A1Q2'
@@ -41,6 +44,7 @@ import L3A2Q1 from '../screens/L3A2Q1'
 import L3A2Q2 from '../screens/L3A2Q2'
 import L3A2Q3 from '../screens/L3A2Q3'
 import L3A2Q4 from '../screens/L3A2Q4'
+
 
 
 
@@ -165,6 +169,9 @@ const AppStack = () => {
                     name = 'L3A2Q4'
                     component = {L3A2Q4}/>
 
+                <Stack.Screen
+                    name = 'Result'
+                    component = {Result}/>
 
             </Stack.Navigator>
         </NavigationContainer>

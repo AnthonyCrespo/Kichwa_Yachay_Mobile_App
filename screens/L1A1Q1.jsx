@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
 const L1A1Q1 = ({route, navigation}) => {
+  var answer;
   return (
     <View style= {styles.AppContainer}>
 
@@ -16,7 +17,7 @@ const L1A1Q1 = ({route, navigation}) => {
 
         <View style={styles.itemContainer}>
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => answer = 'Yana'}
             style={styles.optionButton}>
             <Text style={styles.optionText}>Yana</Text>
           </TouchableOpacity>
@@ -30,7 +31,7 @@ const L1A1Q1 = ({route, navigation}) => {
 
         <View style={styles.itemContainer}>
           <TouchableOpacity
-            onPress={() => {return ('Puka')}}
+            onPress={() => answer = 'Puka'}
             style={styles.optionButton}>
             <Text style={styles.optionText}>Puka</Text>
           </TouchableOpacity>
@@ -45,7 +46,7 @@ const L1A1Q1 = ({route, navigation}) => {
 
         <View style={styles.itemContainer}>
           <TouchableOpacity
-            onPress={() => {return ('Killu')}}
+            onPress={() => answer = 'Killu'}
             style={styles.optionButton}>
             <Text style={styles.optionText}>Killu</Text>
           </TouchableOpacity>
@@ -53,7 +54,7 @@ const L1A1Q1 = ({route, navigation}) => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('L1A1Q2')}
+        onPress={() => navigation.navigate('L1A1Q2', {puntuation1: answer == 'Yana' ? 33: 0 }  )}
         style={styles.continueButton}>
         <Text style={styles.continueText}>Continuar</Text>
       </TouchableOpacity>
