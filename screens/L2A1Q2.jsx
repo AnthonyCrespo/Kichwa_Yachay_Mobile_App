@@ -5,7 +5,21 @@ const L2A1Q1 = ({ navigation }) => {
   return (
     <View style= {styles.AppContainer}>
       
-      <Text style={styles.statementText}>¿Cuál es el perro?</Text>
+      <Text style={styles.statementText}>¿Cuál es una vaca?</Text>
+
+      <View style={styles.optionContainer}>
+
+        <View style={styles.itemContainer}>
+          <Image style={styles.serpentImage} source={require('../assets/serpent.jpeg')}/>
+        </View>
+
+        <View style={styles.itemContainer}>
+          <TouchableOpacity
+            style={styles.optionButton}>
+              <Text style={styles.optionText}>amaru</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
       <View style={styles.optionContainer}>
 
@@ -35,21 +49,8 @@ const L2A1Q1 = ({ navigation }) => {
         </View>
       </View>
 
-      <View style={styles.optionContainer}>  
-        <View style={styles.itemContainer}>
-          <Image style={styles.dogImage} source={require('../assets/yellow-dog.jpeg')}/>
-        </View>
-
-        <View style={styles.itemContainer}>
-          <TouchableOpacity
-            style={styles.optionButton}>
-              <Text style={styles.optionText}>allku</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
       <TouchableOpacity
-        onPress={() => navigation.navigate('L2A1Q2')}
+        // onPress={() => navigation.navigate('L1A2 Pregunta 2')}
         style={styles.continueButton}>
         <Text style={styles.continueText}>Continuar</Text>
       </TouchableOpacity>
@@ -116,10 +117,10 @@ const styles = StyleSheet.create({
     width:146,
     height:117,
   },
-  dogImage:{
-    width:160,
-    height:133,
-  }
+  serpentImage:{
+    width: 137,
+    height: 140,
+  },
 });
 
 export default L2A1Q1;
