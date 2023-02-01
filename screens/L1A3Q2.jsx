@@ -18,10 +18,10 @@ const L1A3Q2 = ({navigation}) => {
     }
 } 
 
-useEffect(() => {
+/* useEffect(() => {
 return () => sound.unloadAsync();
 }, []);
-
+ */
 
   return (
     <View style={styles.AppContainer}>
