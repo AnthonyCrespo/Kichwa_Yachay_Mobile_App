@@ -92,6 +92,10 @@ const questions = [
 ];
 
 let sound;
+let answer;
+let puntaje = 0;
+
+
 const L3A1 = ({ navigation }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
@@ -118,6 +122,7 @@ const L3A1 = ({ navigation }) => {
           <TouchableOpacity
             style={styles.optionButton}
             onPress={() => {
+              answer = option.text;
               playAudio(option.audio);
             }}
           >
@@ -130,8 +135,12 @@ const L3A1 = ({ navigation }) => {
       <TouchableOpacity
         style={styles.continueButton}
         onPress={() => {
+          if (answer === questions[currentQuestionIndex].correct_answer) {
+            puntaje = puntaje + 100/questions.length;
+          }
+
           if (currentQuestionIndex === questions.length-1) {
-            navigation.navigate("Result", {puntuation3:100});
+            navigation.navigate("Result", {puntuation3:puntaje});
           } else{
           setCurrentQuestionIndex(currentQuestionIndex + 1);
         }
