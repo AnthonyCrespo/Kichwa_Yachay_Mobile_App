@@ -13,7 +13,7 @@ const Lessons= ({route}) => {
         { id: 4, title: 'Seleccionar', lessonId: 2, name_screen: 'L2A1Q1' },
         { id: 5, title: 'Completar', lessonId: 2, name_screen: 'L2A2Q1'},
         { id: 6, title: 'Ordenar', lessonId: 2, name_screen: 'L2A3Q1'},
-        { id: 7, title: 'Seleccionar', lessonId: 3, name_screen: 'L3A1Q1'},
+        { id: 7, title: 'Seleccionar', lessonId: 3, name_screen: 'L3A1'},
         { id: 8, title: 'Completar', lessonId: 3, name_screen: 'L3A2Q1'},
         { id: 9, title: 'Relacionar', lessonId: 3 , name_screen: ''}
       ];
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     buttonContainer: {
-        backgroundColor: "#666BCA",
+        backgroundColor: "#2B4E81",
         marginVertical:40,
         borderRadius: 10, 
         paddingVertical: 30,
