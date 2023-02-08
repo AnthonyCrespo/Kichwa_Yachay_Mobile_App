@@ -10,6 +10,7 @@ import Result from '../screens/Result'
 
 
 // L1A1
+import L1A1 from '../screens/L1A1'
 import L1A1Q1 from '../screens/L1A1Q1'
 import L1A1Q2 from '../screens/L1A1Q2'
 import L1A1Q3 from '../screens/L1A1Q3'
@@ -35,6 +36,10 @@ import L2A3Q2 from '../screens/L2A3Q2'
 import L2A3Q3 from '../screens/L2A3Q3'
 import L2A3Q4 from '../screens/L2A3Q4'
 // L3A1
+
+
+import L3A1 from '../screens/L3A1'
+
 import L3A1Q1 from '../screens/L3A1Q1'
 import L3A1Q2 from '../screens/L3A1Q2'
 import L3A1Q3 from '../screens/L3A1Q3'
@@ -77,6 +82,10 @@ const AppStack = () => {
                     component = {Profile}/>
 
                 {/* L1A1*/}
+                <Stack.Screen
+                    name = 'L1A1'
+                    component = {L1A1}/>
+
                 <Stack.Screen
                     name = 'L1A1Q1'
                     component = {L1A1Q1}/>
@@ -146,6 +155,10 @@ const AppStack = () => {
                     component = {L2A3Q4}/>
 
                 {/* L3A1*/}
+                <Stack.Screen
+                    name = 'L3A1'
+                    component = {L3A1}/>
+
                 <Stack.Screen
                     name = 'L3A1Q1'
                     component = {L3A1Q1}/>
