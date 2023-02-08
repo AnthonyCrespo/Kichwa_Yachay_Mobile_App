@@ -10,6 +10,7 @@ import Result from '../screens/Result'
 
 
 // L1A1
+import L1A1 from '../screens/L1A1'
 import L1A1Q1 from '../screens/L1A1Q1'
 import L1A1Q2 from '../screens/L1A1Q2'
 import L1A1Q3 from '../screens/L1A1Q3'
@@ -77,6 +78,10 @@ const AppStack = () => {
                     component = {Profile}/>
 
                 {/* L1A1*/}
+                <Stack.Screen
+                    name = 'L1A1'
+                    component = {L1A1}/>
+
                 <Stack.Screen
                     name = 'L1A1Q1'
                     component = {L1A1Q1}/>

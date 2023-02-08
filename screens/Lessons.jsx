@@ -7,7 +7,7 @@ const Lessons= ({route}) => {
     const {lesson, subtitle} = route.params;
     const navigation = useNavigation();
     const activities = [
-        { id: 1, title: 'Seleccionar', lessonId: 1, name_screen: 'L1A1Q1'},
+        { id: 1, title: 'Seleccionar', lessonId: 1, name_screen: 'L1A1'},
         { id: 2, title: 'Traducir', lessonId: 1, name_screen: 'L1A2Q1'},
         { id: 3, title: 'Escuchar', lessonId: 1, name_screen: 'L1A3Q1'},
         { id: 4, title: 'Seleccionar', lessonId: 2, name_screen: 'L2A1Q1' },
