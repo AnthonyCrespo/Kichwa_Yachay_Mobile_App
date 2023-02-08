@@ -3,6 +3,8 @@ import { Audio } from 'expo-av';
 import {  StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+
+
 const questions = [
   {
     statement: 'Maykan wiwata yana kan',
@@ -98,6 +100,7 @@ let puntaje = 0;
 
 const L3A1 = ({ navigation }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const playAudio = async (path) => {
     sound = new Audio.Sound();
@@ -122,12 +125,15 @@ const L3A1 = ({ navigation }) => {
           <TouchableOpacity
             style={styles.optionButton}
             onPress={() => {
+              setSelectedOption(index);
               answer = option.text;
               playAudio(option.audio);
             }}
           >
             <Icon name="volume-up" size={20} color="black" />
-            <Text style={styles.optionText}>{option.text}</Text>
+            <Text style={selectedOption === index ? styles.selected_optionText : styles.optionText}>
+              {option.text}
+              </Text>
           </TouchableOpacity>
         </View>
       ))}
@@ -135,12 +141,13 @@ const L3A1 = ({ navigation }) => {
       <TouchableOpacity
         style={styles.continueButton}
         onPress={() => {
+          setSelectedOption(null);
           if (answer === questions[currentQuestionIndex].correct_answer) {
             puntaje = puntaje + 100/questions.length;
           }
-
           if (currentQuestionIndex === questions.length-1) {
-            navigation.navigate("Result", {puntuation3:puntaje});
+            navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
+            puntaje = 0;
           } else{
           setCurrentQuestionIndex(currentQuestionIndex + 1);
         }
@@ -179,6 +186,13 @@ const styles = StyleSheet.create({
         },
         optionText: {
           color: '#000',
+          fontSize: 20,
+          marginLeft:20,
+          fontWeight: 'bold'
+        },
+        selected_optionText: {
+          color: '#63933D',
+          fontWeight: 'bold',
           fontSize: 20,
           marginLeft:20
         },
