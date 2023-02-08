@@ -15,7 +15,7 @@ const Lessons= ({route}) => {
         { id: 6, title: 'Ordenar', lessonId: 2, name_screen: 'L2A3Q1'},
         { id: 7, title: 'Seleccionar', lessonId: 3, name_screen: 'L3A1Q1'},
         { id: 8, title: 'Completar', lessonId: 3, name_screen: 'L3A2Q1'},
-        { id: 9, title: 'Relacionar', lessonId: 3 , name_screen: ''}
+        { id: 9, title: 'Relacionar', lessonId: 3 , name_screen: 'L3A3Q1'}
       ];
 
     const filteredActivities = activities.filter((activity) => activity.lessonId === lesson);

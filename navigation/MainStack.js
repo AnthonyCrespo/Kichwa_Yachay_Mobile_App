@@ -45,6 +45,10 @@ import L3A2Q2 from '../screens/L3A2Q2'
 import L3A2Q3 from '../screens/L3A2Q3'
 import L3A2Q4 from '../screens/L3A2Q4'
 
+import L3A3Q1 from '../screens/L3A3Q1'
+import L3A3Q2 from '../screens/L3A3Q2'
+
+
 
 
 
@@ -168,6 +172,12 @@ const AppStack = () => {
                 <Stack.Screen
                     name = 'L3A2Q4'
                     component = {L3A2Q4}/>
+                <Stack.Screen
+                    name = 'L3A3Q1'
+                    component = {L3A3Q1}/>
+                <Stack.Screen
+                    name = 'L3A3Q2'
+                    component = {L3A3Q2}/>
 
                 <Stack.Screen
                     name = 'Result'
