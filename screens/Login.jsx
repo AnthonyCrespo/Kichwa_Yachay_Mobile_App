@@ -1,18 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity,Alert } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import {getAuth,signInWithEmailAndPassword} from 'firebase/auth'
-import {initializeApp} from 'firebase/app'
+import {getAuth,getReactNativePersistence,initializeAuth,signInWithEmailAndPassword} from 'firebase/auth'
+import {initializeApp, getApps, getApp} from 'firebase/app'
 import {firebaseConfig} from '../firebase-config'
 
 
 const Login = ({navigation}) => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  let app;
+  let auth;
+  if (!getApps().length) {
+    try {
+    app = initializeApp(firebaseConfig);
+    auth = initializeAuth(app, {
+      persistence: getReactNativePersistence(AsyncStorage)
+    })}
+    
+    catch (err) {
+      console.log("Error initializing");
+      }
+      }
+    app = getApp();
+    auth = getAuth();
 
 
   const handleSignIn = () =>{

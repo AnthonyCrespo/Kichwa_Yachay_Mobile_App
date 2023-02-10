@@ -1,17 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState} from 'react';
 import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity, Linking, Alert  } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import {getAuth,createUserWithEmailAndPassword} from 'firebase/auth'
-import {initializeApp} from 'firebase/app'
+import {getAuth,getReactNativePersistence,initializeAuth,createUserWithEmailAndPassword} from 'firebase/auth'
+import {initializeApp, getApps, getApp} from 'firebase/app'
 import {firebaseConfig} from '../firebase-config'
 
 const Register = ({navigation}) => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  let app;
+  let auth;
+  if (!getApps().length) {
+    try {
+    app = initializeApp(firebaseConfig);
+    auth = initializeAuth(app, {
+      persistence: getReactNativePersistence(AsyncStorage)
+    })}
+    
+    catch (err) {
+      console.log("Error initializing");
+      }
+      }
+    app = getApp();
+    auth = getAuth();
 
 
   const handleCreateAccount = () =>{
@@ -20,6 +33,7 @@ const Register = ({navigation}) => {
       Alert.alert('Account created')
       const user = userCredential.user
       console.log(user)
+      navigation.navigate('Home')
     })
     .catch(error => {
       console.log(error)
