@@ -1,9 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
-import React,  { useState } from 'react';
-import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
+import React,  { useState} from 'react';
+import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity, Linking, Alert  } from 'react-native';
+
+import {getAuth,createUserWithEmailAndPassword} from 'firebase/auth'
+import {initializeApp} from 'firebase/app'
+import {firebaseConfig} from '../firebase-config'
 
 const Register = ({navigation}) => {
-    
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+
+  const handleCreateAccount = () =>{
+    createUserWithEmailAndPassword(auth,email,password)
+    .then((userCredential) => {
+      Alert.alert('Account created')
+      const user = userCredential.user
+      console.log(user)
+    })
+    .catch(error => {
+      console.log(error)
+      Alert.alert(error.message)
+    })
+  }
+
     return (
         <View style={styles.container}>
         {/* <SvgTop/> */}
@@ -15,11 +38,13 @@ const Register = ({navigation}) => {
         <Text style={styles.subTitle}> Regístrate </Text>
         {/* <Text style={styles.subTitle}>REGISTRO: Ingresa tus datos </Text> */}
 
-        <TextInput style={styles.textInput}
+        <TextInput 
+        style={styles.textInput}
         placeholder="Nombre"
         />
 
-        <TextInput style={styles.textInput}
+        <TextInput onChangeText={(text) => setEmail(text)}
+        style={styles.textInput}
         placeholder="Correo"
         />
 
@@ -27,17 +52,20 @@ const Register = ({navigation}) => {
         placeholder="Nombre de usuario"
         />
 
-        <TextInput style={styles.textInput}
+        <TextInput onChangeText={(text) => setPassword(text)}
+        style={styles.textInput}
         placeholder="Contraseña"
         secureTextEntry={true}
         />
 
-        <TextInput style={styles.textInput}
+{/*         <TextInput style={styles.textInput}
         placeholder="Fecha de Nacimiento"
-        />
+        /> */}
 
-        <TouchableOpacity style={styles.buttonContainer}>
-          <Text style={styles.buttonText}>  Registrarse </Text>
+        <TouchableOpacity onPress ={handleCreateAccount} style={styles.buttonContainer}>
+          <Text style={styles.buttonText}>  
+          Registrarse 
+          </Text>
         </TouchableOpacity>
   
         <View style={styles.messageContainer}>
