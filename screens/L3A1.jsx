@@ -103,14 +103,18 @@ const L3A1 = ({ navigation }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const playAudio = async (path) => {
+    if (sound) {
+    sound.stopAsync();
+    sound.unloadAsync();
+    }
     sound = new Audio.Sound();
     try {
-      await sound.loadAsync(path);
-      await sound.playAsync();
+    await sound.loadAsync(path);
+    await sound.playAsync();
     } catch (error) {
-      console.log(error);
+    console.log(error);
     }
-  };
+    };
 
   const { statement, options } = questions[currentQuestionIndex];
 
@@ -146,6 +150,7 @@ const L3A1 = ({ navigation }) => {
             puntaje = puntaje + 100/questions.length;
           }
           if (currentQuestionIndex === questions.length-1) {
+            /* sound.stopAsync(); */
             navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
             puntaje = 0;
           } else{
@@ -251,4 +256,4 @@ const styles = StyleSheet.create({
         },
       });
       
-      export default L3A1;
+export default L3A1;
