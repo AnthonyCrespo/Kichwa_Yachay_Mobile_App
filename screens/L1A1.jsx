@@ -2,6 +2,108 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
+function getRandomItem(list) {
+  const index = Math.floor(Math.random() * list.length);
+  return list[index];
+}
+
+function updataQuestion(){
+  question_shown = questions.splice(0,1);
+}
+
+function updateOptions(){
+  first_option = getRandomItem(options);
+  left_options = options.filter((option) => option.word !== first_option.word);
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+let questions = 
+{
+  statements: [['¿Cuál es el color negro?', 'Yana'],
+  ['¿Cuál es el color rojo?', 'Puka'],
+  ['¿Cuál es el color amarillo?', 'Killu']],
+  options: [['Yana',0], ['Puka',1], ['Killu',2]],
+};
+
+let options = shuffleArray(questions['options']);
+
+let answer;
+let puntaje = 0;
+
+const L1A1 = ({navigation}) => {  
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleButtonPress = () => {
+    updataQuestion();
+    updateOptions();
+    
+    let question_view = returnView();
+    setContent(question_view);
+  };
+
+  const statement = questions['statements'][currentQuestionIndex];
+
+  return (
+    <View style= {styles.AppContainer}>
+
+      <Text style={styles.statementText}>{statement[0]}</Text>
+      
+      {options.map((option, index) => (
+        <View key={index} style={styles.optionContainer}>  
+          <View style={styles.itemContainer}>
+            <View style={option[1] === 0 ? styles.blacksquare :
+                         option[1] === 1 ? styles.redsquare :
+                         styles.yellowsquare}></View>
+          </View> 
+
+          <View style={styles.itemContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                answer = option[0];
+                 setSelectedOption(index);
+                }}
+              style={styles.optionButton}>
+              <Text style={selectedOption === index ? styles.selected_optionText : styles.optionText}>
+                {option[0]}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ))}
+
+      <TouchableOpacity
+        style={styles.continueButton}
+        onPress={() => {
+          setSelectedOption(null);
+          options = shuffleArray(options);
+          if (answer === questions['statements'][currentQuestionIndex][1]) {
+            puntaje = puntaje + 100/questions['statements'].length;
+          }
+          if (currentQuestionIndex === questions['statements'].length-1) {
+            navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
+            puntaje = 0;
+          } else{
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+        }
+        }}
+      >
+        <Text style={styles.continueText}>Continuar</Text>
+      </TouchableOpacity>
+
+      <StatusBar style="auto" />
+
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   AppContainer: {
     flex: 1,
@@ -64,6 +166,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
+  selected_optionText: {
+    color: '#63933D',
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginLeft:20
+  },
   continueButton: {
     width: 300,
     height: 40,
@@ -77,120 +185,5 @@ const styles = StyleSheet.create({
     fontSize: 24
   }
 });
-
-function getRandomItem(list) {
-  const index = Math.floor(Math.random() * list.length);
-  return list[index];
-}
-
-function updataQuestion(){
-  question_shown = questions.splice(0,1);
-}
-
-function updateOptions(){
-  first_option = getRandomItem(options);
-  left_options = options.filter((option) => option.word !== first_option.word);
-}
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-function returnView() {
-  console.log(question_shown);
-  return (
-    <View>
-      <View style={styles.statementContainer}>
-        <Text style={styles.statementText}> {question_shown} </Text>
-      </View>
-
-      <View style={styles.optionContainer}>  
-        {first_option.view}
-
-        <View style={styles.itemContainer}>
-          <TouchableOpacity
-            onPress={() => {answer = first_option.word}}
-            style={styles.optionButton}>
-            <Text style={styles.optionText}>{first_option.word}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.optionContainer}> 
-        {left_options[0].view}
-
-        <View style={styles.itemContainer}>
-          <TouchableOpacity
-            onPress={() => {answer = left_options[0].word}}
-            style={styles.optionButton}>
-            <Text style={styles.optionText}>{left_options[0].word}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.optionContainer}>  
-        {left_options[1].view}
-
-        <View style={styles.itemContainer}>
-          <TouchableOpacity
-            onPress={() => {answer = left_options[1].word}}
-            style={styles.optionButton}>
-            <Text style={styles.optionText}>{left_options[1].word}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>);
-}
-
-let questions = ['¿Cuál es el color negro?', '¿Cuál es el color rojo?', '¿Cuál es el color amarillo?'];
-questions = shuffleArray(questions);
-let question_shown = questions.splice(0,1);
-let options = [{view: (<View style={styles.itemContainer}>
-                        <View style={styles.blacksquare}></View>
-                        </View>) , word: 'Yana'},
-                {view: (<View style={styles.itemContainer}>
-                        <View style={styles.redsquare}></View>
-                        </View>) , word: 'Puka'},
-                {view: (<View style={styles.itemContainer}>
-                        <View style={styles.yellowsquare}></View>
-                        </View>) , word: 'Killu'}];
-let first_option = getRandomItem(options);
-let left_options = options.filter((option) => option.word !== first_option.word);
-
-let question_view = returnView()
-
-const L1A1 = ({route, navigation}) => {
-  let answer;
-  
-  const [content, setContent] = useState(question_view);
-
-  const handleButtonPress = () => {
-    updataQuestion();
-    updateOptions();
-    
-    let question_view = returnView();
-    setContent(question_view);
-  };
-
-  return (
-    <View style= {styles.AppContainer}>
-      
-      {content}
-
-      <TouchableOpacity
-        onPress={handleButtonPress}
-        style={styles.continueButton}>
-        <Text style={styles.continueText}>Continuar</Text>
-      </TouchableOpacity>
-
-      <StatusBar style="auto" />
-
-    </View>
-  );
-}
 
 export default L1A1;
