@@ -4,13 +4,14 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, Button, FlatList, Dime
 import { useNavigation } from '@react-navigation/native';
 
 const Result = ({route, navigation}) => {
-    const {puntuation3} = route.params;
+    const {puntuation3, time_taken} = route.params;
     return (
 
     <View style={styles.container}>
       <Text style={{fontSize:40, fontWeight: 'bold'}}> Puntaje obtenido:  </Text>
       <Text style={{fontSize:80, marginTop:20, color: '#A43074',fontWeight: 'bold'}}> {puntuation3} </Text>
-
+      <Text style={{fontSize:40, fontWeight: 'bold'}}> Tiempo total:  </Text>
+      <Text style={{fontSize:80, marginTop:20, color: '#A43074',fontWeight: 'bold'}}> {time_taken}s </Text>
 
       <TouchableOpacity
         onPress={() => navigation.navigate('Lessons', {lesson:1,subtitle:'Colores/Tullpukuna'}  )}

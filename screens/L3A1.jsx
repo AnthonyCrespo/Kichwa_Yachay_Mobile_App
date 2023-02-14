@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,  useEffect } from 'react';
 import { Audio } from 'expo-av';
-import {  StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
+import { StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+
+import { getFirestore, collection, getDocs} from 'firebase/firestore';
+import {getAuth,getReactNativePersistence,initializeAuth,signInWithEmailAndPassword} from 'firebase/auth'
+import {firebase, initializeApp, getApps, getApp} from 'firebase/app'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {firebaseConfig} from '../firebase-config'
 
 
 const questions = [
@@ -93,14 +99,39 @@ const questions = [
   // ... agregar más preguntas aquí
 ];
 
+
+const L3A1 = ({ navigation }) => {
+
+
+  
 let sound;
 let answer;
 let puntaje = 0;
 
 
-const L3A1 = ({ navigation }) => {
+    // Load Data From Firestore
+/*     const [questions, setQuestions] = useState([]);
+    const db = getFirestore();
+    // Obtener datos de Firestore
+    useEffect(() => {
+      const fetchData = () => {
+        const collectionRef = collection(db, "L3A1");
+        const querySnapshot =  getDocs(collectionRef);
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        console.log(data);
+        setQuestions(data);
+        console.log(data);
+      };
+      fetchData();
+    }, []); */
+
+
+
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
+  const { statement, options } = questions[currentQuestionIndex];
+
 
   const playAudio = async (path) => {
     if (sound) {
@@ -116,7 +147,11 @@ const L3A1 = ({ navigation }) => {
     }
     };
 
-  const { statement, options } = questions[currentQuestionIndex];
+
+
+      
+
+
 
   return (
     <View style={styles.AppContainer}>

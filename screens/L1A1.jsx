@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
@@ -29,8 +29,15 @@ const L1A1 = ({navigation}) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [showResult, setShowResult] = useState(false);
-
   const statement = questions['statements'][currentQuestionIndex];
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTimer(timer => timer + 1);
+    }, 1600);
+    return () => clearInterval(intervalId);
+  }, []);
  
   const verifyAnswer = () => {
     showResult === false ? setShowResult(true) : setShowResult(false);
@@ -102,7 +109,7 @@ const L1A1 = ({navigation}) => {
             currentButtonText = 'Verificar'
             options = shuffleArray(options);
             if (currentQuestionIndex === questions['statements'].length-1) {
-              navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
+              navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: timer});
               puntaje = 0;
             } else{
             setCurrentQuestionIndex(currentQuestionIndex + 1);
