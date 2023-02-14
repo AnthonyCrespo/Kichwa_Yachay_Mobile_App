@@ -2,19 +2,6 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
-function getRandomItem(list) {
-  const index = Math.floor(Math.random() * list.length);
-  return list[index];
-}
-
-function updataQuestion(){
-  question_shown = questions.splice(0,1);
-}
-
-function updateOptions(){
-  first_option = getRandomItem(options);
-  left_options = options.filter((option) => option.word !== first_option.word);
-}
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -34,22 +21,20 @@ let questions =
 
 let options = shuffleArray(questions['options']);
 
-let answer;
 let puntaje = 0;
+let answers = ['','',''];
+let currentButtonText = 'Verificar';
 
 const L1A1 = ({navigation}) => {  
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
-
-  const handleButtonPress = () => {
-    updataQuestion();
-    updateOptions();
-    
-    let question_view = returnView();
-    setContent(question_view);
-  };
+  const [showResult, setShowResult] = useState(false);
 
   const statement = questions['statements'][currentQuestionIndex];
+ 
+  const verifyAnswer = () => {
+    showResult === false ? setShowResult(true) : setShowResult(false);
+  };
 
   return (
     <View style= {styles.AppContainer}>
@@ -57,21 +42,43 @@ const L1A1 = ({navigation}) => {
       <Text style={styles.statementText}>{statement[0]}</Text>
       
       {options.map((option, index) => (
-        <View key={index} style={styles.optionContainer}>  
+
+        <View key={index} 
+              style={[styles.optionContainer,
+                     showResult &&
+                     option[0] === statement[1] &&
+                     selectedOption === index &&
+                     styles.correctAnswer,
+                     showResult &&
+                     option[0] !== statement[1] &&
+                     selectedOption === index &&
+                     styles.wrongAnswer,
+                     showResult &&
+                     option[0] === statement[1] &&
+                     selectedOption !== index &&
+                     styles.correctAnswer,
+                     showResult &&
+                     option[0] !== statement[1] &&
+                     selectedOption !== index &&
+                     styles.optionContainer,
+                    ]}>  
+
           <View style={styles.itemContainer}>
             <View style={option[1] === 0 ? styles.blacksquare :
                          option[1] === 1 ? styles.redsquare :
-                         styles.yellowsquare}></View>
+                         styles.yellowsquare}
+                         ></View>
           </View> 
 
           <View style={styles.itemContainer}>
             <TouchableOpacity
               onPress={() => {
-                answer = option[0];
+                answers[currentQuestionIndex] = option[0];
                  setSelectedOption(index);
                 }}
               style={styles.optionButton}>
-              <Text style={selectedOption === index ? styles.selected_optionText : styles.optionText}>
+              <Text style={selectedOption === index ? styles.selected_optionText :
+                           styles.optionText}>
                 {option[0]}
               </Text>
             </TouchableOpacity>
@@ -82,20 +89,28 @@ const L1A1 = ({navigation}) => {
       <TouchableOpacity
         style={styles.continueButton}
         onPress={() => {
-          setSelectedOption(null);
-          options = shuffleArray(options);
-          if (answer === questions['statements'][currentQuestionIndex][1]) {
-            puntaje = puntaje + 100/questions['statements'].length;
+          if (currentButtonText === 'Verificar'){
+            verifyAnswer();
+            if (answers[currentQuestionIndex] === statement[1]){
+              puntaje = puntaje + 100/questions['statements'].length;
+            }
+            currentButtonText = 'Continuar'
           }
-          if (currentQuestionIndex === questions['statements'].length-1) {
-            navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
-            puntaje = 0;
-          } else{
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-        }
+          else if (currentButtonText === 'Continuar'){
+            verifyAnswer();
+            setSelectedOption(null);
+            currentButtonText = 'Verificar'
+            options = shuffleArray(options);
+            if (currentQuestionIndex === questions['statements'].length-1) {
+              navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
+              puntaje = 0;
+            } else{
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            }
+          }
         }}
       >
-        <Text style={styles.continueText}>Continuar</Text>
+        <Text style={styles.continueText}>{currentButtonText}</Text>
       </TouchableOpacity>
 
       <StatusBar style="auto" />
@@ -127,10 +142,13 @@ const styles = StyleSheet.create({
   },
   optionContainer: {
     flexDirection:'row',
+    width:300,
+    height:120,
     justifyContent:'space-between',
     paddingRight:50,
     paddingLeft:30,
     marginBottom:15,
+    borderRadius: 15,
   },
   itemContainer:{
     flex:1,
@@ -169,8 +187,15 @@ const styles = StyleSheet.create({
   selected_optionText: {
     color: '#63933D',
     fontWeight: 'bold',
-    fontSize: 20,
-    marginLeft:20
+    fontSize: 24,
+  },
+  correctAnswer: {
+    borderRadius: 20,
+    backgroundColor: '#AAF0D1',
+  },
+  wrongAnswer: {
+    borderRadius: 20,
+    backgroundColor: '#FEC8D8',
   },
   continueButton: {
     width: 300,

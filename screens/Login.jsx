@@ -21,8 +21,8 @@ const Login = ({navigation}) => {
     })}
     
     catch (err) {
-      console.log("Error initializing");
-      }
+      /* console.log("Error initializing"); */
+        }
       }
     app = getApp();
     auth = getAuth();
@@ -37,7 +37,7 @@ const Login = ({navigation}) => {
       navigation.navigate('Home')
     })
     .catch(error => {
-      console.log(error)
+      /* console.log(error) */
       Alert.alert(error.message)
     })
   }
