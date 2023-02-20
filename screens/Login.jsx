@@ -24,8 +24,9 @@ const Login = ({navigation}) => {
       /* console.log("Error initializing"); */
         }
       }
+    else{
     app = getApp();
-    auth = getAuth();
+    auth = getAuth();}
 
 
   const handleSignIn = () =>{

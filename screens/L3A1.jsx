@@ -125,7 +125,25 @@ let puntaje = 0;
       fetchData();
     }, []); */
 
-
+/*     const [questions, setQuestions] = useState([]);
+    const db = getFirestore();
+    // Obtener datos de Firestore
+    async function fetchData() {
+      try{
+        const questions = await firestore().collection('L3A1').get()
+        setData(questions.docs)}
+      catch(e){
+        console.log(e)
+      } */
+/*         const collectionRef = collection(db, "L3A1");
+        const querySnapshot =  getDocs(collectionRef);
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        console.log(data);
+        setQuestions(data);
+        console.log(data);
+      };
+      fetchData();
+    }, []); */
 
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
