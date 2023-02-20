@@ -9,9 +9,9 @@ import {getAuth,getReactNativePersistence,initializeAuth,signInWithEmailAndPassw
 import {firebase, initializeApp, getApps, getApp} from 'firebase/app'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {firebaseConfig} from '../firebase-config'
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
-
-const questions = [
+/* const questions = [
   {
     statement: 'Maykan wiwata yana kan',
     correct_answer: 'Missika yanami kan',
@@ -98,20 +98,86 @@ const questions = [
   }
   // ... agregar más preguntas aquí
 ];
+ */
 
 
 const L3A1 = ({ navigation }) => {
 
+  app = getApp(); 
+  const db = getFirestore(app);
+  
+  const [questions, setQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+    async function loadQuestions() {
+      const questionRef = collection(db, "L3A1");
+      const querySnapshot = await getDocs(questionRef);
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({id: doc.id, ...doc.data()});
+      });
+      setQuestions(data);
+      setIsLoading(false);
+    }
+    useEffect(() => {
+      loadQuestions();
+    }, []);
+
+  let statement, options;
+  if (questions.length > 0) {
+    statement = questions[currentQuestionIndex].statement;
+    options = questions[currentQuestionIndex].options;
+  } else {
+    statement = "Cargando preguntas...";
+    options = [];
+  }
+
+
+  let sound;
+  let answer;
+  let puntaje = 0;
+
+
+ // let questions = []
+  
+/*   async function getQuestions() {
+    const querySnapshot = await getDocs(collection(db, 'L3A1'));
+    querySnapshot.forEach((doc) => {
+      questions.push(doc.data());
+    });
+    console.log(questions);
+  } */
+
+ // getQuestions(); 
+//console.log(questions)
+
+
+
+
+/*   const [questions, setQuestions] = useState([]);
+  async function loadQuestions() {
+    const questionRef = collection(db, "L3A1");
+    const querySnapshot = await getDocs(questionRef);
+    const data = [];
+    querySnapshot.forEach((doc) => {
+      data.push({id: doc.id, ...doc.data()});
+    });
+    setQuestions(data);
+  }
+  useEffect(() => {
+    loadQuestions();
+  }, []);
+
+ 
+  console.log(questions)
+*/
+
 
   
-let sound;
-let answer;
-let puntaje = 0;
-
-
     // Load Data From Firestore
 /*     const [questions, setQuestions] = useState([]);
-    const db = getFirestore();
+    const db = getFirestore(app);
     // Obtener datos de Firestore
     useEffect(() => {
       const fetchData = () => {
@@ -134,7 +200,13 @@ let puntaje = 0;
         setData(questions.docs)}
       catch(e){
         console.log(e)
-      } */
+      }
+
+    } */
+
+
+
+      
 /*         const collectionRef = collection(db, "L3A1");
         const querySnapshot =  getDocs(collectionRef);
         const data = querySnapshot.docs.map((doc) => doc.data());
@@ -146,9 +218,9 @@ let puntaje = 0;
     }, []); */
 
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  //const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
-  const { statement, options } = questions[currentQuestionIndex];
+ // const { statement, options } = questions[currentQuestionIndex];
 
 
   const playAudio = async (path) => {
@@ -166,56 +238,61 @@ let puntaje = 0;
     };
 
 
-
+    console.log(options)
       
 
 
 
-  return (
-    <View style={styles.AppContainer}>
-      <Text style={styles.statementText}>{statement}</Text>
-  
-      {options.map((option, index) => (
-        <View key={index}>
-          <Image style={styles.catImage} source={option.image} />
-  
-          <TouchableOpacity
-            style={styles.optionButton}
-            onPress={() => {
-              setSelectedOption(index);
-              answer = option.text;
-              playAudio(option.audio);
-            }}
-          >
-            <Icon name="volume-up" size={20} color="black" />
-            <Text style={selectedOption === index ? styles.selected_optionText : styles.optionText}>
-              {option.text}
-              </Text>
-          </TouchableOpacity>
-        </View>
-      ))}
-  
-      <TouchableOpacity
-        style={styles.continueButton}
-        onPress={() => {
-          setSelectedOption(null);
-          if (answer === questions[currentQuestionIndex].correct_answer) {
-            puntaje = puntaje + 100/questions.length;
-          }
-          if (currentQuestionIndex === questions.length-1) {
-            /* sound.stopAsync(); */
-            navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
-            puntaje = 0;
-          } else{
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-        }
-        }}
-      >
-        <Text style={styles.continueText}>Continuar</Text>
-      </TouchableOpacity>
-    </View>
-  );
-    }
+    return isLoading ? (
+      <View style={styles.AppContainer}>
+        
+          <Text>Cargando...</Text>
+      </View>
+        ) : (
+          <View style={styles.AppContainer}>
+            <Text style={styles.statementText}>{statement}</Text>
+      
+            {options.map((option, index) => (
+              <View key={index}>
+                <Image style={styles.catImage} source={{ uri: option.image }} />
+                <TouchableOpacity
+                  style={styles.optionButton}
+                  onPress={() => {
+                    setSelectedOption(index);
+                    answer = option.text;
+                    playAudio(option.audio);
+                  }}
+                >
+                  <Icon name="volume-up" size={20} color="black" />
+                  <Text style={selectedOption === index ? styles.selected_optionText : styles.optionText}>
+                    {option.text}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+      
+            <TouchableOpacity
+              style={styles.continueButton}
+              onPress={() => {
+                setSelectedOption(null);
+                if (answer === questions[currentQuestionIndex].correct_answer) {
+                  puntaje = puntaje + 100 / questions.length;
+                }
+                if (currentQuestionIndex === questions.length - 1) {
+                  navigation.navigate("Result", { puntuation3: Math.round(puntaje) });
+                  puntaje = 0;
+                } else {
+                  setCurrentQuestionIndex(currentQuestionIndex + 1);
+                }
+              }}
+            >
+              <Text style={styles.continueText}>Continuar</Text>
+            </TouchableOpacity>
+          </View>
+        )
+
+
+}
 
 
 

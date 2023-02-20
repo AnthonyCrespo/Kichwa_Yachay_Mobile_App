@@ -30,7 +30,8 @@ const Login = ({navigation}) => {
 
 
   const handleSignIn = () =>{
-    signInWithEmailAndPassword(auth,email,password)
+    //signInWithEmailAndPassword(auth,email,password)
+    signInWithEmailAndPassword(auth,'anthony@gmail.com','123456')
     .then((userCredential) => {
       Alert.alert('Signed In!')
       const user = userCredential.user
