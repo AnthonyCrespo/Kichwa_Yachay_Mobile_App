@@ -21,23 +21,25 @@ const Login = ({navigation}) => {
     })}
     
     catch (err) {
-      console.log("Error initializing");
+      /* console.log("Error initializing"); */
+        }
       }
-      }
+    else{
     app = getApp();
-    auth = getAuth();
+    auth = getAuth();}
 
 
   const handleSignIn = () =>{
-    signInWithEmailAndPassword(auth,email,password)
+    //signInWithEmailAndPassword(auth,email,password)
+    signInWithEmailAndPassword(auth,'anthony@gmail.com','123456')
     .then((userCredential) => {
-      Alert.alert('Signed In!')
+      // Alert.alert('Signed In!') */
       const user = userCredential.user
       console.log(user)
       navigation.navigate('Home')
     })
     .catch(error => {
-      console.log(error)
+      /* console.log(error) */
       Alert.alert(error.message)
     })
   }

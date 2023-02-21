@@ -1,106 +1,144 @@
-import React, { useState } from 'react';
+import React, { useState,  useEffect } from 'react';
 import { Audio } from 'expo-av';
-import {  StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
+import { StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
+import { getApp } from 'firebase/app'
 
-
-
-const questions = [
-  {
-    statement: 'Maykan wiwata yana kan',
-    correct_answer: 'Missika yanami kan',
-    options: [
-      {
-        text: 'Missika yanami kan',
-        image: require('../assets/black-cat.jpeg'),
-        audio: require('../assets/audios/missika_yanami_kan.mp3')
-      },
-      {
-        text: 'Amaruka killumi kan',
-        image: require('../assets/serpent.jpeg'),
-        audio: require('../assets/audios/amaruka_killumi_kan.mp3')
-      },
-      {
-        text: 'Kuchika pukami kan',
-        image: require('../assets/pig.jpeg'),
-        audio: require('../assets/audios/kuchika_pukami_kan.mp3')
-      }
-    ]
-  },
-  {
-    statement: 'Maykan wiwata yurak kan',
-    correct_answer: 'Wakraka pukami kan',
-    options: [
-      {
-        text: 'Challwaka killumi kan',
-        image: require('../assets/yellow-fish.jpeg'),
-        audio: require('../assets/audios/missika_yanami_kan.mp3')
-      },
-      {
-        text: 'Wakraka pukami kan',
-        image: require('../assets/bull.jpeg'),
-        audio: require('../assets/audios/amaruka_killumi_kan.mp3')
-      },
-      {
-        text: 'Allkuka yurakmi kan',
-        image: require('../assets/white-dog.jpeg'),
-        audio: require('../assets/audios/kuchika_pukami_kan.mp3')
-      }
-    ]
-  },
-  {
-    statement: 'Maykan wiwata puka kan',
-    correct_answer: 'Challwaka pukammi kan',
-    options: [
-      {
-        text: 'Atallpaka yanami kan',
-        image: require('../assets/hen.jpeg'),
-        audio: require('../assets/audios/missika_yanami_kan.mp3')
-      },
-      {
-        text: 'Atallpaka yanami kan',
-        image: require('../assets/red-fish.jpeg'),
-        audio: require('../assets/audios/amaruka_killumi_kan.mp3')
-      },
-      {
-        text: 'Challwaka pukammi kan',
-        image: require('../assets/black-cat.jpeg'),
-        audio: require('../assets/audios/kuchika_pukami_kan.mp3')
-      }
-    ]
-  },
-  {
-    statement: 'Maykan wiwata killu kan',
-    correct_answer: 'Allkuka yanami kan',
-    options: [
-      {
-        text: 'Allkuka yanami kan',
-        image: require('../assets/black-dog.jpeg'),
-        audio: require('../assets/audios/missika_yanami_kan.mp3')
-      },
-      {
-        text: 'Wakrakra yurakmi kan',
-        image: require('../assets/cow-1.jpeg'),
-        audio: require('../assets/audios/amaruka_killumi_kan.mp3')
-      },
-      {
-        text: 'Amaruka killumi kan',
-        image: require('../assets/serpent.jpeg'),
-        audio: require('../assets/audios/kuchika_pukami_kan.mp3')
-      }
-    ]
-  }
-  // ... agregar más preguntas aquí
-];
-
-let sound;
-let answer;
-let puntaje = 0;
+// const questions = [
+//   {
+//     statement: 'Maykan wiwata yana kan',
+//     correct_answer: 'Missika yanami kan',
+//     options: [
+//       {
+//         text: 'Missika yanami kan',
+//         image: require('../assets/black-cat.jpeg'),
+//         audio: require('../assets/audios/missika_yanami_kan.mp3')
+//       },
+//       {
+//         text: 'Amaruka killumi kan',
+//         image: require('../assets/serpent.jpeg'),
+//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
+//       },
+//       {
+//         text: 'Kuchika pukami kan',
+//         image: require('../assets/pig.jpeg'),
+//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
+//       }
+//     ]
+//   },
+//   {
+//     statement: 'Maykan wiwata yurak kan',
+//     correct_answer: 'Wakraka pukami kan',
+//     options: [
+//       {
+//         text: 'Challwaka killumi kan',
+//         image: require('../assets/yellow-fish.jpeg'),
+//         audio: require('../assets/audios/missika_yanami_kan.mp3')
+//       },
+//       {
+//         text: 'Wakraka pukami kan',
+//         image: require('../assets/bull.jpeg'),
+//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
+//       },
+//       {
+//         text: 'Allkuka yurakmi kan',
+//         image: require('../assets/white-dog.jpeg'),
+//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
+//       }
+//     ]
+//   },
+//   {
+//     statement: 'Maykan wiwata puka kan',
+//     correct_answer: 'Challwaka pukammi kan',
+//     options: [
+//       {
+//         text: 'Atallpaka yanami kan',
+//         image: require('../assets/hen.jpeg'),
+//         audio: require('../assets/audios/missika_yanami_kan.mp3')
+//       },
+//       {
+//         text: 'Atallpaka yanami kan',
+//         image: require('../assets/red-fish.jpeg'),
+//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
+//       },
+//       {
+//         text: 'Challwaka pukammi kan',
+//         image: require('../assets/black-cat.jpeg'),
+//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
+//       }
+//     ]
+//   },
+//   {
+//     statement: 'Maykan wiwata killu kan',
+//     correct_answer: 'Allkuka yanami kan',
+//     options: [
+//       {
+//         text: 'Allkuka yanami kan',
+//         image: require('../assets/black-dog.jpeg'),
+//         audio: require('../assets/audios/missika_yanami_kan.mp3')
+//       },
+//       {
+//         text: 'Wakrakra yurakmi kan',
+//         image: require('../assets/cow-1.jpeg'),
+//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
+//       },
+//       {
+//         text: 'Amaruka killumi kan',
+//         image: require('../assets/serpent.jpeg'),
+//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
+//       }
+//     ]
+//   }
+//   // ... agregar más preguntas aquí
+// ];
 
 
 const L3A1 = ({ navigation }) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
+
+  app = getApp(); 
+  const db = getFirestore();
+  const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
+  const [ questions, setQuestions ] = useState(null);
+  const [ imageUrls, setImageUrls ] = useState(null);
+  const [ selectedOption, setSelectedOption ] = useState(null);
+
+  async function getDocuments() {
+
+    const querySnapshot = await getDocs(collection(db, 'L3A1'));
+
+    // Loop through the documents
+    const docs = [];
+    querySnapshot.forEach(doc => {
+      // Get the document data
+      const data = doc.data();
+      // Add the document data to the array
+      docs.push(data);
+    });
+
+    // Update the state variable with the documents
+    setQuestions(docs);
+  }
+
+  useEffect(() => {
+    // Initialize the Firebase app and get the storage reference
+    const storage = getStorage();
+    const imagesRef = ref(storage, 'images/');
+
+    // Filter the list of items to download
+    const imagesToDownload = ['black-cat.jpeg', 'serpent.jpeg', 'pig.jpeg'];
+
+    // Get the download URLs of the selected images in the storage bucket
+    listAll(imagesRef).then((result) => {
+      const urls = result.items
+        .filter((item) => imagesToDownload.includes(item.name))
+        .map((item) => getDownloadURL(item));
+      Promise.all(urls).then((downloadUrls) => setImageUrls(downloadUrls));
+    })
+
+    getDocuments();
+  }, []);
 
   const playAudio = async (path) => {
     if (sound) {
@@ -116,7 +154,22 @@ const L3A1 = ({ navigation }) => {
     }
     };
 
-  const { statement, options } = questions[currentQuestionIndex];
+  let sound;
+  let answer;
+  let puntaje = 0;
+  let statement, options;
+  
+  if (questions === null | imageUrls === null) {
+    return (
+      <View style={styles.AppContainer}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  } else {
+    statement = questions[currentQuestionIndex].statement;
+    options = questions[currentQuestionIndex].options;
+  }  
+
 
   return (
     <View style={styles.AppContainer}>
@@ -124,7 +177,7 @@ const L3A1 = ({ navigation }) => {
   
       {options.map((option, index) => (
         <View key={index}>
-          <Image style={styles.catImage} source={option.image} />
+          <Image style={styles.catImage} source={{uri: imageUrls[index]}} />
   
           <TouchableOpacity
             style={styles.optionButton}
@@ -162,8 +215,7 @@ const L3A1 = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-    }
-
+}
 
 
 const styles = StyleSheet.create({
