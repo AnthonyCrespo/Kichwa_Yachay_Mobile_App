@@ -33,7 +33,7 @@ const Login = ({navigation}) => {
     //signInWithEmailAndPassword(auth,email,password)
     signInWithEmailAndPassword(auth,'anthony@gmail.com','123456')
     .then((userCredential) => {
-      Alert.alert('Signed In!')
+      // Alert.alert('Signed In!') */
       const user = userCredential.user
       console.log(user)
       navigation.navigate('Home')
