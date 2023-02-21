@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
 import { StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Draggable from 'react-native-draggable';
 const L1A2Q2 = ({navigation}) => {
     return (
         <View style={styles.container}>
@@ -18,8 +19,25 @@ const L1A2Q2 = ({navigation}) => {
               <Icon name="volume-up" size={30} color="black"/>
               </TouchableOpacity>
             </View>
-            
+
+
             <View style={{ flexDirection: 'row',margin: 60 }}>
+              <Text style={styles.instructionText}> ______________________________ </Text>
+
+            </View>
+
+
+            <Draggable x={90} y={500}>
+              <Text style={styles.buttonSolution}>Negro</Text>
+            </Draggable>
+            <Draggable x={170} y={500}>
+              <Text style={styles.buttonSolution}>Blanco</Text>
+            </Draggable>
+            <Draggable x={260} y={500}>
+              <Text style={styles.buttonSolution}>es</Text>
+            </Draggable>
+            
+            {/* <View style={{ flexDirection: 'row',margin: 60 }}>
               <TextInput style={styles. textSolution}/>
               <TextInput style={styles. textSolution}/>
             </View>
@@ -29,7 +47,7 @@ const L1A2Q2 = ({navigation}) => {
               <Text style={styles.buttonSolution}>  negro  </Text>
               <Text style={styles.buttonSolution}>  rojo </Text>
               
-            </View>
+            </View> */}
             <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q3')}>
               <Text style={styles.buttonText}> Continuar </Text> 
             </TouchableOpacity>

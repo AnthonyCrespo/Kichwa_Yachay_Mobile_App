@@ -2,7 +2,19 @@ import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
 import { StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Draggable from 'react-native-draggable';
+const initialPosition = { x: 70, y: 500 };
 const L1A2Q1 = ({navigation}) => {
+
+  const [position, setPosition] = useState(initialPosition);
+  const [buttonPosition, setButtonPosition] = useState({ x: -150, y: -50 });
+  const handlePress = () => {
+    setButtonPosition({ x: -110, y: -135 });
+  };
+  const [buttonPosition2, setButtonPosition2] = useState({ x: -60, y: -50 });
+  const handlePress2 = () => {
+    setButtonPosition2({ x: -170, y: -135 });
+  };
     return (
         <View style={styles.container}>
             <View style={{ margin: 20 }}>
@@ -21,19 +33,45 @@ const L1A2Q1 = ({navigation}) => {
             </View>
             
             <View style={{ flexDirection: 'row',margin: 60 }}>
-              <TextInput style={styles. textSolution}/>
-              <TextInput style={styles. textSolution}/>
+              <Text style={styles.instructionText}> ______________________________ </Text>
+
             </View>
 
-            <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.buttonSolution}>  Blanco </Text>
-              <Text style={styles.buttonSolution}>  Negro  </Text>
-              <Text style={styles.buttonSolution}>  es </Text>
-              
-            </View>
+
+            <Draggable x={90} y={500}>
+              <Text style={styles.buttonSolution}>Negro</Text>
+            </Draggable>
+            <Draggable x={170} y={500}>
+              <Text style={styles.buttonSolution}>Blanco</Text>
+            </Draggable>
+            <Draggable x={260} y={500}>
+              <Text style={styles.buttonSolution}>es</Text>
+            </Draggable>
+            
+            
+            
+            
+            {/* <Draggable
+            x={position.x}
+            y={position.y}
+            onDragRelease={(gestureState) => {
+            // Si la posición del texto supera cierto límite, regresa a su posición inicial
+            if (gestureState.moveX > 200 || gestureState.moveY > 375) {
+                setPosition(initialPosition);
+              }
+            }}
+            >
+          <Text style={styles.buttonSolution}>Negro</Text>
+          </Draggable> */}
+            
+
+
+
+            <View style={{ flexDirection: 'row' ,margin: 70}}>
             <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q2')}>
               <Text style={styles.buttonText}> Continuar </Text> 
             </TouchableOpacity>
+            </View>
            
           <StatusBar style="auto" />
         </View>
@@ -69,11 +107,11 @@ const styles = StyleSheet.create({
     textSolution: {
       padding: 10,
       paddingStart: 30,
-      width: '35%',
-      height: 40,
+      width: '80%',
+      height: 60,
       marginTop: '5%',
       borderRadius: 10,
-      backgroundColor: '#B9B6B6',
+      backgroundColor: '#D0C0C0',
       marginRight: 20
     },
   
