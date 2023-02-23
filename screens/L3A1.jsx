@@ -6,97 +6,11 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
 import { getApp } from 'firebase/app'
 
-// const questions = [
-//   {
-//     statement: 'Maykan wiwata yana kan',
-//     correct_answer: 'Missika yanami kan',
-//     options: [
-//       {
-//         text: 'Missika yanami kan',
-//         image: require('../assets/black-cat.jpeg'),
-//         audio: require('../assets/audios/missika_yanami_kan.mp3')
-//       },
-//       {
-//         text: 'Amaruka killumi kan',
-//         image: require('../assets/serpent.jpeg'),
-//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
-//       },
-//       {
-//         text: 'Kuchika pukami kan',
-//         image: require('../assets/pig.jpeg'),
-//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
-//       }
-//     ]
-//   },
-//   {
-//     statement: 'Maykan wiwata yurak kan',
-//     correct_answer: 'Wakraka pukami kan',
-//     options: [
-//       {
-//         text: 'Challwaka killumi kan',
-//         image: require('../assets/yellow-fish.jpeg'),
-//         audio: require('../assets/audios/missika_yanami_kan.mp3')
-//       },
-//       {
-//         text: 'Wakraka pukami kan',
-//         image: require('../assets/bull.jpeg'),
-//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
-//       },
-//       {
-//         text: 'Allkuka yurakmi kan',
-//         image: require('../assets/white-dog.jpeg'),
-//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
-//       }
-//     ]
-//   },
-//   {
-//     statement: 'Maykan wiwata puka kan',
-//     correct_answer: 'Challwaka pukammi kan',
-//     options: [
-//       {
-//         text: 'Atallpaka yanami kan',
-//         image: require('../assets/hen.jpeg'),
-//         audio: require('../assets/audios/missika_yanami_kan.mp3')
-//       },
-//       {
-//         text: 'Atallpaka yanami kan',
-//         image: require('../assets/red-fish.jpeg'),
-//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
-//       },
-//       {
-//         text: 'Challwaka pukammi kan',
-//         image: require('../assets/black-cat.jpeg'),
-//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
-//       }
-//     ]
-//   },
-//   {
-//     statement: 'Maykan wiwata killu kan',
-//     correct_answer: 'Allkuka yanami kan',
-//     options: [
-//       {
-//         text: 'Allkuka yanami kan',
-//         image: require('../assets/black-dog.jpeg'),
-//         audio: require('../assets/audios/missika_yanami_kan.mp3')
-//       },
-//       {
-//         text: 'Wakrakra yurakmi kan',
-//         image: require('../assets/cow-1.jpeg'),
-//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
-//       },
-//       {
-//         text: 'Amaruka killumi kan',
-//         image: require('../assets/serpent.jpeg'),
-//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
-//       }
-//     ]
-//   }
-//   // ... agregar más preguntas aquí
-// ];
-
+let answer;
+let puntaje = 0;
 
 const L3A1 = ({ navigation }) => {
-
+  let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
   app = getApp(); 
   const db = getFirestore();
   const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
@@ -128,6 +42,7 @@ const L3A1 = ({ navigation }) => {
 
     // Filter the list of items to download
     const imagesToDownload = ['black-cat.jpeg', 'serpent.jpeg', 'pig.jpeg'];
+    //const imagesToDownload = options.map((option) => option['image'])
 
     // Get the download URLs of the selected images in the storage bucket
     listAll(imagesRef).then((result) => {
@@ -142,32 +57,31 @@ const L3A1 = ({ navigation }) => {
 
   const playAudio = async (path) => {
     if (sound) {
-    sound.stopAsync();
-    sound.unloadAsync();
+      sound.stopAsync();
+      sound.unloadAsync();
     }
     sound = new Audio.Sound();
     try {
-    await sound.loadAsync(path);
-    await sound.playAsync();
+      await sound.loadAsync(path);
+      await sound.playAsync();
     } catch (error) {
-    console.log(error);
-    }
+      console.log(error);
+      }
     };
 
   let sound;
-  let answer;
-  let puntaje = 0;
   let statement, options;
   
   if (questions === null | imageUrls === null) {
     return (
       <View style={styles.AppContainer}>
-        <Text>Loading...</Text>
+        <Text>Cargando...</Text>
       </View>
     );
   } else {
     statement = questions[currentQuestionIndex].statement;
     options = questions[currentQuestionIndex].options;
+    //console.log(questions)
   }  
 
 
@@ -176,42 +90,50 @@ const L3A1 = ({ navigation }) => {
       <Text style={styles.statementText}>{statement}</Text>
   
       {options.map((option, index) => (
-        <View key={index}>
-          <Image style={styles.catImage} source={{uri: imageUrls[index]}} />
-  
-
-      <View style={styles.optionContainer}>
         
-        <TouchableOpacity
-              style={styles.optionIcon}
-              onPress={() => {
-                //playAudio(option.audio);
-                playAudio(require('../assets/audios/kuchika_pukami_kan.mp3'))
-              }}
-            >
-              <Icon name="volume-up" size={20} color="black" />
-        </TouchableOpacity>
+        <View key={index}>
+          {/*  ---- Option Image ---- */}
+          <Image style={styles.catImage} source={{uri: imageUrls[index]}} />
 
-        <TouchableOpacity
-              onPress={() => {
-                setSelectedOption(index);
-                answer = option.text;
-              }}
-          >
 
-            <Text style={selectedOption === index ? styles.selected_optionText : styles.optionText}>
-              {option.text}
-            </Text>
+          {/*  ---- Option Icon-Text ---- */}
+          <View style={styles.optionContainer}>
+            {/* -------- Icon -------- */}
+              <TouchableOpacity
+                    style={styles.optionIcon}
+                    onPress={() => {
+                      //playAudio(option.audio);
+                      //layAudio(require(audio_test))
+                      console.log(option.audio)
+                      playAudio(option.audio)
+                    }}
+                  >
+                    <Icon name="volume-up" size={20} color="black" />
+              </TouchableOpacity>
+              {/* --------  Text -------- */}
+              <TouchableOpacity
+                    onPress={() => {
+                      setSelectedOption(index);
+                      answer = option.text;
+                    }}
+                >
 
-        </TouchableOpacity>
-      </View>
-    </View>
+                  <Text style={selectedOption === index ? styles.selected_optionText : styles.optionText}>
+                    {option.text}
+                  </Text>
+
+              </TouchableOpacity>
+          </View>
+
+        </View>
     ))}
   
       <TouchableOpacity
         style={styles.continueButton}
         onPress={() => {
           setSelectedOption(null);
+          console.log(answer)
+          console.log(questions[currentQuestionIndex].correct_answer)
           if (answer === questions[currentQuestionIndex].correct_answer) {
             puntaje = puntaje + 100/questions.length;
           }
