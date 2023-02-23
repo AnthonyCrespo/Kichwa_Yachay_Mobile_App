@@ -46,6 +46,8 @@ const Lessons= ({route}) => {
                 </TouchableOpacity>
             </View>
             ))}
+
+            
             <StatusBar style="auto" />  
         </View>
     );

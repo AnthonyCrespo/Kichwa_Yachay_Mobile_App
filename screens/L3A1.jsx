@@ -179,21 +179,34 @@ const L3A1 = ({ navigation }) => {
         <View key={index}>
           <Image style={styles.catImage} source={{uri: imageUrls[index]}} />
   
-          <TouchableOpacity
-            style={styles.optionButton}
-            onPress={() => {
-              setSelectedOption(index);
-              answer = option.text;
-              playAudio(option.audio);
-            }}
+
+      <View style={styles.optionContainer}>
+        
+        <TouchableOpacity
+              style={styles.optionIcon}
+              onPress={() => {
+                //playAudio(option.audio);
+                playAudio(require('../assets/audios/kuchika_pukami_kan.mp3'))
+              }}
+            >
+              <Icon name="volume-up" size={20} color="black" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+              onPress={() => {
+                setSelectedOption(index);
+                answer = option.text;
+              }}
           >
-            <Icon name="volume-up" size={20} color="black" />
+
             <Text style={selectedOption === index ? styles.selected_optionText : styles.optionText}>
               {option.text}
-              </Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+            </Text>
+
+        </TouchableOpacity>
+      </View>
+    </View>
+    ))}
   
       <TouchableOpacity
         style={styles.continueButton}
@@ -229,30 +242,46 @@ const styles = StyleSheet.create({
           alignItems: 'center',
           alignContent: 'center'
         },
+
         statementText: {
           color: '#F18701',
           fontSize: 28,
           fontWeight: 'bold',
         },
-        optionButton: {
-          width: 400,
-          height: 40,
+
+
+        // ------  Options -----
+        optionContainer: {
           flexDirection: 'row',
-          alignContent: 'space-between',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          alignContent: 'center',
         },
+
+
+
+        optionButton: {
+          flexDirection: 'row',
+          //alignContent: 'space-between',
+        },
+
         optionText: {
           color: '#000',
           fontSize: 20,
           marginLeft:20,
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          alignSelf: 'center'
         },
+
         selected_optionText: {
           color: '#63933D',
           fontWeight: 'bold',
           fontSize: 20,
-          marginLeft:20
+          marginLeft:20,
+          alignSelf: 'center'
         },
+
+        // ------  Continue Button -----
         continueButton: {
           width: 200,
           height: 40,
@@ -270,7 +299,7 @@ const styles = StyleSheet.create({
           height: 80,
           alignSelf:'center'
         },
-        serpentImage:{
+/*         serpentImage:{
           width: 137,
           height: 140,
         },
@@ -305,7 +334,7 @@ const styles = StyleSheet.create({
         cowImage:{
           width: 159,
           height: 112,
-        },
+        }, */
       });
       
 export default L3A1;
