@@ -1,9 +1,123 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
-import { StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
+import { StyleSheet,Text,FlatList, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Draggable from 'react-native-draggable';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
+import { puntaje } from './L1A2Q1';
+export let puntaje2 = puntaje;
+const gestureRootViewStyle = { flex: 1 };
+
+
 const L1A2Q2 = ({navigation}) => {
+  const draggableItemList = [
+    {
+      "id": 1,
+      "name": "Rojo",
+      "background_color": "cyan"
+    },
+    {
+      "id": 2,
+      "name": "Es",
+      "background_color": "cyan"
+    },
+    {
+      "id": 3,
+      "name": "Blanco",
+      "background_color": "cyan"
+
+    }
+
+  ];
+  const FirstReceivingItemList = [
+    {
+      "id": 4,
+      "background_color": 'silver'
+    },
+    {
+      "id": 5,
+      "background_color": 'silver'
+    }
+  ];
+
+  const [receivingItemList, setReceivedItemList] = React.useState(FirstReceivingItemList);
+  const [dragItemMiddleList, setDragItemListMiddle] = React.useState(draggableItemList);
+
+  const DragUIComponent = ({ item, index }) => {
+    return (
+      <DraxView
+        style={[styles.centeredContent, styles.draggableBox, { backgroundColor: item.background_color }]}
+        draggingStyle={styles.dragging}
+        dragReleasedStyle={styles.dragging}
+        hoverDraggingStyle={styles.hoverDragging}
+        dragPayload={index}
+        longPressDelay={150}
+        key={index}
+      >
+        <Text style={styles.textStyle}>{item.name}</Text>
+      </DraxView>
+    );
+  }
+
+  const ReceivingZoneUIComponent = ({ item, index }) => {
+    return (
+      <DraxView
+        style={[styles.centeredContent, styles.receivingZone, { backgroundColor: item.background_color }]}
+        receivingStyle={styles.receiving}
+        renderContent={({ viewState }) => {
+          const receivingDrag = viewState && viewState.receivingDrag;
+          const payload = receivingDrag && receivingDrag.payload;
+          return (
+            <View>
+              <Text style={styles.textStyle}>{item.name}</Text>
+            </View>
+          );
+        }}
+        key={index}
+        onReceiveDragDrop={(event) => {
+          const draggedPayload = event.dragged.payload;
+          const draggedItem = dragItemMiddleList[draggedPayload];
+          let newReceivingItemList = [...receivingItemList];
+          newReceivingItemList[index] = draggedItem;
+          setReceivedItemList(newReceivingItemList);
+  
+          let newDragItemMiddleList = [...dragItemMiddleList];
+          newDragItemMiddleList[draggedPayload] = item;
+          setDragItemListMiddle(newDragItemMiddleList);
+        }}
+      />
+    );
+  }
+  
+  const FlatListItemSeparator = () => {
+    return (<View style={styles.itemSeparator} />);
+  }
+
+  const resetLists = () => {
+    setReceivedItemList(FirstReceivingItemList);
+    setDragItemListMiddle(draggableItemList);
+  }
+  const verifyConcatenation = (receivingItemList, targetString) => {
+    let concatenatedString = '';
+    receivingItemList.forEach(item => {
+      concatenatedString += item.name ;
+    });
+    return concatenatedString === targetString;
+  }
+
+  const result = () => {
+  if (verifyConcatenation(receivingItemList,'EsRojo')){
+      alert('Respuesta:\n'+'Correcto');
+      resetLists();
+      puntaje2=puntaje2+0.333333;
+  }
+  else
+  {
+      alert('Respuesta:\n'+'Incorrecto')
+      resetLists();
+      /* puntaje2=puntaje2; */
+  }
+};
     return (
         <View style={styles.container}>
             <View style={{ margin: 20 }}>
@@ -20,39 +134,41 @@ const L1A2Q2 = ({navigation}) => {
               </TouchableOpacity>
             </View>
 
-
-            <View style={{ flexDirection: 'row',margin: 60 }}>
-              <Text style={styles.instructionText}> ______________________________ </Text>
-
+            <GestureHandlerRootView style={gestureRootViewStyle}>
+            <DraxProvider>
+              <View style={styles.container}>
+                <View style={styles.receivingContainer}>
+                  {receivingItemList.map((item, index) => ReceivingZoneUIComponent({ item, index }))}
+                </View>
+                <View style={styles.draxListContainer}>
+                  <DraxList
+                    data={dragItemMiddleList}
+                    renderItemContent={DragUIComponent}
+                    keyExtractor={(item, index) => index.toString()}
+                    numColumns={4}
+                    ItemSeparatorComponent={FlatListItemSeparator}
+                    scrollEnabled={true}
+                  />
+                </View>
+              </View>
+            </DraxProvider>
+          </GestureHandlerRootView>
+           
+            <View>
+            <TouchableOpacity style={styles.buttonContainer} onPress={resetLists} >
+              <Text style={styles.buttonText}> Reset </Text> 
+            </TouchableOpacity>
             </View>
 
-
-            <Draggable x={90} y={500}>
-              <Text style={styles.buttonSolution}>Negro</Text>
-            </Draggable>
-            <Draggable x={170} y={500}>
-              <Text style={styles.buttonSolution}>Blanco</Text>
-            </Draggable>
-            <Draggable x={260} y={500}>
-              <Text style={styles.buttonSolution}>es</Text>
-            </Draggable>
+            <View style={{ flexDirection: 'row' ,margin: 10}}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={result}>
+              <Text style={styles.buttonText}> Verificar </Text> 
+            </TouchableOpacity>
             
-            {/* <View style={{ flexDirection: 'row',margin: 60 }}>
-              <TextInput style={styles. textSolution}/>
-              <TextInput style={styles. textSolution}/>
-            </View>
-
-            <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.buttonSolution}>  es </Text>
-              <Text style={styles.buttonSolution}>  negro  </Text>
-              <Text style={styles.buttonSolution}>  rojo </Text>
-              
-            </View> */}
             <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q3')}>
               <Text style={styles.buttonText}> Continuar </Text> 
             </TouchableOpacity>
-
-           
+            </View>
           <StatusBar style="auto" />
         </View>
         
@@ -133,6 +249,53 @@ const styles = StyleSheet.create({
     icon: {
       width: 30,
       height: 30,
+    },
+    receivingZone: {
+      height: 60,//(Dimensions.get('window').width / 4) - 12,
+      borderRadius: 10,
+      width: 60,//(Dimensions.get('window').width / 4) - 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 5
+    },
+    receiving: {
+      borderColor: 'blue',
+      borderWidth: 2,
+    },
+    draggableBox: {
+      width: 60,//(Dimensions.get('window').width / 4) - 12,
+      height:60,// (Dimensions.get('window').width / 4) - 12,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 5
+    },
+    dragging: {
+      opacity: 0.2,
+    },
+    hoverDragging: {
+      borderColor: 'magenta',
+      borderWidth: 2,
+    },
+    receivingContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      margin: 70
+    },
+    itemSeparator: {
+      height: 15
+    },
+    draxListContainer: {
+      padding: 5,
+      height: 200
+    },
+    receivingZoneContainer: {
+      padding: 5,
+      height: 100,
+      margin: 70
+    },
+    textStyle: {
+      fontSize: 18
     }
   })
 
