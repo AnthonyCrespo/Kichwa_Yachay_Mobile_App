@@ -16,4 +16,12 @@ export  const playAudio = async (path) => {
   }
 };
 
-export default playAudio;
+export const stopAudio = async () => {
+  if (sound) {
+    await sound.stopAsync();
+    sound.unloadAsync();
+    sound = null;
+  }
+};
+
+export default {playAudio, stopAudio};

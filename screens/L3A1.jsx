@@ -6,7 +6,7 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
 //import ListPictures from './images';
 import useCronometro from './functions/cronometer';
-import { playAudio } from './functions/playAudio';
+import {playAudio, stopAudio} from './functions/playAudio';
 import images from './imagesL3A1'
 import audios from './soundsL3A1';
 
@@ -35,6 +35,7 @@ const L3A1 = ({ navigation }) => {
     const handleComprobarPress = () => {
 /*     if (sound) {
       sound.stopAsync(); } */
+    stopAudio()
     respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
     if (respuesta_correcta) {
       puntaje = puntaje + 100/questions.length;
