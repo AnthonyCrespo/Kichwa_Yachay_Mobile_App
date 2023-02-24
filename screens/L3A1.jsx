@@ -7,7 +7,7 @@ import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
 //import ListPictures from './images';
 import useCronometro from './functions/cronometer';
 import {playAudio, stopAudio} from './functions/playAudio';
-import BarraProgreso from './functions/BarraProgreso';
+//import BarraProgreso from './functions/BarraProgreso';
 import images from './imagesL3A1'
 import audios from './soundsL3A1';
 import ProgressBar from 'react-native-progress/Bar';
@@ -41,6 +41,7 @@ const L3A1 = ({ navigation }) => {
     const handleComprobarPress = () => {
     stopAudio()
     setPorcentaje(porcentaje+100/questions.length)
+    //console.log(porcentaje/100)
     respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
     if (respuesta_correcta) {
       puntaje = puntaje + 100/questions.length;
@@ -135,15 +136,11 @@ const L3A1 = ({ navigation }) => {
   }
   statement = questions[currentQuestionIndex].statement;
   options = questions[currentQuestionIndex].options;
-
   return (
     <View style={styles.AppContainer}>
       <Text style={styles.statementText}>{statement}</Text>
-
-      <ProgressBar progress={porcentaje/100} width={ancho} height={20} />
-    
+      <ProgressBar progress={porcentaje/100} width={ancho} height={20} color={'#89D630'} style ={{borderColor: "#383A45"}} />
       {options.map((option, index) => (
-        
         <View key={index}>
           {/*  ---- Option Image ---- */}
           {/* <Image style={styles.catImage} source={{uri: imageUrls[index]}  */}
@@ -237,7 +234,7 @@ const styles = StyleSheet.create({
         AppContainer: {
           flex: 1,
           backgroundColor: '#fff',
-          paddingTop:20,
+          paddingTop:10,
           //paddingLeft:5,
           //paddingRight:5,
           justifyContent:'space-around',
