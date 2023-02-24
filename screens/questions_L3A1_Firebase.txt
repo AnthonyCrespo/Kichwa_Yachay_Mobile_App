@@ -1,0 +1,64 @@
+Array [
+  Object {
+    "correct_answer": "Missika yanami kan",
+    "options": Array [
+      Object {
+        "audio": "'../assets/audios/missika_yanami_kan.mp3'",
+        "image": "gs://test-kichwa.appspot.com/images/black-cat.jpeg",
+        "text": "Missika yanami kan",
+      },
+      Object {
+        "audio": "'../assets/audios/amaruka_killumi_kan.mp3'",
+        "image": "gs://test-kichwa.appspot.com/images/serpent.jpeg",
+        "text": "Amaruka killumi kan",
+      },
+      Object {
+        "audio": "'../assets/audios/kuchika_pukami_kan.mp3'",
+        "image": "gs://test-kichwa.appspot.com/images/pig.jpeg",
+        "text": "Kuchika pukami kan",
+      },
+    ],
+    "statement": "Maykan wiwata yana kan",
+  },
+  Object {
+    "correct_answer": "Wakraka pukami kan",
+    "options": Array [
+      Object {
+        "audio": "gs://test-kichwa.appspot.com/audios/missika_yanami_kan.mp3",
+        "image": "gs://test-kichwa.appspot.com/images/yellow-fish.jpeg",
+        "text": "Challwaka killumi kan",
+      },
+      Object {
+        "audio": "gs://test-kichwa.appspot.com/audios/amaruka_killumi_kan.mp3",
+        "image": "gs://test-kichwa.appspot.com/images/bull.jpeg",
+        "text": "Wakraka pukami kan",
+      },
+      Object {
+        "audio": "gs://test-kichwa.appspot.com/audios/kuchika_pukami_kan.mp3",
+        "image": "gs://test-kichwa.appspot.com/images/white-dog.jpeg",
+        "text": "Allkuka yurakmi kan",
+      },
+    ],
+    "statement": "Maykan wiwata yurak kan",
+  },
+  Object {
+    "options": Array [
+      Object {
+        "audio": "gs://test-kichwa.appspot.com/audios/missika_yanami_kan.mp3",
+        "image": "gs://test-kichwa.appspot.com/images/hen.jpeg",
+        "text": "Atallpaka yanami kan",
+      },
+      Object {
+        "audio": "gs://test-kichwa.appspot.com/audios/missika_yanami_kan.mp3",
+        "image": "gs://test-kichwa.appspot.com/images/hen.jpeg",
+        "text": "Challwaka pukammi kan",
+      },
+      Object {
+        "audio": "gs://test-kichwa.appspot.com/audios/missika_yanami_kan.mp3",
+        "image": "gs://test-kichwa.appspot.com/images/hen.jpeg",
+        "text": "Misika yanami kan",
+      },
+    ],
+    "statement": "Challwaka pukammi kan",
+  },
+]

@@ -35,7 +35,8 @@ const Login = ({navigation}) => {
     .then((userCredential) => {
       // Alert.alert('Signed In!') */
       const user = userCredential.user
-      console.log(user)
+      //console.log(user)
+      console.log(userCredential.user.uid)
       navigation.navigate('Home')
     })
     .catch(error => {

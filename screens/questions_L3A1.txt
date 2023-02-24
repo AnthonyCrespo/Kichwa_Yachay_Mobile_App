@@ -1,0 +1,87 @@
+// const questions = [
+//   {
+//     statement: 'Maykan wiwata yana kan',
+//     correct_answer: 'Missika yanami kan',
+//     options: [
+//       {
+//         text: 'Missika yanami kan',
+//         image: require('../assets/black-cat.jpeg'),
+//         audio: require('../assets/audios/missika_yanami_kan.mp3')
+//       },
+//       {
+//         text: 'Amaruka killumi kan',
+//         image: require('../assets/serpent.jpeg'),
+//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
+//       },
+//       {
+//         text: 'Kuchika pukami kan',
+//         image: require('../assets/pig.jpeg'),
+//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
+//       }
+//     ]
+//   },
+//   {
+//     statement: 'Maykan wiwata yurak kan',
+//     correct_answer: 'Wakraka pukami kan',
+//     options: [
+//       {
+//         text: 'Challwaka killumi kan',
+//         image: require('../assets/yellow-fish.jpeg'),
+//         audio: require('../assets/audios/missika_yanami_kan.mp3')
+//       },
+//       {
+//         text: 'Wakraka pukami kan',
+//         image: require('../assets/bull.jpeg'),
+//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
+//       },
+//       {
+//         text: 'Allkuka yurakmi kan',
+//         image: require('../assets/white-dog.jpeg'),
+//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
+//       }
+//     ]
+//   },
+//   {
+//     statement: 'Maykan wiwata puka kan',
+//     correct_answer: 'Challwaka pukammi kan',
+//     options: [
+//       {
+//         text: 'Atallpaka yanami kan',
+//         image: require('../assets/hen.jpeg'),
+//         audio: require('../assets/audios/missika_yanami_kan.mp3')
+//       },
+//       {
+//         text: 'Atallpaka yanami kan',
+//         image: require('../assets/red-fish.jpeg'),
+//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
+//       },
+//       {
+//         text: 'Challwaka pukammi kan',
+//         image: require('../assets/black-cat.jpeg'),
+//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
+//       }
+//     ]
+//   },
+//   {
+//     statement: 'Maykan wiwata killu kan',
+//     correct_answer: 'Allkuka yanami kan',
+//     options: [
+//       {
+//         text: 'Allkuka yanami kan',
+//         image: require('../assets/black-dog.jpeg'),
+//         audio: require('../assets/audios/missika_yanami_kan.mp3')
+//       },
+//       {
+//         text: 'Wakrakra yurakmi kan',
+//         image: require('../assets/cow-1.jpeg'),
+//         audio: require('../assets/audios/amaruka_killumi_kan.mp3')
+//       },
+//       {
+//         text: 'Amaruka killumi kan',
+//         image: require('../assets/serpent.jpeg'),
+//         audio: require('../assets/audios/kuchika_pukami_kan.mp3')
+//       }
+//     ]
+//   }
+//   // ... agregar más preguntas aquí
+// ];
