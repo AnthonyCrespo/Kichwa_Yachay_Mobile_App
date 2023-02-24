@@ -5,7 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
 const gestureRootViewStyle = { flex: 1 };
-export let puntaje = 0;
+
+let puntaje = 0;
+
 const L1A2Q1 = ({navigation}) => {
 
   const draggableItemList = [
@@ -49,7 +51,7 @@ const L1A2Q1 = ({navigation}) => {
         dragReleasedStyle={styles.dragging}
         hoverDraggingStyle={styles.hoverDragging}
         dragPayload={index}
-        longPressDelay={150}
+        longPressDelay={0}
         key={index}
       >
         <Text style={styles.textStyle}>{item.name}</Text>
@@ -166,7 +168,7 @@ const L1A2Q1 = ({navigation}) => {
               <Text style={styles.buttonText}> Verificar </Text> 
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q2')}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q3',{puntuation1:puntaje})}>
               <Text style={styles.buttonText}> Continuar </Text> 
             </TouchableOpacity>
             </View>

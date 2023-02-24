@@ -4,10 +4,18 @@ import { StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } fro
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
-import { puntaje2 } from './L1A2Q2';
-export let puntaje3=puntaje2;
+
+
 const gestureRootViewStyle = { flex: 1 };
-const L1A2Q3 = ({navigation}) => {
+let puntaje2 = 0
+
+const L1A2Q3 = ({route, navigation}) => {
+
+  const {puntuation1} = route.params;
+
+  //let puntaje2 = puntuation1
+
+
   const draggableItemList = [
     {
       "id": 1,
@@ -49,7 +57,7 @@ const L1A2Q3 = ({navigation}) => {
         dragReleasedStyle={styles.dragging}
         hoverDraggingStyle={styles.hoverDragging}
         dragPayload={index}
-        longPressDelay={150}
+        longPressDelay={0}
         key={index}
       >
         <Text style={styles.textStyle}>{item.name}</Text>
@@ -107,7 +115,8 @@ const L1A2Q3 = ({navigation}) => {
   if (verifyConcatenation(receivingItemList,'EsAmarillo')){
       alert('Respuesta:\n'+'Correcto');
       resetLists();
-      puntaje3=puntaje3+0.333333;
+      puntaje2 = puntuation1 +0.333333;
+      //console.log(puntaje2)
   }
   else
   {
@@ -161,7 +170,7 @@ const L1A2Q3 = ({navigation}) => {
               <Text style={styles.buttonText}> Verificar </Text> 
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonContainer}onPress={() => navigation.navigate("Result", {puntuation3: Math.round(puntaje3)})}>
+            <TouchableOpacity style={styles.buttonContainer}onPress={() => navigation.navigate("Result", {puntuation3: puntaje2})}>
               <Text style={styles.buttonText}> Finalizar </Text> 
             </TouchableOpacity>
             </View>

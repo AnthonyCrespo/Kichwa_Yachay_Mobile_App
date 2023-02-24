@@ -171,8 +171,8 @@ const L3A1 = ({ navigation }) => {
             <Text style={styles.comprobarText}>Comprobar</Text>
           </TouchableOpacity>
       </View>
+      
             {/* Modal */}
-
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
           {/* <View style={styles.modalContent}> */}

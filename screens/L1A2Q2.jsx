@@ -9,7 +9,7 @@ export let puntaje2 = puntaje;
 const gestureRootViewStyle = { flex: 1 };
 
 
-const L1A2Q2 = ({navigation}) => {
+const L1A2Q2 = ({navigation, route}) => {
   const draggableItemList = [
     {
       "id": 1,
