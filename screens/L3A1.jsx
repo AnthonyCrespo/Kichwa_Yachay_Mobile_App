@@ -11,26 +11,51 @@ let puntaje = 0;
 let respuesta_correcta;
 
 const L3A1 = ({ navigation }) => {
-  let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
+  //let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
   app = getApp(); 
   const db = getFirestore();
   const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
-  const [ questions, setQuestions ] = useState(null);
+  const [ questions, setQuestions ] = useState([]);
   const [ imageUrls, setImageUrls ] = useState(null);
   const [ selectedOption, setSelectedOption ] = useState(null);
-
-
-
   const [modalVisible, setModalVisible] = useState(false);
-  //const [answer, setAnswer] = useState("");
 
 
+  /*--------------------------------------------------------------------------------------------  */
+  /*---------------------------------------- Modal -----------------------------------------  */
+  /*--------------------------------------------------------------------------------------------*/
+    const handleComprobarPress = () => {
+    //setAnswer(options[selectedOption].text);
+    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
+    if (respuesta_correcta) {
+      puntaje = puntaje + 100/questions.length;
+    }
+    setModalVisible(true);
+  };
 
 
+  const handleContinuePress = () => {
+    setModalVisible(false);
+    setSelectedOption(null);
+
+
+    if (currentQuestionIndex === questions.length-1) {
+      /* sound.stopAsync(); */
+      navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: 20, lesson:3, subtitle:' '});
+      puntaje = 0;
+    } else{
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setImageUrls(imageUrls.slice(3, imageUrls.lesson))
+      console.log(imageUrls)
+    }
+  }
+
+
+  /*--------------------------------------------------------------------------------------------  */
+  /*---------------------------------------- Database -----------------------------------------  */
+  /*--------------------------------------------------------------------------------------------*/
   async function getDocuments() {
-
     const querySnapshot = await getDocs(collection(db, 'L3A1'));
-
     // Loop through the documents
     const docs = [];
     querySnapshot.forEach(doc => {
@@ -39,31 +64,65 @@ const L3A1 = ({ navigation }) => {
       // Add the document data to the array
       docs.push(data);
     });
-
     // Update the state variable with the documents
     setQuestions(docs);
   }
 
-  useEffect(() => {
+
+  async function getImages(){
+    if (questions.length === 0) {
+      return; // no hay preguntas cargadas aún, salir de la función
+    }
+  
     // Initialize the Firebase app and get the storage reference
     const storage = getStorage();
     const imagesRef = ref(storage, 'images/');
-
+  
     // Filter the list of items to download
-    const imagesToDownload = ['black-cat.jpeg', 'serpent.jpeg', 'pig.jpeg'];
-    //const imagesToDownload = options.map((option) => option['image'])
-
+    const imagesToDownload = questions.reduce((acc, question) => {
+      return acc.concat(question.options.map(option => option.image));
+    }, []);
+  
     // Get the download URLs of the selected images in the storage bucket
     listAll(imagesRef).then((result) => {
       const urls = result.items
         .filter((item) => imagesToDownload.includes(item.name))
-        .map((item) => getDownloadURL(item));
-      Promise.all(urls).then((downloadUrls) => setImageUrls(downloadUrls));
+        .map((item) => {
+          return getDownloadURL(item).then(url => {
+            return {
+              name: item.name,
+              url: url
+            }
+          });
+        });
+  
+      Promise.all(urls).then((downloadUrls) => {
+        // Sort the downloadUrls array to match the order in imagesToDownload
+        const sortedUrls = [];
+        for (let i = 0; i < imagesToDownload.length; i++) {
+          const imageName = imagesToDownload[i];
+          const urlObject = downloadUrls.find((obj) => obj.name === imageName);
+          sortedUrls.push(urlObject.url);
+        }
+        setImageUrls(sortedUrls);
+      });
     })
+  }
 
+  useEffect(() => {
     getDocuments();
   }, []);
 
+
+  useEffect(() => {
+    getImages();
+  }, [questions,currentQuestionIndex]);
+
+
+
+  /*--------------------------------------------------------------------------------------------  */
+  /*------------------------------------------ Audio ------------------------------------------  */
+  /*--------------------------------------------------------------------------------------------*/
   const playAudio = async (path) => {
     if (sound) {
       sound.stopAsync();
@@ -79,9 +138,12 @@ const L3A1 = ({ navigation }) => {
     };
 
   let sound;
-  let statement, options//, correctAnswer;
+  let statement, options //, correctAnswer;
   
-  if (questions === null | imageUrls === null) {
+
+
+
+  if (questions === null  | imageUrls === null) {
     return (
       <View style={styles.AppContainer}>
         <Text>Cargando...</Text>
@@ -90,33 +152,7 @@ const L3A1 = ({ navigation }) => {
   } else {
     statement = questions[currentQuestionIndex].statement;
     options = questions[currentQuestionIndex].options;
-    //correctAnswer = questions[currentQuestionIndex].correct_answer;
-    //console.log(questions)
   }  
-
-
-  const handleComprobarPress = () => {
-    //setAnswer(options[selectedOption].text);
-    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
-    if (respuesta_correcta) {
-      puntaje = puntaje + 100/questions.length;
-    }
-    setModalVisible(true);
-  };
-
-
-  const handleContinuePress = () => {
-    setModalVisible(false);
-    setSelectedOption(null);
-
-    if (currentQuestionIndex === questions.length-1) {
-      /* sound.stopAsync(); */
-      navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: 20, lesson:3, subtitle:' '});
-      puntaje = 0;
-    } else{
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  }
 
 
   return (
@@ -171,7 +207,7 @@ const L3A1 = ({ navigation }) => {
             <Text style={styles.comprobarText}>Comprobar</Text>
           </TouchableOpacity>
       </View>
-      
+
             {/* Modal */}
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
