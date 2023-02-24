@@ -11,11 +11,13 @@ let puntaje = 0;
 let respuesta_correcta;
 
 const L3A1 = ({ navigation }) => {
-  //let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
+  let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
+  let image_test = require('../assets/black-dog.jpeg')
+  let image_test2 = '../assets/black-dog.jpeg'
   app = getApp(); 
   const db = getFirestore();
   const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
-  const [ questions, setQuestions ] = useState([]);
+  const [ questions, setQuestions ] = useState(null);
   const [ imageUrls, setImageUrls ] = useState(null);
   const [ selectedOption, setSelectedOption ] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,15 +40,12 @@ const L3A1 = ({ navigation }) => {
     setModalVisible(false);
     setSelectedOption(null);
 
-
     if (currentQuestionIndex === questions.length-1) {
       /* sound.stopAsync(); */
       navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: 20, lesson:3, subtitle:' '});
       puntaje = 0;
     } else{
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setImageUrls(imageUrls.slice(3, imageUrls.lesson))
-      console.log(imageUrls)
     }
   }
 
@@ -54,6 +53,33 @@ const L3A1 = ({ navigation }) => {
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Database -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
+/*   const updatePaths = (arr) => {
+    const updatedArr = arr.map((obj) => {
+      const updatedOptions = obj.options.map((option) => {
+        const audioPath = `${option.audio}`;
+        console.log(audioPath )
+        const imagePath = `${option.image}`;
+        console.log(imagePath)
+        return {
+          ...option,
+          audio: require(audioPath),
+          image: require(imagePath)
+        };
+      });
+      return {
+        ...obj,
+        options: updatedOptions,
+      };
+    });
+    return updatedArr;
+  };
+
+  const handleUpdatePaths = () => {
+    const updatedQuestions = updatePaths(questions);
+    setQuestions(updatedQuestions);
+  };
+ 
+  */
   async function getDocuments() {
     const querySnapshot = await getDocs(collection(db, 'L3A1'));
     // Loop through the documents
@@ -65,11 +91,19 @@ const L3A1 = ({ navigation }) => {
       docs.push(data);
     });
     // Update the state variable with the documents
+    //const updatedDocs = updatePaths(docs);
     setQuestions(docs);
   }
 
+  useEffect(() => {
+    getDocuments();
+  }, []);
 
-  async function getImages(){
+
+
+  
+
+/*   async function getImages(){
     if (questions.length === 0) {
       return; // no hay preguntas cargadas aún, salir de la función
     }
@@ -79,45 +113,26 @@ const L3A1 = ({ navigation }) => {
     const imagesRef = ref(storage, 'images/');
   
     // Filter the list of items to download
-    const imagesToDownload = questions.reduce((acc, question) => {
-      return acc.concat(question.options.map(option => option.image));
-    }, []);
-  
+    const imagesToDownload = questions[currentQuestionIndex].options.map((option) => option.image);
+    //const imagesToDownload = questions.map(question => question.options.map(option => option.image)).flat();
+    console.log(imagesToDownload)
     // Get the download URLs of the selected images in the storage bucket
     listAll(imagesRef).then((result) => {
       const urls = result.items
         .filter((item) => imagesToDownload.includes(item.name))
-        .map((item) => {
-          return getDownloadURL(item).then(url => {
-            return {
-              name: item.name,
-              url: url
-            }
-          });
-        });
-  
-      Promise.all(urls).then((downloadUrls) => {
-        // Sort the downloadUrls array to match the order in imagesToDownload
-        const sortedUrls = [];
-        for (let i = 0; i < imagesToDownload.length; i++) {
-          const imageName = imagesToDownload[i];
-          const urlObject = downloadUrls.find((obj) => obj.name === imageName);
-          sortedUrls.push(urlObject.url);
-        }
-        setImageUrls(sortedUrls);
-      });
+        .map((item) => getDownloadURL(item));
+      Promise.all(urls).then((downloadUrls) => setImageUrls(downloadUrls));
     })
+  
   }
-
-  useEffect(() => {
-    getDocuments();
-  }, []);
+ */
 
 
-  useEffect(() => {
+
+/*   useEffect(() => {
     getImages();
   }, [questions,currentQuestionIndex]);
-
+ */
 
 
   /*--------------------------------------------------------------------------------------------  */
@@ -142,8 +157,8 @@ const L3A1 = ({ navigation }) => {
   
 
 
-
-  if (questions === null  | imageUrls === null) {
+  //if (questions === null  | imageUrls === null) {
+  if (questions === null) {
     return (
       <View style={styles.AppContainer}>
         <Text>Cargando...</Text>
@@ -152,6 +167,7 @@ const L3A1 = ({ navigation }) => {
   } else {
     statement = questions[currentQuestionIndex].statement;
     options = questions[currentQuestionIndex].options;
+    //console.log(questions)
   }  
 
 
@@ -163,8 +179,9 @@ const L3A1 = ({ navigation }) => {
         
         <View key={index}>
           {/*  ---- Option Image ---- */}
-          <Image style={styles.catImage} source={{uri: imageUrls[index]}} />
-
+          {/* <Image style={styles.catImage} source={{uri: imageUrls[index]}  */}
+           {/* <Image style={styles.catImage} source={ image_test } /> */}
+           {/* <Image style={styles.catImage} source={ option.image } /> */}
 
           {/*  ---- Option Icon-Text ---- */}
           <View style={styles.optionContainer}>
@@ -172,10 +189,9 @@ const L3A1 = ({ navigation }) => {
               <TouchableOpacity
                     style={styles.optionIcon}
                     onPress={() => {
-                      //playAudio(option.audio);
+                      playAudio(option.audio);
                       //layAudio(require(audio_test))
-                      console.log(option.audio)
-                      playAudio(option.audio)
+                      //console.log(option.audio)
                     }}
                   >
                     <Icon name="volume-up" size={20} color="black" />
