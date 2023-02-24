@@ -1,5 +1,5 @@
 import React, { useState,  useEffect } from 'react';
-import { Audio } from 'expo-av';
+//import { Audio } from 'expo-av';
 import { Modal, StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
@@ -7,7 +7,7 @@ import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
 import { getApp } from 'firebase/app'
 import useCronometro from './functions/cronometer';
 //import ListPictures from './images';
-
+import { playAudio } from './functions/playAudio';
 import images from './imagesL3A1'
 import audios from './soundsL3A1';
 
@@ -26,25 +26,16 @@ const L3A1 = ({ navigation }) => {
   const [ imageUrls, setImageUrls ] = useState(null);
   const [ selectedOption, setSelectedOption ] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  // ----- Timer -------
   const segundos = useCronometro();
 
-  /*--------------------------------------------------------------------------------------------  */
-  /* ---------------------------------  Timer -------------------------------------------- */
-  /*--------------------------------------------------------------------------------------------  */
-/*   const [segundos, setSegundos] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSegundos(segundos => segundos + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []); */
-  
 
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Modal -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
     const handleComprobarPress = () => {
+/*     if (sound) {
+      sound.stopAsync(); } */
     respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
     if (respuesta_correcta) {
       puntaje = puntaje + 100/questions.length;
@@ -58,7 +49,6 @@ const L3A1 = ({ navigation }) => {
     setSelectedOption(null);
 
     if (currentQuestionIndex === questions.length-1) {
-      /* sound.stopAsync(); */
       navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: segundos, lesson:3, subtitle:' '});
       puntaje = 0;
     } else{
@@ -125,25 +115,6 @@ const L3A1 = ({ navigation }) => {
   }, [questions,currentQuestionIndex]);
  */
 
-
-  /*--------------------------------------------------------------------------------------------  */
-  /*------------------------------------------ Audio ------------------------------------------  */
-  /*--------------------------------------------------------------------------------------------*/
-  const playAudio = async (path) => {
-    if (sound) {
-      sound.stopAsync();
-      sound.unloadAsync();
-    }
-    sound = new Audio.Sound();
-    try {
-      await sound.loadAsync(path);
-      await sound.playAsync();
-    } catch (error) {
-      console.log(error);
-      }
-    };
-
-  let sound;
   let statement, options //, correctAnswer;
   
 
@@ -181,7 +152,8 @@ const L3A1 = ({ navigation }) => {
               <TouchableOpacity
                     style={styles.optionIcon}
                     onPress={() => {
-                      playAudio((audios.find((audio) => audio.name === option.audio)).path);
+                      let audioPath = (audios.find((audio) => audio.name === option.audio)).path
+                      playAudio(audioPath);
                       //layAudio(require(audio_test))
                       //console.log(option.audio)
                     }}
