@@ -1,6 +1,6 @@
 import React, { useState,  useEffect } from 'react';
 import { Audio } from 'expo-av';
-import { StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
+import { Modal, StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
@@ -8,6 +8,7 @@ import { getApp } from 'firebase/app'
 
 let answer;
 let puntaje = 0;
+let respuesta_correcta;
 
 const L3A1 = ({ navigation }) => {
   let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
@@ -17,6 +18,14 @@ const L3A1 = ({ navigation }) => {
   const [ questions, setQuestions ] = useState(null);
   const [ imageUrls, setImageUrls ] = useState(null);
   const [ selectedOption, setSelectedOption ] = useState(null);
+
+
+
+  const [modalVisible, setModalVisible] = useState(false);
+  //const [answer, setAnswer] = useState("");
+
+
+
 
   async function getDocuments() {
 
@@ -70,7 +79,7 @@ const L3A1 = ({ navigation }) => {
     };
 
   let sound;
-  let statement, options;
+  let statement, options//, correctAnswer;
   
   if (questions === null | imageUrls === null) {
     return (
@@ -81,14 +90,39 @@ const L3A1 = ({ navigation }) => {
   } else {
     statement = questions[currentQuestionIndex].statement;
     options = questions[currentQuestionIndex].options;
+    //correctAnswer = questions[currentQuestionIndex].correct_answer;
     //console.log(questions)
   }  
+
+
+  const handleComprobarPress = () => {
+    //setAnswer(options[selectedOption].text);
+    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
+    if (respuesta_correcta) {
+      puntaje = puntaje + 100/questions.length;
+    }
+    setModalVisible(true);
+  };
+
+
+  const handleContinuePress = () => {
+    setModalVisible(false);
+    setSelectedOption(null);
+
+    if (currentQuestionIndex === questions.length-1) {
+      /* sound.stopAsync(); */
+      navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
+      puntaje = 0;
+    } else{
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  }
 
 
   return (
     <View style={styles.AppContainer}>
       <Text style={styles.statementText}>{statement}</Text>
-  
+    
       {options.map((option, index) => (
         
         <View key={index}>
@@ -127,39 +161,66 @@ const L3A1 = ({ navigation }) => {
 
         </View>
     ))}
-  
-      <TouchableOpacity
-        style={styles.continueButton}
-        onPress={() => {
-          setSelectedOption(null);
-          console.log(answer)
-          console.log(questions[currentQuestionIndex].correct_answer)
-          if (answer === questions[currentQuestionIndex].correct_answer) {
-            puntaje = puntaje + 100/questions.length;
-          }
-          if (currentQuestionIndex === questions.length-1) {
-            /* sound.stopAsync(); */
-            navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
-            puntaje = 0;
-          } else{
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-        }
-        }}
-      >
-        <Text style={styles.continueText}>Continuar</Text>
-      </TouchableOpacity>
+      <View >
+          <TouchableOpacity
+            //style={styles.continueButton}
+            style={selectedOption === null ? styles.comprobarButton_Disabled : styles.comprobarButton_Enabled }
+            disabled={selectedOption === null}
+            onPress={handleComprobarPress}
+          >
+            <Text style={styles.comprobarText}>Comprobar</Text>
+          </TouchableOpacity>
+      </View>
+            {/* Modal */}
+
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <View style={styles.modalContainer}>
+          {/* <View style={styles.modalContent}> */}
+            <Text style={respuesta_correcta? styles.modalTextCorrecto: styles.modalTextIncorrecto}>
+            {respuesta_correcta ? "¡Excelente!" : "Incorrecto"}
+            </Text>
+{/*             <Text style = {{color:'white', paddingVertical:10, fontSize:17}}>
+            {!respuesta_correcta? `Respuesta correcta: ${questions[currentQuestionIndex].correct_answer}`: ''}
+            </Text> */}
+
+            <Text style={{color: 'white', paddingVertical: 10, fontSize: 17, opacity: respuesta_correcta ? 0: 1}}>
+              <Text style={{color: '#86D332'}}>Respuesta correcta: </Text>
+              {!respuesta_correcta ? questions[currentQuestionIndex].correct_answer : ''}
+            </Text>
+
+            <TouchableOpacity onPress={handleContinuePress} style={respuesta_correcta? styles.continueButton_Correct: styles.continueButton_Incorrect}>
+              <Text style = {styles.continueText}>Continuar</Text>
+            </TouchableOpacity>
+
+          {/* </View> */}
+        </View>
+      </Modal>
     </View>
   );
 }
 
 
 const styles = StyleSheet.create({
+
+        ComprobarButton: {
+        width: '100%',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        backgroundColor: 'red',
+
+        padding: 10,
+        borderTopWidth: 1,
+        borderTopColor: '#ccc',
+      },
+
         AppContainer: {
           flex: 1,
           backgroundColor: '#fff',
           paddingTop:20,
-          paddingLeft:5,
-          paddingRight:5,
+          //paddingLeft:5,
+          //paddingRight:5,
           justifyContent:'space-around',
           alignItems: 'center',
           alignContent: 'center'
@@ -203,8 +264,9 @@ const styles = StyleSheet.create({
           alignSelf: 'center'
         },
 
-        // ------  Continue Button -----
-        continueButton: {
+
+        // ------  Comprobar Button -----
+        comprobarButton_Enabled: {
           width: 200,
           height: 40,
           alignItems: 'center',
@@ -212,15 +274,90 @@ const styles = StyleSheet.create({
           backgroundColor: "#82C0CC",
           borderRadius: 20,
         },
-        continueText:{
-          color: '#fff',
-          fontSize: 24
+        comprobarButton_Disabled: {
+          width: 200,
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: "#C3C3C3",
+          borderRadius: 20,
+          //opacity: 0
         },
+
+
+        comprobarText:{
+          color: '#fff',
+          fontSize: 20
+        },
+
+
         catImage:{
           width: 140,
           height: 80,
           alignSelf:'center'
         },
+
+
+        /* ------- Modal --------- */
+        modalContainer: {
+          position: 'absolute',
+          width:"100%",
+          bottom: 0,
+          backgroundColor: '#383A45',
+          //borderRadius: 5,
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 20,
+          //margin: 40,
+          marginHorizontal: 'auto',
+          marginTop: 'auto',
+          marginBottom: 'auto',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        },
+
+
+        /* ------ Texto Modal -------- */
+        modalTextCorrecto:{
+          color: '#86D332',
+          fontWeight:'bold',
+          fontSize: 20
+        },
+
+        modalTextIncorrecto:{
+          color:'#EE5655',
+          fontWeight:'bold',
+          fontSize: 20,
+          //marginBottom:5
+        },
+        
+        /* ------ Button Continue -------- */
+        continueButton_Correct:{
+          width: 200,
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: "#86D332",
+          borderRadius: 20},
+        
+
+
+        continueButton_Incorrect:{
+          width: 200,
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: "#EE5655",
+          borderRadius: 20},
+
+        continueText:{
+            color: '#fff',
+            fontSize: 20
+          },
+  
 /*         serpentImage:{
           width: 137,
           height: 140,
