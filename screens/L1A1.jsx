@@ -109,7 +109,7 @@ const L1A1 = ({navigation}) => {
             currentButtonText = 'Verificar'
             options = shuffleArray(options);
             if (currentQuestionIndex === questions['statements'].length-1) {
-              navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: timer});
+              navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: timer, lesson:1, subtitle:'Colores/Tullpukuna'});
               puntaje = 0;
             } else{
             setCurrentQuestionIndex(currentQuestionIndex + 1);

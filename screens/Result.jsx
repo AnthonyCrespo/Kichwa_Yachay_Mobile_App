@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 
 const Result = ({route, navigation}) => {
     const {puntuation3, time_taken, lesson, subtitle} = route.params;
-    console.log( lesson, subtitle)
     return (
 
     <View style={styles.container}>
