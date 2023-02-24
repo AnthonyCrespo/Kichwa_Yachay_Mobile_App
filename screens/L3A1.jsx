@@ -7,8 +7,10 @@ import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
 //import ListPictures from './images';
 import useCronometro from './functions/cronometer';
 import {playAudio, stopAudio} from './functions/playAudio';
+import BarraProgreso from './functions/BarraProgreso';
 import images from './imagesL3A1'
 import audios from './soundsL3A1';
+import ProgressBar from 'react-native-progress/Bar';
 
 let answer;
 let puntaje = 0;
@@ -28,14 +30,17 @@ const L3A1 = ({ navigation }) => {
   // ----- Timer -------
   const segundos = useCronometro();
 
+  // ----- Barra de progreso ------
 
+  const [porcentaje, setPorcentaje] = useState(0);
+  const ancho = 300
+  
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Modal -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
     const handleComprobarPress = () => {
-/*     if (sound) {
-      sound.stopAsync(); } */
     stopAudio()
+    setPorcentaje(porcentaje+100/questions.length)
     respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
     if (respuesta_correcta) {
       puntaje = puntaje + 100/questions.length;
@@ -45,6 +50,7 @@ const L3A1 = ({ navigation }) => {
 
 
   const handleContinuePress = () => {
+    
     setModalVisible(false);
     setSelectedOption(null);
 
@@ -133,6 +139,8 @@ const L3A1 = ({ navigation }) => {
   return (
     <View style={styles.AppContainer}>
       <Text style={styles.statementText}>{statement}</Text>
+
+      <ProgressBar progress={porcentaje/100} width={ancho} height={20} />
     
       {options.map((option, index) => (
         
