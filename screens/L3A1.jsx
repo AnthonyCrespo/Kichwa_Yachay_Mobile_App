@@ -6,14 +6,19 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
 import { getApp } from 'firebase/app'
 
+//import ListPictures from './images';
+
+import images from './imagesL3A1'
+import audios from './soundsL3A1';
+
 let answer;
 let puntaje = 0;
 let respuesta_correcta;
 
 const L3A1 = ({ navigation }) => {
-  let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
-  let image_test = require('../assets/black-dog.jpeg')
-  let image_test2 = '../assets/black-dog.jpeg'
+  //let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
+  //let image_test = require('../assets/black-dog.jpeg')
+  //let image_test2 = '../assets/black-dog.jpeg'
   app = getApp(); 
   const db = getFirestore();
   const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
@@ -27,7 +32,6 @@ const L3A1 = ({ navigation }) => {
   /*---------------------------------------- Modal -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
     const handleComprobarPress = () => {
-    //setAnswer(options[selectedOption].text);
     respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
     if (respuesta_correcta) {
       puntaje = puntaje + 100/questions.length;
@@ -53,33 +57,9 @@ const L3A1 = ({ navigation }) => {
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Database -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
-/*   const updatePaths = (arr) => {
-    const updatedArr = arr.map((obj) => {
-      const updatedOptions = obj.options.map((option) => {
-        const audioPath = `${option.audio}`;
-        console.log(audioPath )
-        const imagePath = `${option.image}`;
-        console.log(imagePath)
-        return {
-          ...option,
-          audio: require(audioPath),
-          image: require(imagePath)
-        };
-      });
-      return {
-        ...obj,
-        options: updatedOptions,
-      };
-    });
-    return updatedArr;
-  };
 
-  const handleUpdatePaths = () => {
-    const updatedQuestions = updatePaths(questions);
-    setQuestions(updatedQuestions);
-  };
+
  
-  */
   async function getDocuments() {
     const querySnapshot = await getDocs(collection(db, 'L3A1'));
     // Loop through the documents
@@ -90,8 +70,6 @@ const L3A1 = ({ navigation }) => {
       // Add the document data to the array
       docs.push(data);
     });
-    // Update the state variable with the documents
-    //const updatedDocs = updatePaths(docs);
     setQuestions(docs);
   }
 
@@ -180,8 +158,9 @@ const L3A1 = ({ navigation }) => {
         <View key={index}>
           {/*  ---- Option Image ---- */}
           {/* <Image style={styles.catImage} source={{uri: imageUrls[index]}  */}
+          {/* <Image style={styles.catImage} source={{uri: "file:///../assets/black-dog.jpeg"}} /> */}
            {/* <Image style={styles.catImage} source={ image_test } /> */}
-           {/* <Image style={styles.catImage} source={ option.image } /> */}
+           <Image style={styles.catImage} source={(images.find((image) => image.name === option.image)).path}/>
 
           {/*  ---- Option Icon-Text ---- */}
           <View style={styles.optionContainer}>
@@ -189,7 +168,7 @@ const L3A1 = ({ navigation }) => {
               <TouchableOpacity
                     style={styles.optionIcon}
                     onPress={() => {
-                      playAudio(option.audio);
+                      playAudio((audios.find((audio) => audio.name === option.audio)).path);
                       //layAudio(require(audio_test))
                       //console.log(option.audio)
                     }}
