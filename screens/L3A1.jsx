@@ -111,7 +111,7 @@ const L3A1 = ({ navigation }) => {
 
     if (currentQuestionIndex === questions.length-1) {
       /* sound.stopAsync(); */
-      navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
+      navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: 20, lesson:3, subtitle:' '});
       puntaje = 0;
     } else{
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
         },
 
         selected_optionText: {
-          color: '#63933D',
+          color: '#3259A1',
           fontWeight: 'bold',
           fontSize: 20,
           marginLeft:20,
