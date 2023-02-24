@@ -1,12 +1,11 @@
 import React, { useState,  useEffect } from 'react';
-//import { Audio } from 'expo-av';
 import { Modal, StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { getApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
-import { getApp } from 'firebase/app'
-import useCronometro from './functions/cronometer';
 //import ListPictures from './images';
+import useCronometro from './functions/cronometer';
 import { playAudio } from './functions/playAudio';
 import images from './imagesL3A1'
 import audios from './soundsL3A1';
@@ -126,12 +125,9 @@ const L3A1 = ({ navigation }) => {
         <Text>Cargando...</Text>
       </View>
     );
-  } else {
-    statement = questions[currentQuestionIndex].statement;
-    options = questions[currentQuestionIndex].options;
-    //console.log(questions)
-  }  
-
+  }
+  statement = questions[currentQuestionIndex].statement;
+  options = questions[currentQuestionIndex].options;
 
   return (
     <View style={styles.AppContainer}>
@@ -154,8 +150,6 @@ const L3A1 = ({ navigation }) => {
                     onPress={() => {
                       let audioPath = (audios.find((audio) => audio.name === option.audio)).path
                       playAudio(audioPath);
-                      //layAudio(require(audio_test))
-                      //console.log(option.audio)
                     }}
                   >
                     <Icon name="volume-up" size={20} color="black" />
