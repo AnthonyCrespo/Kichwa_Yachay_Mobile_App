@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
 import { getApp } from 'firebase/app'
-
+import useCronometro from './functions/cronometer';
 //import ListPictures from './images';
 
 import images from './imagesL3A1'
@@ -26,7 +26,20 @@ const L3A1 = ({ navigation }) => {
   const [ imageUrls, setImageUrls ] = useState(null);
   const [ selectedOption, setSelectedOption ] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const segundos = useCronometro();
 
+  /*--------------------------------------------------------------------------------------------  */
+  /* ---------------------------------  Timer -------------------------------------------- */
+  /*--------------------------------------------------------------------------------------------  */
+/*   const [segundos, setSegundos] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSegundos(segundos => segundos + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []); */
+  
 
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Modal -----------------------------------------  */
@@ -46,7 +59,7 @@ const L3A1 = ({ navigation }) => {
 
     if (currentQuestionIndex === questions.length-1) {
       /* sound.stopAsync(); */
-      navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: 20, lesson:3, subtitle:' '});
+      navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: segundos, lesson:3, subtitle:' '});
       puntaje = 0;
     } else{
       setCurrentQuestionIndex(currentQuestionIndex + 1);
