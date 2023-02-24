@@ -2,19 +2,17 @@ import { Audio } from 'expo-av';
 
 let sound = null;
 
-export const playAudio = async (path) => {
+export  const playAudio = async (path) => {
   if (sound) {
-    if (sound.getStatusAsync().isPlaying) {
-      await sound.pauseAsync();
-      return;
-    }
+  sound.stopAsync();
+  sound.unloadAsync();
   }
   sound = new Audio.Sound();
   try {
-    await sound.loadAsync(path);
-    await sound.playAsync();
+  await sound.loadAsync(path);
+  await sound.playAsync();
   } catch (error) {
-    console.log(error);
+  console.log(error);
   }
 };
 
