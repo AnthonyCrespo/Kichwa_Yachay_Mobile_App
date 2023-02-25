@@ -6,7 +6,17 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
 const gestureRootViewStyle = { flex: 1 };
 
+let puntaje1 = 0;
+let questions = 
+{
+  statements: [['Yanami kan', 'EsNegro'],
+  ['Pukami kan', 'EsRojo'],
+  ['Killumi kan', 'EsAmarillo']],
+  options: [['Es',0], ['Rojo',1], ['Blanco',2],['Negro',3],['Amarillo',4]],
+};
 let puntaje = 0;
+let answers = ['',''];
+let currentButtonText = 'Verificar';
 
 const L1A2Q1 = ({navigation}) => {
 
@@ -55,6 +65,7 @@ const L1A2Q1 = ({navigation}) => {
         key={index}
       >
         <Text style={styles.textStyle}>{item.name}</Text>
+        
       </DraxView>
     );
   }
@@ -120,6 +131,13 @@ const L1A2Q1 = ({navigation}) => {
   }
 };
 
+const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [showResult, setShowResult] = useState(false);
+  const statement = questions['statements'][currentQuestionIndex];
+  const [timer, setTimer] = useState(0);
+
+
     return (
         <View style={styles.container}>
             <View style={{ margin: 20 }}>
@@ -130,7 +148,7 @@ const L1A2Q1 = ({navigation}) => {
 
             
             <View style={{ flexDirection: 'row',margin: 60 }}>
-              <Text style={styles.instructionText}> Yanami kan </Text>
+              <Text style={styles.instructionText}> {questions.statements[0][0]}</Text>
               <TouchableOpacity >
               <Icon name="volume-up" size={30} color="black"/>
               </TouchableOpacity>
@@ -164,12 +182,12 @@ const L1A2Q1 = ({navigation}) => {
             </View>
 
             <View style={{ flexDirection: 'row' ,margin: 10}}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={result}>
+            {/* <TouchableOpacity style={styles.buttonContainer} onPress={result}>
               <Text style={styles.buttonText}> Verificar </Text> 
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q3',{puntuation1:puntaje})}>
-              <Text style={styles.buttonText}> Continuar </Text> 
+              <Text style={styles.buttonText}> {currentButtonText} </Text> 
             </TouchableOpacity>
             </View>
            
