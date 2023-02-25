@@ -11,6 +11,8 @@ import {playAudio, stopAudio} from './functions/playAudio';
 import images from './imagesL3A1'
 import audios from './soundsL3A1';
 import ProgressBar from 'react-native-progress/Bar';
+//import ProgressBarKichwa from './functions/ProgressBarKichwa'
+
 
 let answer;
 let puntaje = 0;
@@ -33,7 +35,7 @@ const L3A1 = ({ navigation }) => {
   // ----- Barra de progreso ------
 
   const [porcentaje, setPorcentaje] = useState(0);
-  const ancho = 300
+
   
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Modal -----------------------------------------  */
@@ -139,7 +141,11 @@ const L3A1 = ({ navigation }) => {
   return (
     <View style={styles.AppContainer}>
       <Text style={styles.statementText}>{statement}</Text>
-      <ProgressBar progress={porcentaje/100} width={ancho} height={20} color={'#89D630'} style ={{borderColor: "#383A45"}} />
+      <ProgressBar progress={porcentaje/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25}}
+                    />
+
       {options.map((option, index) => (
         <View key={index}>
           {/*  ---- Option Image ---- */}

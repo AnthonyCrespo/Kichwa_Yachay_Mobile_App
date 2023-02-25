@@ -67,7 +67,10 @@ const L1A3 = ({ navigation }) => {
         <Text style={styles.statementText}>Escuche y seleccione</Text>
       </View>
 
-      <ProgressBar progress={porcentaje/100} width={ancho} height={20} color={'#89D630'} style ={{borderColor: "#383A45"}} />
+      <ProgressBar progress={porcentaje/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25}}
+                    />
 
       <View style={styles.audioContainer}> 
         <TouchableOpacity

@@ -55,7 +55,7 @@ const L3A3Q1= ({navigation}) => {
 </View>
 
 
-<TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L3A3Q2')}>
+<TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("Result", {puntuation3: Math.round(100), time_taken: 70, lesson:3, subtitle:' '})}> 
      <Text style={styles.buttonText}> Continuar </Text> 
 </TouchableOpacity>
 
