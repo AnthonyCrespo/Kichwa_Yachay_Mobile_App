@@ -1,9 +1,32 @@
 import React  from 'react';
-import {Dimensions, FlatList, View, StyleSheet, Text, Image, TouchableOpacity, StatusBar} from 'react-native';
+import {Dimensions, FlatList, View, StyleSheet, Text, Image, TouchableOpacity, StatusBar, Alert} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+//import firebase from 'firebase';
+
+import { getAuth, signOut} from 'firebase/auth';
+import { getReactNativeFirestore, enableMultiTabIndexedDbPersistence } from 'firebase/firestore';
+import { getApp} from 'firebase/app'
 
 const {width} = Dimensions.get('screen');
 
 const Profile= ({navigation}) => {
+  const app = getApp();
+  const auth = getAuth(app);
+  //const db = getFirestore(app);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      // Elimina la información de sesión del almacenamiento local
+      await AsyncStorage.removeItem('usuario');
+      // Redirige al usuario a la pantalla de inicio de sesión
+      navigation.navigate('Login');
+    } catch (error) {
+      console.log('Error al cerrar la sesión:', error);
+      Alert.alert('Error', 'No se pudo cerrar la sesión. Por favor, inténtalo de nuevo más tarde.');
+    }
+  };
+  
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Perfil</Text>
@@ -20,10 +43,16 @@ const Profile= ({navigation}) => {
       <Text style={styles.progressHeader}>Progreso</Text>
       <FlatList styles = {styles.contentContainer}
         contentContainerStyle={styles.contentContainer}
-        data={[2.5,5,6]}
+        data={[2.5,5,5]}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({item}) => <ProgressBar widthPct={item} />}
       />
+
+      <TouchableOpacity style = {{backgroundColor:'#C33E5B',borderRadius:25,paddingVertical:15,
+                                  paddingHorizontal:80,marginBottom:60}}
+                        onPress={handleSignOut}>
+      <Text style={{color:'white', fontSize:15}}> Cerrar Sesión </Text>
+      </TouchableOpacity>
 
     <View style={styles.bottomBar}>
       <TouchableOpacity onPress={() => navigation.navigate('Home')}>

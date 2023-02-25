@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Button, FlatList, Dimensions   } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState , useEffect} from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Dimensions, BackHandler} from 'react-native';
 
+import {  } from 'react-native';
 const Home = ({navigation}) => {
   const [units, setUnits] = useState([
     {
@@ -24,6 +24,20 @@ const Home = ({navigation}) => {
       ],
     },
   ]);
+
+  useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   /* const navigation = useNavigation(); */
   const [selectedLesson, setSelectedLesson] = useState(null);

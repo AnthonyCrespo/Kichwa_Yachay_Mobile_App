@@ -1,14 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity,Alert } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {getAuth,getReactNativePersistence,initializeAuth,signInWithEmailAndPassword} from 'firebase/auth'
+
 import {initializeApp, getApps, getApp} from 'firebase/app'
 import {firebaseConfig} from '../firebase-config'
 
 
+
+
+
 const Login = ({navigation}) => {
+  const [logged_user, setLoggedUser] = React.useState(1)
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   let app;
@@ -28,23 +33,55 @@ const Login = ({navigation}) => {
     app = getApp();
     auth = getAuth();}
 
+  const guardarSesion = async (usuario) => {
+      try {
+        await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
+      } catch (error) {
+        console.log('Error al guardar la información de sesión:', error);
+      }
+    };
+  
+      // función para verificar si hay una sesión iniciada en el almacenamiento local
+  const verificarSesion = async () => {
+    try {
+      const usuario = await AsyncStorage.getItem('usuario');
+      return usuario != null ? JSON.parse(usuario) : null;
+    } catch (error) {
+      console.log('Error al verificar la información de sesión:', error);
+      return null;
+    }
+  };
 
-  const handleSignIn = () =>{
-    //signInWithEmailAndPassword(auth,email,password)
-    signInWithEmailAndPassword(auth,'anthony@gmail.com','123456')
-    .then((userCredential) => {
-      // Alert.alert('Signed In!') */
-      const user = userCredential.user
-      //console.log(user)
-      console.log(userCredential.user.uid)
-      navigation.navigate('Home')
-    })
-    .catch(error => {
-      /* console.log(error) */
-      Alert.alert(error.message)
-    })
-  }
+  useEffect(() => {
+    verificarSesion().then((usuario) => {
+      if (usuario) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Home' }],
+        });
+      }
+      else {setLoggedUser(0)}
+    });
+  }, []);
 
+
+  const handleSignIn = () => {
+    signInWithEmailAndPassword(auth, 'anthony@gmail.com', '123456')
+      .then((userCredential) => {
+        const user = userCredential.user;
+        //console.log(user.uid);
+  
+        // Guardar información de sesión en el almacenamiento local
+        guardarSesion(user.uid);
+  
+        navigation.navigate('Home');
+      })
+      .catch((error) => {
+        Alert.alert(error.message);
+      });
+  };
+
+  if (logged_user===0){
     return (
         <View style={styles.container}>
         {/* <SvgTop/> */}
@@ -96,7 +133,7 @@ const Login = ({navigation}) => {
       </View>     
   )
 
-
+}
 }
 
 const styles = StyleSheet.create({
