@@ -6,7 +6,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
 const gestureRootViewStyle = { flex: 1 };
 
-let puntaje1 = 0;
 let questions = 
 {
   statements: [['Yanami kan', 'EsNegro'],
@@ -19,6 +18,7 @@ let answers = ['',''];
 let currentButtonText = 'Verificar';
 
 const L1A2Q1 = ({navigation}) => {
+
 
   const draggableItemList = [
     {
@@ -127,7 +127,7 @@ const L1A2Q1 = ({navigation}) => {
   {
       alert('Respuesta:\n'+'Incorrecto');
       resetLists();
-      /* puntaje=puntaje */
+      puntaje=puntaje;
   }
 };
 
@@ -174,22 +174,31 @@ const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
               </View>
             </DraxProvider>
           </GestureHandlerRootView>
+          <View>
 
-            <View>
+
             <TouchableOpacity style={styles.buttonContainer} onPress={resetLists} >
               <Text style={styles.buttonText}> Reset </Text> 
             </TouchableOpacity>
             </View>
 
-            <View style={{ flexDirection: 'row' ,margin: 10}}>
-            {/* <TouchableOpacity style={styles.buttonContainer} onPress={result}>
-              <Text style={styles.buttonText}> Verificar </Text> 
-            </TouchableOpacity> */}
 
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q3',{puntuation1:puntaje})}>
-              <Text style={styles.buttonText}> {currentButtonText} </Text> 
+            <View style={{ flexDirection: 'row' ,margin: 30}}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+                  onPress={() => {
+                    if (currentButtonText === 'Verificar'){
+                      result();
+                      currentButtonText = 'Continuar'
+                    }
+                    else if (currentButtonText === 'Continuar'){
+                      navigation.navigate('L1A2Q2',{puntuation1:puntaje})
+                      currentButtonText = 'Verificar';
+                    }
+              }}>
+              <Text style={styles.buttonText}>{currentButtonText}</Text>
             </TouchableOpacity>
-            </View>
+            </View> 
            
           <StatusBar style="auto" />
         </View>

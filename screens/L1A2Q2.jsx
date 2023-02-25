@@ -4,12 +4,13 @@ import { StyleSheet,Text,FlatList, View, TextInput,Image, TouchableOpacity, Link
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
-import { puntaje } from './L1A2Q1';
-export let puntaje2 = puntaje;
+
 const gestureRootViewStyle = { flex: 1 };
+let puntaje2 = 0
+let currentButtonText = 'Verificar';
 
-
-const L1A2Q2 = ({navigation, route}) => {
+const L1A2Q2 = ({route,navigation}) => {
+  const {puntuation1} = route.params;
   const draggableItemList = [
     {
       "id": 1,
@@ -51,7 +52,7 @@ const L1A2Q2 = ({navigation, route}) => {
         dragReleasedStyle={styles.dragging}
         hoverDraggingStyle={styles.hoverDragging}
         dragPayload={index}
-        longPressDelay={150}
+        longPressDelay={0}
         key={index}
       >
         <Text style={styles.textStyle}>{item.name}</Text>
@@ -109,13 +110,13 @@ const L1A2Q2 = ({navigation, route}) => {
   if (verifyConcatenation(receivingItemList,'EsRojo')){
       alert('Respuesta:\n'+'Correcto');
       resetLists();
-      puntaje2=puntaje2+0.333333;
+      puntaje2 = puntuation1 +0.333333;
   }
   else
   {
       alert('Respuesta:\n'+'Incorrecto')
       resetLists();
-      /* puntaje2=puntaje2; */
+      puntaje2 = puntuation1;
   }
 };
     return (
@@ -160,13 +161,21 @@ const L1A2Q2 = ({navigation, route}) => {
             </TouchableOpacity>
             </View>
 
-            <View style={{ flexDirection: 'row' ,margin: 10}}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={result}>
-              <Text style={styles.buttonText}> Verificar </Text> 
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L1A2Q3')}>
-              <Text style={styles.buttonText}> Continuar </Text> 
+
+            <View style={{ flexDirection: 'row' ,margin: 30}}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+                  onPress={() => {
+                    if (currentButtonText === 'Verificar'){
+                      result();
+                      currentButtonText = 'Continuar'
+                    }
+                    else if (currentButtonText === 'Continuar'){
+                      navigation.navigate('L1A2Q3',{puntuation2:puntaje2})
+                      currentButtonText = 'Verificar'
+                    }
+              }}>
+              <Text style={styles.buttonText}>{currentButtonText}</Text>
             </TouchableOpacity>
             </View>
           <StatusBar style="auto" />

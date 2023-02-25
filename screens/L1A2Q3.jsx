@@ -7,11 +7,11 @@ import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
 
 
 const gestureRootViewStyle = { flex: 1 };
-let puntaje2 = 0
-
+let puntaje3 = 0
+let currentButtonText = 'Verificar';
 const L1A2Q3 = ({route, navigation}) => {
 
-  const {puntuation1} = route.params;
+  const {puntuation2} = route.params;
 
   //let puntaje2 = puntuation1
 
@@ -115,14 +115,14 @@ const L1A2Q3 = ({route, navigation}) => {
   if (verifyConcatenation(receivingItemList,'EsAmarillo')){
       alert('Respuesta:\n'+'Correcto');
       resetLists();
-      puntaje2 = puntuation1 +0.333333;
+      puntaje3 = puntuation2 +0.333333;
       //console.log(puntaje2)
   }
   else
   {
       alert('Respuesta:\n'+'Incorrecto');
       resetLists();
-      /* puntaje3=puntaje3; */
+      puntaje3 = puntuation2;
   }
 };
     return (
@@ -165,19 +165,22 @@ const L1A2Q3 = ({route, navigation}) => {
             </TouchableOpacity>
             </View>
 
-            <View style={{ flexDirection: 'row' ,margin: 10}}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={result}>
-              <Text style={styles.buttonText}> Verificar </Text> 
+            <View style={{ flexDirection: 'row' ,margin: 30}}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+                  onPress={() => {
+                    if (currentButtonText === 'Verificar'){
+                      result();
+                      currentButtonText = 'Continuar'
+                    }
+                    else if (currentButtonText === 'Continuar'){
+                      navigation.navigate("Result", {puntuation3: puntaje3,lesson:1,subtitle:'Colores/Tullpukuna'});
+                      currentButtonText = 'Verificar';
+                    }
+              }}>
+              <Text style={styles.buttonText}>{currentButtonText}</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity style={styles.buttonContainer}onPress={() => navigation.navigate("Result", {puntuation3: puntaje2})}>
-              <Text style={styles.buttonText}> Finalizar </Text> 
-            </TouchableOpacity>
-            </View>
-          
-            
-
-           
+            </View>          
           <StatusBar style="auto" />
         </View>
         
