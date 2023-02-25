@@ -3,6 +3,9 @@ import { Audio } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { playAudio } from './functions/playAudio';
+import useCronometro from './functions/cronometer';
+
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -26,29 +29,16 @@ let options = shuffleArray(
    ['Puka',1],
    ['Killu',2]]);
 
-let sound;
 let answer;
 let puntaje = 0;
 
 const L1A3 = ({ navigation }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
-
-  const playAudio = async (path) => {
-    if (sound) {
-    sound.stopAsync();
-    sound.unloadAsync();
-    }
-    sound = new Audio.Sound();
-    try {
-    await sound.loadAsync(path);
-    await sound.playAsync();
-    } catch (error) {
-    console.log(error);
-    }
-  };
   
   const {text, audio} = questions[currentQuestionIndex];
+    // ----- Timer -------
+  const segundos = useCronometro();
 /*   useEffect(() => {
     return () => sound.unloadAsync();
   }, []); */
@@ -118,7 +108,7 @@ const L1A3 = ({ navigation }) => {
                 puntaje = puntaje + 100/questions.length;
             }
             if (currentQuestionIndex === questions.length-1) {
-                navigation.navigate("Result", {puntuation3: Math.round(puntaje)});
+                navigation.navigate("Result", {puntuation3: Math.round(puntaje),time_taken: segundos, lesson:1, subtitle:'Colores/Tullpukuna'});
                 puntaje = 0;
             } else{
             setCurrentQuestionIndex(currentQuestionIndex + 1);

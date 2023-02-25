@@ -1,102 +1,47 @@
 import React, { useState,  useEffect } from 'react';
-import { Audio } from 'expo-av';
 import { Modal, StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { getApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
-import { getApp } from 'firebase/app'
+//import ListPictures from './images';
+import useCronometro from './functions/cronometer';
+import {playAudio, stopAudio} from './functions/playAudio';
+//import BarraProgreso from './functions/BarraProgreso';
+import images from './imagesL3A1'
+import audios from './soundsL3A1';
+import ProgressBar from 'react-native-progress/Bar';
 
 let answer;
 let puntaje = 0;
 let respuesta_correcta;
 
 const L3A1 = ({ navigation }) => {
-  let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
+  //let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
+  //let image_test = require('../assets/black-dog.jpeg')
+  //let image_test2 = '../assets/black-dog.jpeg'
   app = getApp(); 
   const db = getFirestore();
   const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
   const [ questions, setQuestions ] = useState(null);
   const [ imageUrls, setImageUrls ] = useState(null);
   const [ selectedOption, setSelectedOption ] = useState(null);
-
-
-
   const [modalVisible, setModalVisible] = useState(false);
-  //const [answer, setAnswer] = useState("");
+  // ----- Timer -------
+  const segundos = useCronometro();
 
+  // ----- Barra de progreso ------
 
-
-
-  async function getDocuments() {
-
-    const querySnapshot = await getDocs(collection(db, 'L3A1'));
-
-    // Loop through the documents
-    const docs = [];
-    querySnapshot.forEach(doc => {
-      // Get the document data
-      const data = doc.data();
-      // Add the document data to the array
-      docs.push(data);
-    });
-
-    // Update the state variable with the documents
-    setQuestions(docs);
-  }
-
-  useEffect(() => {
-    // Initialize the Firebase app and get the storage reference
-    const storage = getStorage();
-    const imagesRef = ref(storage, 'images/');
-
-    // Filter the list of items to download
-    const imagesToDownload = ['black-cat.jpeg', 'serpent.jpeg', 'pig.jpeg'];
-    //const imagesToDownload = options.map((option) => option['image'])
-
-    // Get the download URLs of the selected images in the storage bucket
-    listAll(imagesRef).then((result) => {
-      const urls = result.items
-        .filter((item) => imagesToDownload.includes(item.name))
-        .map((item) => getDownloadURL(item));
-      Promise.all(urls).then((downloadUrls) => setImageUrls(downloadUrls));
-    })
-
-    getDocuments();
-  }, []);
-
-  const playAudio = async (path) => {
-    if (sound) {
-      sound.stopAsync();
-      sound.unloadAsync();
-    }
-    sound = new Audio.Sound();
-    try {
-      await sound.loadAsync(path);
-      await sound.playAsync();
-    } catch (error) {
-      console.log(error);
-      }
-    };
-
-  let sound;
-  let statement, options//, correctAnswer;
+  const [porcentaje, setPorcentaje] = useState(0);
+  const ancho = 300
   
-  if (questions === null | imageUrls === null) {
-    return (
-      <View style={styles.AppContainer}>
-        <Text>Cargando...</Text>
-      </View>
-    );
-  } else {
-    statement = questions[currentQuestionIndex].statement;
-    options = questions[currentQuestionIndex].options;
-    //correctAnswer = questions[currentQuestionIndex].correct_answer;
-    //console.log(questions)
-  }  
-
-
-  const handleComprobarPress = () => {
-    //setAnswer(options[selectedOption].text);
+  /*--------------------------------------------------------------------------------------------  */
+  /*---------------------------------------- Modal -----------------------------------------  */
+  /*--------------------------------------------------------------------------------------------*/
+    const handleComprobarPress = () => {
+    stopAudio()
+    setPorcentaje(porcentaje+100/questions.length)
+    //console.log(porcentaje/100)
     respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
     if (respuesta_correcta) {
       puntaje = puntaje + 100/questions.length;
@@ -106,12 +51,12 @@ const L3A1 = ({ navigation }) => {
 
 
   const handleContinuePress = () => {
+    
     setModalVisible(false);
     setSelectedOption(null);
 
     if (currentQuestionIndex === questions.length-1) {
-      /* sound.stopAsync(); */
-      navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: 20, lesson:3, subtitle:' '});
+      navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: segundos, lesson:3, subtitle:' '});
       puntaje = 0;
     } else{
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -119,16 +64,89 @@ const L3A1 = ({ navigation }) => {
   }
 
 
+  /*--------------------------------------------------------------------------------------------  */
+  /*---------------------------------------- Database -----------------------------------------  */
+  /*--------------------------------------------------------------------------------------------*/
+
+
+ 
+  async function getDocuments() {
+    const querySnapshot = await getDocs(collection(db, 'L3A1'));
+    // Loop through the documents
+    const docs = [];
+    querySnapshot.forEach(doc => {
+      // Get the document data
+      const data = doc.data();
+      // Add the document data to the array
+      docs.push(data);
+    });
+    setQuestions(docs);
+  }
+
+  useEffect(() => {
+    getDocuments();
+  }, []);
+
+
+
+  
+
+/*   async function getImages(){
+    if (questions.length === 0) {
+      return; // no hay preguntas cargadas aún, salir de la función
+    }
+  
+    // Initialize the Firebase app and get the storage reference
+    const storage = getStorage();
+    const imagesRef = ref(storage, 'images/');
+  
+    // Filter the list of items to download
+    const imagesToDownload = questions[currentQuestionIndex].options.map((option) => option.image);
+    //const imagesToDownload = questions.map(question => question.options.map(option => option.image)).flat();
+    console.log(imagesToDownload)
+    // Get the download URLs of the selected images in the storage bucket
+    listAll(imagesRef).then((result) => {
+      const urls = result.items
+        .filter((item) => imagesToDownload.includes(item.name))
+        .map((item) => getDownloadURL(item));
+      Promise.all(urls).then((downloadUrls) => setImageUrls(downloadUrls));
+    })
+  
+  }
+ */
+
+
+
+/*   useEffect(() => {
+    getImages();
+  }, [questions,currentQuestionIndex]);
+ */
+
+  let statement, options //, correctAnswer;
+  
+
+
+  //if (questions === null  | imageUrls === null) {
+  if (questions === null) {
+    return (
+      <View style={styles.AppContainer}>
+        <Text>Cargando...</Text>
+      </View>
+    );
+  }
+  statement = questions[currentQuestionIndex].statement;
+  options = questions[currentQuestionIndex].options;
   return (
     <View style={styles.AppContainer}>
       <Text style={styles.statementText}>{statement}</Text>
-    
+      <ProgressBar progress={porcentaje/100} width={ancho} height={20} color={'#89D630'} style ={{borderColor: "#383A45"}} />
       {options.map((option, index) => (
-        
         <View key={index}>
           {/*  ---- Option Image ---- */}
-          <Image style={styles.catImage} source={{uri: imageUrls[index]}} />
-
+          {/* <Image style={styles.catImage} source={{uri: imageUrls[index]}  */}
+          {/* <Image style={styles.catImage} source={{uri: "file:///../assets/black-dog.jpeg"}} /> */}
+           {/* <Image style={styles.catImage} source={ image_test } /> */}
+           <Image style={styles.catImage} source={(images.find((image) => image.name === option.image)).path}/>
 
           {/*  ---- Option Icon-Text ---- */}
           <View style={styles.optionContainer}>
@@ -136,10 +154,8 @@ const L3A1 = ({ navigation }) => {
               <TouchableOpacity
                     style={styles.optionIcon}
                     onPress={() => {
-                      //playAudio(option.audio);
-                      //layAudio(require(audio_test))
-                      console.log(option.audio)
-                      playAudio(option.audio)
+                      let audioPath = (audios.find((audio) => audio.name === option.audio)).path
+                      playAudio(audioPath);
                     }}
                   >
                     <Icon name="volume-up" size={20} color="black" />
@@ -171,7 +187,7 @@ const L3A1 = ({ navigation }) => {
             <Text style={styles.comprobarText}>Comprobar</Text>
           </TouchableOpacity>
       </View>
-      
+
             {/* Modal */}
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
@@ -218,7 +234,7 @@ const styles = StyleSheet.create({
         AppContainer: {
           flex: 1,
           backgroundColor: '#fff',
-          paddingTop:20,
+          paddingTop:10,
           //paddingLeft:5,
           //paddingRight:5,
           justifyContent:'space-around',
