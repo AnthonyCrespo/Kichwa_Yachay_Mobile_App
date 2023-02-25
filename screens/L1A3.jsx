@@ -1,48 +1,65 @@
-import React, { useState } from 'react';
-import { Audio } from 'expo-av';
+import React, { useState, useEffect } from 'react';
+import { playAudio, stopAudio } from './functions/playAudio';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { playAudio } from './functions/playAudio';
+import { getApp } from 'firebase/app'
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import ProgressBar from 'react-native-progress/Bar';
 import useCronometro from './functions/cronometer';
+import Icon from 'react-native-vector-icons/FontAwesome'
+import audios from './soundsL1A3';
 
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-const questions = [
-  {text: 'Yana',
-   audio: require('../assets/audios/yana.mp3')},
-  {text: 'Puka',
-   audio: require('../assets/audios/puka.mp3')},
-  {text: 'Killu',
-   audio: require('../assets/audios/killu.mp3')},
-];
-
-let options = shuffleArray(
-  [['Yana',0],
-   ['Puka',1],
-   ['Killu',2]]);
-
-let answer;
+let answers = ['','',''];
 let puntaje = 0;
+let currentButtonText = 'Verificar';
 
 const L1A3 = ({ navigation }) => {
+  app = getApp(); 
+  const db = getFirestore();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [ questions, setQuestions ] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
-  
-  const {text, audio} = questions[currentQuestionIndex];
-    // ----- Timer -------
+  const [showResult, setShowResult] = useState(false);
   const segundos = useCronometro();
-/*   useEffect(() => {
-    return () => sound.unloadAsync();
-  }, []); */
 
+  // ----- Barra de progreso ------
+  const [porcentaje, setPorcentaje] = useState(0);
+  const ancho = 300
+
+  async function getDocuments() {
+    const querySnapshot = await getDocs(collection(db, 'L1A3'));
+    // Loop through the documents
+    const docs = [];
+    querySnapshot.forEach(doc => {
+      // Get the document data
+      const data = doc.data();
+      // Add the document data to the array
+      docs.push(data);
+    });
+    setQuestions(docs);
+  }
+ 
+  const verifyAnswer = () => {
+    showResult === false ? setShowResult(true) : setShowResult(false);
+  };
+
+  useEffect(() => {
+    getDocuments();
+  }, []);
+
+  let statement, retrieved_audio, options;
+ 
+  if (questions === null) {
+    return (
+      <View style={styles.AppContainer}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+  statement = questions[currentQuestionIndex].statement;
+  retrieved_audio = questions[currentQuestionIndex].audio;
+  options = questions[currentQuestionIndex].options;
+  
   return (
     <View style= {styles.AppContainer}>
 
@@ -50,73 +67,92 @@ const L1A3 = ({ navigation }) => {
         <Text style={styles.statementText}>Escuche y seleccione</Text>
       </View>
 
+      <ProgressBar progress={porcentaje/100} width={ancho} height={20} color={'#89D630'} style ={{borderColor: "#383A45"}} />
+
       <View style={styles.audioContainer}> 
         <TouchableOpacity
           style={styles.audioButton} 
-          onPress={() => {playAudio(audio)}}
+          onPress={() => {
+            let audioPath = (audios.find((audio) => audio.name === retrieved_audio)).path
+            playAudio(audioPath);
+          }}
         >
           <Icon name="volume-up" size={30} color="black"/>
-          <Text style={{fontSize:25, marginLeft:20}}>{text}</Text>
+          <Text style={{fontSize:25, marginLeft:20}}>{statement}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.optionsContainer}>  
-      
-      <TouchableOpacity
-        onPress={() => {
-          setSelectedOption(0);
-          answer = options[0][0];
-        }}
-      >
-        <View style={options[0][1] === 0 ? styles.blacksquare :
-                     options[0][1] === 1 ? styles.redsquare :
-                     styles.yellowsquare}></View>
-      </TouchableOpacity>
 
-      <TouchableOpacity
-        style={{paddingRight:10,paddingLeft:10}}
-        onPress={() => {
-          setSelectedOption(1);
-          answer = options[1][0];
-        }}
-      >
-        <View style={options[1][1] === 0 ? styles.blacksquare :
-                     options[1][1] === 1 ? styles.redsquare :
-                     styles.yellowsquare}></View>
-      </TouchableOpacity>
-      
-      <TouchableOpacity
-        onPress={() => {
-          setSelectedOption(2);
-          answer = options[2][0];
-        }}
-      >
-        <View style={options[2][1] === 0 ? styles.blacksquare :
-                     options[2][1] === 1 ? styles.redsquare :
-                     styles.yellowsquare}></View>
-      </TouchableOpacity>
+      {options.map((option, index) =>(
+        <View key = {index}
+              style = {[styles.colorContainer,
+              showResult &&
+              option['text'] === statement &&
+              selectedOption === index &&
+              styles.correctAnswer,
+              showResult &&
+              option['text'] !== statement &&
+              selectedOption === index &&
+              styles.wrongAnswer,
+              showResult &&
+              option['text'] === statement &&
+              selectedOption !== index &&
+              styles.correctAnswer,
+              showResult &&
+              option['text'] !== statement &&
+              selectedOption !== index &&
+              styles.colorContainer,
+         ]}>
+          <TouchableOpacity
+            style = {(showResult === false && selectedOption === index) ? styles.selectedTouchOption : styles.touchOption}
+            onPress={() => {
+              if(showResult === false){
+                setSelectedOption(index);
+                answers[currentQuestionIndex] = option['text'];
+              }
+            }}
+          >
+            <View style = {[styles.colorSquare, {backgroundColor: option['color']}]}></View>
+
+          </TouchableOpacity>
+        </View>
+      ))}
 
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-            style={styles.continueButton}
-            onPress={() => {
-            setSelectedOption(null);
-            options = shuffleArray(options);
-            if (answer === questions[currentQuestionIndex]['text']) {
+      <TouchableOpacity
+        style={styles.continueButton}
+        onPress={() => {
+          if (currentButtonText === 'Verificar'){
+            if (selectedOption !== null){
+              stopAudio()
+              verifyAnswer();
+              setPorcentaje(porcentaje+100/questions.length)
+              if (answers[currentQuestionIndex] === statement){
                 puntaje = puntaje + 100/questions.length;
+              }
+              currentButtonText = 'Continuar'
             }
+          }
+          else if (currentButtonText === 'Continuar'){
+            verifyAnswer();
+            setSelectedOption(null);
+            currentButtonText = 'Verificar'
             if (currentQuestionIndex === questions.length-1) {
-                navigation.navigate("Result", {puntuation3: Math.round(puntaje),time_taken: segundos, lesson:1, subtitle:'Colores/Tullpukuna'});
-                puntaje = 0;
+              navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: segundos, lesson:1, subtitle:'Colores/Tullpukuna'});
+              puntaje = 0;
+              answers = ['','','']
             } else{
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             }
-            }}
-        >
-            <Text style={styles.continueText}>Continuar</Text>
-        </TouchableOpacity>
+          }
+        }}
+      >
+        <Text style={styles.continueText}>{currentButtonText}</Text>
+      </TouchableOpacity>
+
       </View>
 
       <StatusBar style="auto"/>
@@ -169,40 +205,39 @@ const styles = StyleSheet.create({
       marginTop: 50,
       justifyContent:'space-around',
     },
-    blacksquare: {
-      width: 100,
-      height: 100,
-      borderRadius: 15,
-      backgroundColor: 'black'
-    },
-    redsquare: {
-      width: 100,
-      height: 100,
-      borderRadius: 15,
-      backgroundColor: '#CB2626'
-    },
-    yellowsquare: {
-      width: 100,
-      height: 100,
-      borderRadius: 15,
-      backgroundColor: '#FFDD00'
-    },
-    squareOption: {
-      width: 100,
-      height: 100,
+    colorContainer: {
+      width: 115,
+      height: 115,
       alignItems: 'center',
       justifyContent: 'center',
     },
-    optionText: {
-      color: '#000',
-      fontSize: 24,
-      fontWeight: 'bold',
+    touchOption: {
+      width: 110,
+      height: 110,
+      borderRadius: 15,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
-    selected_optionText: {
-      color: '#63933D',
-      fontWeight: 'bold',
-      fontSize: 20,
-      marginLeft:20
+    selectedTouchOption: {
+      width: 110,
+      height: 110,
+      borderRadius: 15,
+      backgroundColor: '#B4CBF0',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    colorSquare: {
+      width: 95,
+      height: 95,
+      borderRadius: 15,
+    },
+    correctAnswer: {
+      borderRadius: 15,
+      backgroundColor: '#AAF0D1',
+    },
+    wrongAnswer: {
+      borderRadius: 15,
+      backgroundColor: '#FEC8D8',
     },
     buttonContainer:{
       flex:2,

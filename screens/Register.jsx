@@ -5,19 +5,24 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {getAuth,getReactNativePersistence,initializeAuth,createUserWithEmailAndPassword} from 'firebase/auth'
 import {initializeApp, getApps, getApp} from 'firebase/app'
+import { getFirestore, collection, doc, setDoc } from 'firebase/firestore';
 import {firebaseConfig} from '../firebase-config'
 
 const Register = ({navigation}) => {
+  const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
+  const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   let app;
   let auth;
+  let db;
   if (!getApps().length) {
     try {
     app = initializeApp(firebaseConfig);
     auth = initializeAuth(app, {
       persistence: getReactNativePersistence(AsyncStorage)
-    })}
+    });
+    db = getFirestore();}
     
     catch (err) {
       console.log("Error initializing");
@@ -25,6 +30,7 @@ const Register = ({navigation}) => {
       }
     app = getApp();
     auth = getAuth();
+    db = getFirestore();
 
 
   const handleCreateAccount = () =>{

@@ -1,92 +1,105 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-let questions = 
-{
-  statements: [['¿Cuál es el color negro?', 'Yana'],
-  ['¿Cuál es el color rojo?', 'Puka'],
-  ['¿Cuál es el color amarillo?', 'Killu']],
-  options: [['Yana',0], ['Puka',1], ['Killu',2]],
-};
-
-let options = shuffleArray(questions['options']);
+import { getApp } from 'firebase/app'
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import useCronometro from './functions/cronometer';
+import ProgressBar from 'react-native-progress/Bar';
 
 let puntaje = 0;
 let answers = ['','',''];
 let currentButtonText = 'Verificar';
 
 const L1A1 = ({navigation}) => {  
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [showResult, setShowResult] = useState(false);
-  const statement = questions['statements'][currentQuestionIndex];
-  const [timer, setTimer] = useState(0);
+  app = getApp(); 
+  const db = getFirestore();
+  const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
+  const [ questions, setQuestions ] = useState(null);
+  const [ selectedOption, setSelectedOption ] = useState(null);
+  const [ showResult, setShowResult ] = useState(false);
+  const segundos = useCronometro();
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimer(timer => timer + 1);
-    }, 1600);
-    return () => clearInterval(intervalId);
-  }, []);
- 
+  // ----- Barra de progreso ------
+  const [porcentaje, setPorcentaje] = useState(0);
+  const ancho = 300
+
+  async function getDocuments() {
+    const querySnapshot = await getDocs(collection(db, 'L1A1'));
+    // Loop through the documents
+    const docs = [];
+    querySnapshot.forEach(doc => {
+      // Get the document data
+      const data = doc.data();
+      // Add the document data to the array
+      docs.push(data);
+    });
+    setQuestions(docs);
+  }
+
   const verifyAnswer = () => {
     showResult === false ? setShowResult(true) : setShowResult(false);
   };
 
+  useEffect(() => {
+    getDocuments();
+  }, []);
+
+  let statement, correct_answer, options;
+ 
+  if (questions === null) {
+    return (
+      <View style={styles.AppContainer}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+  statement = questions[currentQuestionIndex].statement;
+  correct_answer = questions[currentQuestionIndex].correct_answer;
+  options = questions[currentQuestionIndex].options;
+  
   return (
     <View style= {styles.AppContainer}>
 
-      <Text style={styles.statementText}>{statement[0]}</Text>
-      
+      <Text style={styles.statementText}>{statement}</Text>
+      <ProgressBar progress={porcentaje/100} width={ancho} height={20} color={'#89D630'} style ={{borderColor: "#383A45"}} />
+
       {options.map((option, index) => (
 
         <View key={index} 
               style={[styles.optionContainer,
                      showResult &&
-                     option[0] === statement[1] &&
+                     option['text'] === correct_answer &&
                      selectedOption === index &&
                      styles.correctAnswer,
                      showResult &&
-                     option[0] !== statement[1] &&
+                     option['text'] !== correct_answer &&
                      selectedOption === index &&
                      styles.wrongAnswer,
                      showResult &&
-                     option[0] === statement[1] &&
+                     option['text'] === correct_answer &&
                      selectedOption !== index &&
                      styles.correctAnswer,
                      showResult &&
-                     option[0] !== statement[1] &&
+                     option['text'] !== correct_answer &&
                      selectedOption !== index &&
                      styles.optionContainer,
                     ]}>  
 
           <View style={styles.itemContainer}>
-            <View style={option[1] === 0 ? styles.blacksquare :
-                         option[1] === 1 ? styles.redsquare :
-                         styles.yellowsquare}
-                         ></View>
+            <View style={[styles.colorSquare, {backgroundColor: option['color']}]}></View>
           </View> 
 
           <View style={styles.itemContainer}>
             <TouchableOpacity
               onPress={() => {
-                answers[currentQuestionIndex] = option[0];
+                if(showResult === false){
+                answers[currentQuestionIndex] = option['text'];
                  setSelectedOption(index);
-                }}
+                }}}
               style={styles.optionButton}>
               <Text style={selectedOption === index ? styles.selected_optionText :
                            styles.optionText}>
-                {option[0]}
+                {option['text']}
               </Text>
             </TouchableOpacity>
           </View>
@@ -97,20 +110,23 @@ const L1A1 = ({navigation}) => {
         style={styles.continueButton}
         onPress={() => {
           if (currentButtonText === 'Verificar'){
-            verifyAnswer();
-            if (answers[currentQuestionIndex] === statement[1]){
-              puntaje = puntaje + 100/questions['statements'].length;
+            if (selectedOption !== null){
+              verifyAnswer();
+              setPorcentaje(porcentaje+100/questions.length)
+              if (answers[currentQuestionIndex] === correct_answer){
+                puntaje = puntaje + 100/3;
+              }
+              currentButtonText = 'Continuar';
             }
-            currentButtonText = 'Continuar'
           }
           else if (currentButtonText === 'Continuar'){
             verifyAnswer();
             setSelectedOption(null);
             currentButtonText = 'Verificar'
-            options = shuffleArray(options);
-            if (currentQuestionIndex === questions['statements'].length-1) {
-              navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: timer, lesson:1, subtitle:'Colores/Tullpukuna'});
+            if (currentQuestionIndex === 2) {
+              navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: segundos, lesson:1, subtitle:'Colores/Tullpukuna'});
               puntaje = 0;
+              answers = ['','','']
             } else{
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             }
@@ -162,23 +178,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  blacksquare: {
+  colorSquare: {
     width: 100,
     height: 100,
     borderRadius: 15,
-    backgroundColor: 'black'
-  },
-  redsquare: {
-    width: 100,
-    height: 100,
-    borderRadius: 15,
-    backgroundColor: '#CB2626'
-  },
-  yellowsquare: {
-    width: 100,
-    height: 100,
-    borderRadius: 15,
-    backgroundColor: '#FFDD00'
   },
   optionButton: {
     width: 100,

@@ -40,8 +40,8 @@ const L3A1 = ({ navigation }) => {
   /*--------------------------------------------------------------------------------------------*/
     const handleComprobarPress = () => {
     stopAudio()
-    setPorcentaje(porcentaje+100/questions.length)
     //console.log(porcentaje/100)
+    setPorcentaje(porcentaje+100/questions.length)
     respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
     if (respuesta_correcta) {
       puntaje = puntaje + 100/questions.length;
