@@ -38,7 +38,18 @@ const Register = ({navigation}) => {
     .then((userCredential) => {
       Alert.alert('Account created')
       const user = userCredential.user
-      console.log(user)
+      console.log(user.uid)
+      //console.log(user)
+      const userDoc = {
+        name: name,
+        email: email,
+        username: username,
+        //password: password
+      };
+      setDoc(doc(db, 'Users', user.uid), userDoc);
+      Alert.alert('Account created');
+      //console.log(user);
+
       navigation.navigate('Home')
     })
     .catch(error => {
@@ -60,7 +71,7 @@ const Register = ({navigation}) => {
 
         <TextInput 
         style={styles.textInput}
-        placeholder="Nombre"
+        placeholder="Nombre" onChangeText={(text) =>setName(text)}
         />
 
         <TextInput onChangeText={(text) => setEmail(text)}
@@ -68,7 +79,7 @@ const Register = ({navigation}) => {
         placeholder="Correo"
         />
 
-        <TextInput style={styles.textInput}
+        <TextInput style={styles.textInput} onChangeText={(text) =>setUsername(text)}
         placeholder="Nombre de usuario"
         />
 
