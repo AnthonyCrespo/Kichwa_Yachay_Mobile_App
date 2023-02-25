@@ -81,7 +81,7 @@ const Login = ({navigation}) => {
       });
   };
 
-  /* if (logged_user===0){ */
+  if (logged_user===0){
     return (
         <View style={styles.container}>
         {/* <SvgTop/> */}
@@ -133,9 +133,9 @@ const Login = ({navigation}) => {
       </View>     
   )
 
-  }
-/* }
- */
+}
+}
+
 const styles = StyleSheet.create({
     container: {
       flex: 1,

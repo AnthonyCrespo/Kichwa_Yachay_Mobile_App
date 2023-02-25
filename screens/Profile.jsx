@@ -1,10 +1,7 @@
 import React  from 'react';
 import {Dimensions, FlatList, View, StyleSheet, Text, Image, TouchableOpacity, StatusBar, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//import firebase from 'firebase';
-
 import { getAuth, signOut} from 'firebase/auth';
-import { getReactNativeFirestore, enableMultiTabIndexedDbPersistence } from 'firebase/firestore';
 import { getApp} from 'firebase/app'
 
 const {width} = Dimensions.get('screen');

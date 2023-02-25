@@ -13,7 +13,6 @@ import audios from './soundsL3A1';
 import ProgressBar from 'react-native-progress/Bar';
 //import ProgressBarKichwa from './functions/ProgressBarKichwa'
 
-
 let answer;
 let puntaje = 0;
 let respuesta_correcta;
