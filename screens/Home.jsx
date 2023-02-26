@@ -4,12 +4,47 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Dimensions, 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signOut} from 'firebase/auth';
 import { getApp} from 'firebase/app'
+import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 'firebase/firestore';
 
 import {  } from 'react-native';
 const Home = ({navigation}) => {
+  const [name, setName] = useState("")
+  const [username, setUsername] = useState("")
+
   const app = getApp();
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
+  auth.onAuthStateChanged(async function(currentUser) {
+    if (currentUser) {
+      const userId = currentUser.uid;
+      const userDocRef = doc(db, 'Users', userId);
+  
+      try {
+        const userDoc = await getDoc(userDocRef);
+        const username = userDoc.data().username;
+        const name = userDoc.data().name;
+/*         console.log('Username:', username);
+        console.log('Name:', name); */
+        setName(name)
+        setUsername(username, username)
+      } catch (error) {
+        console.log('Error al obtener los datos del usuario:', error);
+      }
+    } else {
+      console.log('El usuario no ha iniciado sesión');
+    }
+  });
+
+
+/*   const userDocRef = doc(db, 'Users', userId);
+  
+  const userDoc = getDoc(userDocRef);
+  const username = userDoc.data().username;
+  const name = userDoc.data().name;
+  console.log('Username:', username);
+  console.log('Name:', name); */
+  
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -114,8 +149,8 @@ const Home = ({navigation}) => {
       <Text style={styles_perfil.headerText}>Perfil</Text>
       <View style={styles_perfil.profileContainer}>
         <View style={styles_perfil.textContainer}>
-          <Text style={styles_perfil.nameText}>Nombre del usuario</Text>
-          <Text style={styles_perfil.usernameText}>username</Text>
+          <Text style={styles_perfil.nameText}>{name}</Text>
+          <Text style={styles_perfil.usernameText}>{username}</Text>
         </View>
         <Image
           source={require('../assets/user_photo.png')}

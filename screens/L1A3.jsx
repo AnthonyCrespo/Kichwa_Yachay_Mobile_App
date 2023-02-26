@@ -144,7 +144,12 @@ const L1A3 = ({ navigation }) => {
             setSelectedOption(null);
             currentButtonText = 'Verificar'
             if (currentQuestionIndex === questions.length-1) {
-              navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: segundos, lesson:1, subtitle:'Colores/Tullpukuna'});
+              navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
+                                             time_taken: segundos,
+                                             unit:1, 
+                                             lesson:1, 
+                                             activity:3, 
+                                             subtitle:'Colores/Tullpukuna'});
               puntaje = 0;
               answers = ['','','']
             } else{
