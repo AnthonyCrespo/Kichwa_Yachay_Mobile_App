@@ -65,10 +65,14 @@ const Result = ({route, navigation}) => {
       
       // Si la actividad ya existe, la actualizamos con los nuevos datos
       question_status = userData.unidad[unidad].leccion[leccion].actividad[actividad].question_status;
-      console.log(question_status)
+      //console.log(question_status)
       question_status = question_status === "Aprobado" ? "Aprobado": 
                          (score > 50 ? "Aprobado": "Reprobado")
-                        
+              
+      previous_score = userData.unidad[unidad].leccion[leccion].actividad[actividad].score; 
+      previous_time = userData.unidad[unidad].leccion[leccion].actividad[actividad].time; 
+      score = previous_score >= score ? previous_score: score  
+      time =  previous_score >= score ? previous_time: time      
 
       await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}.actividad.${actividad}`]: { question_status, score, tiempo } });
       console.log(`Actividad ${actividad} actualizada`);
