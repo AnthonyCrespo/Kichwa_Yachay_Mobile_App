@@ -234,7 +234,7 @@ const verifyConcatenation = (receivingItemList) => {
 
 
         <TouchableOpacity style={styles.buttonContainer} onPress={resetLists} >
-          <Text style={styles.buttonText}> Reinciar </Text> 
+          <Text style={styles.buttonText}> Reiniciar </Text> 
         </TouchableOpacity>
       </View>
 
@@ -328,7 +328,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     backgroundColor: "#666BCA",
-    radius:50,
     marginTop: 25,
     borderRadius: 10,
     paddingVertical: 10,
