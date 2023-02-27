@@ -1,7 +1,136 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
 import { StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
+
+
+
+  const gestureRootViewStyle = { flex: 1 };
+
+  let puntaje = 0;
+  let answers = ['',''];
+  let currentButtonText = 'Verificar'; 
+
 const L2A3Q1 = ({navigation}) => {
+
+  const draggableItemList = [
+    {
+      "id": 1,
+      "name": "kan",
+      "background_color": "cyan"
+    },
+    {
+      "id": 2,
+      "name": "Allkuka",
+      "background_color": "cyan"
+    },
+    {
+      "id": 3,
+      "name": "yanami",
+      "background_color": "cyan"
+
+    }
+
+  ];
+  const FirstReceivingItemList = [
+    {
+      "id": 4,
+      "background_color": 'silver'
+    },
+    {
+      "id": 5,
+      "background_color": 'silver'
+    },
+    {
+      "id": 6,
+      "background_color": 'silver'
+    }
+  ];
+
+  const [receivingItemList, setReceivedItemList] = React.useState(FirstReceivingItemList);
+  const [dragItemMiddleList, setDragItemListMiddle] = React.useState(draggableItemList);
+
+  const DragUIComponent = ({ item, index }) => {
+    return (
+      <DraxView
+        style={[styles.centeredContent, styles.draggableBox, { backgroundColor: item.background_color }]}
+        draggingStyle={styles.dragging}
+        dragReleasedStyle={styles.dragging}
+        hoverDraggingStyle={styles.hoverDragging}
+        dragPayload={index}
+        longPressDelay={0}
+        key={index}
+      >
+        <Text style={styles.textStyle}>{item.name}</Text>
+        
+      </DraxView>
+    );
+  }
+
+  const ReceivingZoneUIComponent = ({ item, index }) => {
+    return (
+      <DraxView
+        style={[styles.centeredContent, styles.receivingZone, { backgroundColor: item.background_color }]}
+        receivingStyle={styles.receiving}
+        renderContent={({ viewState }) => {
+          const receivingDrag = viewState && viewState.receivingDrag;
+          const payload = receivingDrag && receivingDrag.payload;
+          return (
+            <View>
+              <Text style={styles.textStyle}>{item.name}</Text>
+            </View>
+          );
+        }}
+        key={index}
+        onReceiveDragDrop={(event) => {
+          const draggedPayload = event.dragged.payload;
+          const draggedItem = dragItemMiddleList[draggedPayload];
+          let newReceivingItemList = [...receivingItemList];
+          newReceivingItemList[index] = draggedItem;
+          setReceivedItemList(newReceivingItemList);
+  
+          let newDragItemMiddleList = [...dragItemMiddleList];
+          newDragItemMiddleList[draggedPayload] = item;
+          setDragItemListMiddle(newDragItemMiddleList);
+        }}
+      />
+    );
+  }
+  
+  const FlatListItemSeparator = () => {
+    return (<View style={styles.itemSeparator} />);
+  }
+
+  const resetLists = () => {
+    setReceivedItemList(FirstReceivingItemList);
+    setDragItemListMiddle(draggableItemList);
+  }
+  const verifyConcatenation = (receivingItemList, targetString) => {
+    let concatenatedString = '';
+    receivingItemList.forEach(item => {
+      concatenatedString += item.name ;
+    });
+    return concatenatedString === targetString;
+  }
+
+  const result = () => {
+  if (verifyConcatenation(receivingItemList,'Allkukayanamikan')){
+      alert('Respuesta:\n'+'Correcto');
+      resetLists();
+      puntaje=puntaje+0.333333;
+      
+  }
+  else
+  {
+      alert('Respuesta:\n'+'Incorrecto');
+      resetLists();
+      puntaje=puntaje;
+  }
+};
+
+
     return (
         <View style={styles.container}>
             <View style={{ margin: 20 }}>
@@ -12,6 +141,7 @@ const L2A3Q1 = ({navigation}) => {
 
             <Text style={styles.instructionText}> El perro es negro </Text>
 
+{/* 
             <View style={{ flexDirection: 'row',margin: 40 }}>
               <Text style={styles.instructionText}> __________</Text>
               <Text style={styles.instructionText}> __________ </Text>
@@ -22,11 +152,49 @@ const L2A3Q1 = ({navigation}) => {
               <Text style={styles.buttonSolution}>  kan </Text>
               <Text style={styles.buttonSolution}>  Allkuka  </Text>
               <Text style={styles.buttonSolution}>  yanami </Text>
+            </View> */}
+             <GestureHandlerRootView style={gestureRootViewStyle}>
+            <DraxProvider>
+              <View style={styles.container}>
+                <View style={styles.receivingContainer}>
+                  {receivingItemList.map((item, index) => ReceivingZoneUIComponent({ item, index }))}
+                </View>
+                <View style={styles.draxListContainer}>
+                  <DraxList
+                    data={dragItemMiddleList}
+                    renderItemContent={DragUIComponent}
+                    keyExtractor={(item, index) => index.toString()}
+                    numColumns={4}
+                    ItemSeparatorComponent={FlatListItemSeparator}
+                    scrollEnabled={true}
+                  />
+                </View>
+              </View>
+            </DraxProvider>
+          </GestureHandlerRootView>
+
+          <View>
+            <TouchableOpacity style={styles.buttonContainer} onPress={resetLists} >
+              <Text style={styles.buttonText}> Reset </Text> 
+            </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('L2A3Q2')}>
-              <Text style={styles.buttonText}> Continuar </Text> 
+            <View style={{ flexDirection: 'row' ,margin: 30}}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+                  onPress={() => {
+                    if (currentButtonText === 'Verificar'){
+                      result();
+                      currentButtonText = 'Continuar'
+                    }
+                    else if (currentButtonText === 'Continuar'){
+                      navigation.navigate('L2A3Q2',{puntuation1:puntaje})
+                      currentButtonText = 'Verificar';
+                    }
+              }}>
+              <Text style={styles.buttonText}>{currentButtonText}</Text>
             </TouchableOpacity>
+            </View> 
            
           <StatusBar style="auto" />
         </View>
@@ -58,7 +226,16 @@ const styles = StyleSheet.create({
       color: 'black',
       fontWeight: 'bold'
     },
-    
+    textSolution: {
+      padding: 10,
+      paddingStart: 30,
+      width: '80%',
+      height: 60,
+      marginTop: '5%',
+      borderRadius: 10,
+      backgroundColor: '#D0C0C0',
+      marginRight: 20
+    },
     buttonSolution: {
       backgroundColor: "#B9B6B6",
       marginTop: 25,
@@ -74,8 +251,15 @@ const styles = StyleSheet.create({
       marginTop: 25,
       borderRadius: 10,
       paddingVertical: 10,
-      paddingHorizontal: 50
+      paddingHorizontal: 40
       },
+      buttonContainerBotton: {
+        backgroundColor: "#82C0CC",
+        marginTop: 25,
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 50
+        },
     buttonText: {
       fontSize: 20,
       color: "white",
@@ -98,6 +282,53 @@ const styles = StyleSheet.create({
       width: 30,
       height: 30,
     },
+    receivingZone: {
+      height: 60,//(Dimensions.get('window').width / 4) - 12,
+      borderRadius: 10,
+      width: 60,//(Dimensions.get('window').width / 4) - 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 5
+    },
+    receiving: {
+      borderColor: 'blue',
+      borderWidth: 2,
+    },
+    draggableBox: {
+      width: 60,//(Dimensions.get('window').width / 4) - 12,
+      height:60,// (Dimensions.get('window').width / 4) - 12,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 5
+    },
+    dragging: {
+      opacity: 0.2,
+    },
+    hoverDragging: {
+      borderColor: 'magenta',
+      borderWidth: 2,
+    },
+    receivingContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      margin: 70
+    },
+    itemSeparator: {
+      height: 15
+    },
+    draxListContainer: {
+      padding: 5,
+      height: 200
+    },
+    receivingZoneContainer: {
+      padding: 5,
+      height: 100,
+      margin: 70
+    },
+    textStyle: {
+      fontSize: 18
+    }
   })
 
   export default L2A3Q1
