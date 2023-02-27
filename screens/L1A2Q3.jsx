@@ -127,6 +127,7 @@ const L1A2Q3 = ({route, navigation}) => {
 };
     return (
         <View style={styles.container}>
+          
             <View style={{ margin: 20 }}>
              <Text style={styles.Title}> Actividad2/Rurana 2</Text>
             </View>
@@ -135,7 +136,7 @@ const L1A2Q3 = ({route, navigation}) => {
 
             
             <View style={{ flexDirection: 'row',margin: 60 }}>
-              <Text style={styles.instructionText}> Killumi kan </Text>
+              <Text style={styles.instructionText}> Yurakmi kan </Text>
               <TouchableOpacity >
               <Icon name="volume-up" size={30} color="black"/>
               </TouchableOpacity>
