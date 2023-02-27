@@ -24,10 +24,11 @@ const Result = ({route, navigation}) => {
       const db = getFirestore();
       const userDocRef = doc(db, 'Users', userId);
       const userDoc = await getDoc(userDocRef);
-      
+      let question_status
       // Si el documento no existe, lo creamos y agregamos la primera unidad
+      question_status = score > 50 ? "Aprobado": "Reprobado"
       if (!userDoc.exists()) {
-        await setDoc(userDocRef, { unidad: { unidad: { leccion: { leccion: { actividad: { actividad: { completado, score, tiempo } } } } } } });
+        await setDoc(userDocRef, { unidad: { unidad: { leccion: { leccion: { actividad: { actividad: { question_status , score, tiempo } } } } } } });
         console.log('Documento creado con la primera unidad');
         return;
       }
@@ -36,34 +37,40 @@ const Result = ({route, navigation}) => {
       
       // Si el campo "unidades" no existe, lo creamos y agregamos la primera unidad
       if (!userData.unidad) {
-        await updateDoc(userDocRef, { unidad: { [unidad]: { leccion: { [leccion]: { actividad: { [actividad]: { completado, score, tiempo  } } } } } } });
+        await updateDoc(userDocRef, { unidad: { [unidad]: { leccion: { [leccion]: { actividad: { [actividad]: { question_status , score, tiempo  } } } } } } });
         console.log('Campo "unidad" creado con la primera unidad');
         return;
       }
       
       // Si la unidad no existe, la creamos y agregamos la primera lección
       if (!userData.unidad[unidad]) {
-        await updateDoc(userDocRef, { [`unidad.${unidad}`]: { leccion: { [leccion]: { actividad: { [actividad]: { completado, score, tiempo } } } } } });
+        await updateDoc(userDocRef, { [`unidad.${unidad}`]: { leccion: { [leccion]: { actividad: { [actividad]: { question_status , score, tiempo } } } } } });
         console.log(`Unidad ${unidad} creada con la primera lección`);
         return;
       }
       
       // Si la lección no existe, la creamos y agregamos la primera actividad
       if (!userData.unidad[unidad].leccion[leccion]) {
-        await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}`]: { actividad: { [actividad]: { completado, score, tiempo  } } } });
+        await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}`]: { actividad: { [actividad]: { question_status , score, tiempo  } } } });
         console.log(`Lección ${leccion} creada con la primera actividad`);
         return;
       }
       
       // Si la actividad no existe, la creamos
       if (!userData.unidad[unidad].leccion[leccion].actividad[actividad]) {
-        await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}.actividad.${actividad}`]: { completado, score, tiempo  } });
+        await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}.actividad.${actividad}`]: { question_status , score, tiempo  } });
         console.log(`Actividad ${actividad} creada`);
         return;
       }
       
       // Si la actividad ya existe, la actualizamos con los nuevos datos
-      await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}.actividad.${actividad}`]: { completado, score, tiempo } });
+      question_status = userData.unidad[unidad].leccion[leccion].actividad[actividad].question_status;
+      console.log(question_status)
+      question_status = question_status === "Aprobado" ? "Aprobado": 
+                         (score > 50 ? "Aprobado": "Reprobado")
+                        
+
+      await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}.actividad.${actividad}`]: { question_status, score, tiempo } });
       console.log(`Actividad ${actividad} actualizada`);
     }
 
