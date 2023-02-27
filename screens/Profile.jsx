@@ -3,12 +3,24 @@ import {Dimensions, FlatList, View, StyleSheet, Text, Image, TouchableOpacity, S
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signOut} from 'firebase/auth';
 import { getApp} from 'firebase/app'
+import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 'firebase/firestore';
 
 const {width} = Dimensions.get('screen');
 
 const Profile= ({navigation}) => {
   const app = getApp();
   const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const currentUser = auth.currentUser;
+  const userId = currentUser.uid;
+  const userDocRef = doc(db, 'Users', userId);
+  
+  const userDoc = getDoc(userDocRef);
+  const username = userDoc.data().username;
+  const name = userDoc.data().name;
+  console.log('Username:', username);
+  console.log('Name:', name);
   //const db = getFirestore(app);
 
   const handleSignOut = async () => {

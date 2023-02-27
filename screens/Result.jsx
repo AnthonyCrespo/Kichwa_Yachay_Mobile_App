@@ -1,10 +1,74 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Button, FlatList, Dimensions   } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { getApp } from 'firebase/app'
+import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 const Result = ({route, navigation}) => {
-    const {puntuation3, time_taken, lesson, subtitle} = route.params;
+    const {puntuation3, time_taken, unit, lesson, activity, subtitle} = route.params;
+    const app = getApp(); 
+    //const db = getFirestore(app);
+    const auth = getAuth(app);
+
+
+    const currentUser = auth.currentUser;
+    const userId = currentUser.uid;
+     useEffect(()=>{ 
+    console.log(`El UID del usuario actual es: ${userId}`);
+       },[])
+
+    //const userDoc = doc(db, 'Users', userId )    console.log(userDoc.data())
+
+    async function updateUserData(userId, unidad, leccion, actividad, score, tiempo, completado) {
+      const db = getFirestore();
+      const userDocRef = doc(db, 'Users', userId);
+      const userDoc = await getDoc(userDocRef);
+      
+      // Si el documento no existe, lo creamos y agregamos la primera unidad
+      if (!userDoc.exists()) {
+        await setDoc(userDocRef, { unidad: { unidad: { leccion: { leccion: { actividad: { actividad: { completado, score, tiempo } } } } } } });
+        console.log('Documento creado con la primera unidad');
+        return;
+      }
+      
+      const userData = userDoc.data();
+      
+      // Si el campo "unidades" no existe, lo creamos y agregamos la primera unidad
+      if (!userData.unidad) {
+        await updateDoc(userDocRef, { unidad: { [unidad]: { leccion: { [leccion]: { actividad: { [actividad]: { completado, score, tiempo  } } } } } } });
+        console.log('Campo "unidad" creado con la primera unidad');
+        return;
+      }
+      
+      // Si la unidad no existe, la creamos y agregamos la primera lección
+      if (!userData.unidad[unidad]) {
+        await updateDoc(userDocRef, { [`unidad.${unidad}`]: { leccion: { [leccion]: { actividad: { [actividad]: { completado, score, tiempo } } } } } });
+        console.log(`Unidad ${unidad} creada con la primera lección`);
+        return;
+      }
+      
+      // Si la lección no existe, la creamos y agregamos la primera actividad
+      if (!userData.unidad[unidad].leccion[leccion]) {
+        await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}`]: { actividad: { [actividad]: { completado, score, tiempo  } } } });
+        console.log(`Lección ${leccion} creada con la primera actividad`);
+        return;
+      }
+      
+      // Si la actividad no existe, la creamos
+      if (!userData.unidad[unidad].leccion[leccion].actividad[actividad]) {
+        await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}.actividad.${actividad}`]: { completado, score, tiempo  } });
+        console.log(`Actividad ${actividad} creada`);
+        return;
+      }
+      
+      // Si la actividad ya existe, la actualizamos con los nuevos datos
+      await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}.actividad.${actividad}`]: { completado, score, tiempo } });
+      console.log(`Actividad ${actividad} actualizada`);
+    }
+
+    updateUserData(userId, unit, lesson, activity, puntuation3, time_taken, true);
+    
     return (
 
     <View style={styles.container}>

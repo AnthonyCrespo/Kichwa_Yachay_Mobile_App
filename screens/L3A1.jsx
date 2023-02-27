@@ -3,7 +3,7 @@ import { Modal, StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } fro
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
+//import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
 //import ListPictures from './images';
 import useCronometro from './functions/cronometer';
 import {playAudio, stopAudio} from './functions/playAudio';
@@ -11,6 +11,8 @@ import {playAudio, stopAudio} from './functions/playAudio';
 import images from './imagesL3A1'
 import audios from './soundsL3A1';
 import ProgressBar from 'react-native-progress/Bar';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getAuth } from 'firebase/auth';
 //import ProgressBarKichwa from './functions/ProgressBarKichwa'
 
 let answer;
@@ -18,11 +20,17 @@ let puntaje = 0;
 let respuesta_correcta;
 
 const L3A1 = ({ navigation }) => {
-  //let audio_test = '../assets/audios/kuchika_pukami_kan.mp3'
-  //let image_test = require('../assets/black-dog.jpeg')
-  //let image_test2 = '../assets/black-dog.jpeg'
-  app = getApp(); 
-  const db = getFirestore();
+  //const usuario =  AsyncStorage.getItem('usuario');
+
+  const app = getApp(); 
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  //const currentUser = auth.currentUser;
+  //const userId = currentUser.uid;
+  //console.log(`El UID del usuario actual es: ${userId}`);
+
+
   const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
   const [ questions, setQuestions ] = useState(null);
   const [ imageUrls, setImageUrls ] = useState(null);
@@ -57,7 +65,12 @@ const L3A1 = ({ navigation }) => {
     setSelectedOption(null);
 
     if (currentQuestionIndex === questions.length-1) {
-      navigation.navigate("Result", {puntuation3: Math.round(puntaje), time_taken: segundos, lesson:3, subtitle:' '});
+      navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
+                                     time_taken: segundos, 
+                                     unit:1, 
+                                     lesson:3, 
+                                     activity:1, 
+                                     subtitle:' '});
       puntaje = 0;
     } else{
       setCurrentQuestionIndex(currentQuestionIndex + 1);
