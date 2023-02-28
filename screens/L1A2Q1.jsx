@@ -66,7 +66,7 @@ const L1A2Q1 = ({navigation}) => {
   const DragUIComponent = ({ item, index }) => {
     return (
       <DraxView
-        style={[styles.centeredContent, styles.draggableBox, { backgroundColor: item.background_color }]}
+        style={[styles.centeredContent, styles.draggableBox, { backgroundColor: "cyan" }]}
         draggingStyle={styles.dragging}
         dragReleasedStyle={styles.dragging}
         hoverDraggingStyle={styles.hoverDragging}
