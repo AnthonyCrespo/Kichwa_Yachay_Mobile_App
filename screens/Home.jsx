@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signOut} from 'firebase/auth';
 import { getApp} from 'firebase/app'
 import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 'firebase/firestore';
+import LoadingScreen from './loadingScreen';
 
 
 const Home = ({navigation}) => {
@@ -93,9 +94,7 @@ const Home = ({navigation}) => {
 
   if (units === null) {
     return (
-      <View style={styles_home.container}>
-        <Text>Cargando...</Text>
-      </View>
+      <LoadingScreen/>
     );
   }
     if (currentSubscreen===0)

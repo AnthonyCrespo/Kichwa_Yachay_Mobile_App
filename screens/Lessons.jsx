@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity  } from 'reac
 import { useNavigation } from '@react-navigation/native';
 import { getApp} from 'firebase/app'
 import { getFirestore, collection, getDocs} from 'firebase/firestore';
-
+import LoadingScreen from './loadingScreen';
 
 const Lessons= ({route}) => {
     const {unit, lesson, subtitle} = route.params;
@@ -48,9 +48,7 @@ const Lessons= ({route}) => {
 
     if (activities === null) {
         return (
-          <View style={styles.container}>
-            <Text>Cargando...</Text>
-          </View>
+            <LoadingScreen/>
         );
       }
     else {//console.log(activities)

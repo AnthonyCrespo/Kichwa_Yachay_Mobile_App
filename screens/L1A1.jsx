@@ -5,7 +5,7 @@ import { getApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
-
+import LoadingScreen from './loadingScreen';
 let puntaje = 0;
 let answers = ['','',''];
 let currentButtonText = 'Verificar';
@@ -48,9 +48,7 @@ const L1A1 = ({navigation}) => {
  
   if (questions === null) {
     return (
-      <View style={styles.AppContainer}>
-        <Text>Loading...</Text>
-      </View>
+      <LoadingScreen/>
     );
   }
   statement = questions[currentQuestionIndex].statement;
