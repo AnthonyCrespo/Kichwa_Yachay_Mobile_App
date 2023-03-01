@@ -89,7 +89,7 @@ const Result = ({route, navigation}) => {
       <Text style={{fontSize:80, marginTop:20, color: '#A43074',fontWeight: 'bold'}}> {time_taken}s </Text>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('Lessons', {lesson, subtitle} )}
+        onPress={() => navigation.navigate('Lessons', {unit, lesson, subtitle} )}
         style={styles.continueButton}>
         <Text style={styles.continueText}>Continuar</Text>
       </TouchableOpacity>
