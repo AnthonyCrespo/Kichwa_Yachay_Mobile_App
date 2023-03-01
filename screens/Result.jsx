@@ -70,7 +70,7 @@ const Result = ({route, navigation}) => {
                          (score > 50 ? "Aprobado": "Reprobado")
               
       previous_score = userData.unidad[unidad].leccion[leccion].actividad[actividad].score; 
-      previous_time = userData.unidad[unidad].leccion[leccion].actividad[actividad].time; 
+      previous_time = userData.unidad[unidad].leccion[leccion].actividad[actividad].tiempo; 
       score = previous_score >= score ? previous_score: score  
       tiempo =  previous_score >= score ? previous_time: tiempo  
 
