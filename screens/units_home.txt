@@ -1,0 +1,20 @@
+/*   const unidades = [
+    {
+      id: 1,
+      title: 'UNIDAD 1',
+      lessons: [
+        { id: 1, title: 'Lección 1', subtitle:'Colores/Tullpukuna' },
+        { id: 2, title: 'Lección 2', subtitle:'Animales/Wiwakuna' },
+        { id: 3, title: 'Lección 3' ,subtitle:' ' },
+      ],
+    },
+    {
+      id: 2,
+      title: 'UNIDAD 2',
+      lessons: [
+        { id: 4, title: 'Lección 1' },
+        { id: 5, title: 'Lección 2' },
+        { id: 6, title: 'Lección 3' },
+      ],
+    },
+  ] */

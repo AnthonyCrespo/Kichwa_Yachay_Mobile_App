@@ -6,7 +6,7 @@ import { getAuth, signOut} from 'firebase/auth';
 import { getApp} from 'firebase/app'
 import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 'firebase/firestore';
 
-import {  } from 'react-native';
+
 const Home = ({navigation}) => {
   const [name, setName] = useState("")
   const [username, setUsername] = useState("")
@@ -14,6 +14,30 @@ const Home = ({navigation}) => {
   const app = getApp();
   const auth = getAuth(app);
   const db = getFirestore(app);
+
+ /*--------------------------------------------------------------------------------------------  */
+  /*---------------------------------------- Database -----------------------------------------  */
+  /*--------------------------------------------------------------------------------------------*/
+
+
+ 
+  async function getDocuments() {
+    const querySnapshot = await getDocs(collection(db, 'Units_Lessons'));
+    // Loop through the documents
+    const docs = [];
+    querySnapshot.forEach(doc => {
+      // Get the document data
+      const data = doc.data();
+      // Add the document data to the array
+      docs.push(data);
+    });
+    setUnits(docs);
+  }
+
+  useEffect(() => {
+    getDocuments();
+  }, []);
+
 
   auth.onAuthStateChanged(async function(currentUser) {
     if (currentUser) {
@@ -37,14 +61,6 @@ const Home = ({navigation}) => {
   });
 
 
-/*   const userDocRef = doc(db, 'Users', userId);
-  
-  const userDoc = getDoc(userDocRef);
-  const username = userDoc.data().username;
-  const name = userDoc.data().name;
-  console.log('Username:', username);
-  console.log('Name:', name); */
-  
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -59,43 +75,9 @@ const Home = ({navigation}) => {
     }
   };
 
-  const [units, setUnits] = useState([
-    {
-      id: 1,
-      title: 'UNIDAD 1',
-      lessons: [
-        { id: 1, title: 'Lección 1', subtitle:'Colores/Tullpukuna' },
-        { id: 2, title: 'Lección 2', subtitle:'Animales/Wiwakuna' },
-        { id: 3, title: 'Lección 3' ,subtitle:' ' },
-      ],
-    },
-    {
-      id: 2,
-      title: 'UNIDAD 2',
-      lessons: [
-        { id: 4, title: 'Lección 1' },
-        { id: 5, title: 'Lección 2' },
-        { id: 6, title: 'Lección 3' },
-      ],
-    },
-  ]);
+  const [units, setUnits] = useState(null);
 
-/*   const handleBackButton = () => {
-    BackHandler.exitApp();
-    return true;
-  };
-  
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      handleBackButton,
-    );
-  
-    return () => backHandler.remove();
-  }, []);
- */
 
-  /* const navigation = useNavigation(); */
   const [selectedLesson, setSelectedLesson] = useState(null);
   const handlePress = (lesson,subtitle) => {
     setSelectedLesson(lesson);
@@ -108,6 +90,14 @@ const Home = ({navigation}) => {
   const { height, width } = Dimensions.get('window');
   const topPadding = Platform.OS === 'ios' ? 0 : StatusBar.currentHeight;
   const [currentSubscreen, setSubscreen] = useState(0);
+
+  if (units === null) {
+    return (
+      <View style={styles_home.container}>
+        <Text>Cargando...</Text>
+      </View>
+    );
+  }
     if (currentSubscreen===0)
     return (
       <View style={styles_home.container}>
