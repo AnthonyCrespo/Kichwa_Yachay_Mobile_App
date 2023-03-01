@@ -288,12 +288,12 @@ const styles = StyleSheet.create({
     height: 30,
   },
   receivingZone: {
-    height: 60,//(Dimensions.get('window').width / 4) - 12,
-    borderRadius: 10,
     width: 60,//(Dimensions.get('window').width / 4) - 12,
+    height:50,// (Dimensions.get('window').width / 4) - 12,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 0.1
+    marginRight: 5
   },
   receiving: {
     borderColor: 'blue',
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
   },
   draggableBox: {
     width: 60,//(Dimensions.get('window').width / 4) - 12,
-    height:60,// (Dimensions.get('window').width / 4) - 12,
+    height:50,// (Dimensions.get('window').width / 4) - 12,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',

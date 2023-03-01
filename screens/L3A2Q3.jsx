@@ -37,11 +37,11 @@
     ];
     const FirstReceivingItemList = [
       {
-        "id": 4,
+        "id": 5,
         "background_color": 'silver'
       },
       {
-        "id": 5,
+        "id": 6,
         "background_color": 'silver'
       }
     ];

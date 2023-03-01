@@ -9,7 +9,6 @@ import { getApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
-import audios from './soundsL1A2';
 
 
 const gestureRootViewStyle = { flex: 1 };
@@ -19,8 +18,6 @@ let respuesta_correcta;
 
 let answer_state = 0;
 
-
-  let currentButtonText = 'Verificar'; 
 
 const L2A3Q1 = ({navigation}) => {
   app = getApp(); 
@@ -50,9 +47,9 @@ const L2A3Q1 = ({navigation}) => {
         navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
                                       time_taken: segundos, 
                                       unit:1,
-                                      lesson:1, 
-                                      activity:2,
-                                      subtitle:'Colores/Tullpukuna'});
+                                      lesson:2, 
+                                      activity:3,
+                                      subtitle:'Animales/Wiwakuna'});
         puntaje = 0;
         currentQuestionIndex = 0
       } else{
@@ -70,7 +67,7 @@ const L2A3Q1 = ({navigation}) => {
   const DragUIComponent = ({ item, index }) => {
     return (
       <DraxView
-        style={[styles.centeredContent, styles.draggableBox, { backgroundColor: "cyan" }]}
+        style={[styles.centeredContent, styles.draggableBox, { backgroundColor: item.background_color }]}
         draggingStyle={styles.dragging}
         dragReleasedStyle={styles.dragging}
         hoverDraggingStyle={styles.hoverDragging}
@@ -124,43 +121,64 @@ const L2A3Q1 = ({navigation}) => {
     answer_state = 0
   }
 
-
-const verifyConcatenation = (receivingItemList) => {
-  let concatenatedString = '';
-  let itemCount = 0;
-  receivingItemList.forEach(item => {
-    concatenatedString += item.text;
-    itemCount++;
-
-    if (itemCount < receivingItemList.length) {
-      concatenatedString += ' ';
-    }
-  });
+   const verifyConcatenation = (receivingItemList) => {
+     let concatenatedString = '';
+     let itemCount = 0;
+     receivingItemList.forEach(item => {
+       concatenatedString += item.text;
+       itemCount++;
+  
+       if (itemCount < receivingItemList.length) {
+         concatenatedString += ' ';
+       }
+     });
+  
+     return concatenatedString === questions[currentQuestionIndex].correct_answer;
+   }
+  /* const verifyConcatenation = (receivingItemList) => {
+    let concatenatedString = '';
+    if (receivingItemList.length = 5) {
+       let result = '';
+        result += receivingItemList[0] + receivingItemList[1];
+        result += ' ';
+        result += receivingItemList[2] + receivingItemList[3];
+        result += ' ';
+        result += receivingItemList[4];
+      concatenatedString = result;
+    };
 
   return concatenatedString === questions[currentQuestionIndex].correct_answer;
-}
+} */
 
 
 
 
-  let statement, InitialDraggableItemList, retrieved_audio;
+  let statement, InitialDraggableItemList, retrieved_audio,correct_answer;
   let FirstReceivingItemList = [
-    {
-      "id": 4,
-      "background_color": 'silver'
-    },
-    {
-      "id": 5,
-      "background_color": 'silver'
-    },
     {
       "id": 6,
       "background_color": 'silver'
+    },
+    {
+      "id": 7,
+      "background_color": 'silver'
+    },
+    {
+      "id": 8,
+      "background_color": 'silver'
+    },
+    {
+      "id": 9,
+      "background_color": 'silver'
+    },
+    {
+      "id": 10,
+      "background_color": 'silver'
     }
   ];
-    
   let [ receivingItemList, setReceivingItemList ]= useState(FirstReceivingItemList);
   let [ dragItemMiddleList, setDragItemMiddleList ] = useState(null);
+ 
 
   async function getDocuments() {
     const querySnapshot = await getDocs(collection(db, 'L2A3'));
@@ -203,6 +221,10 @@ const verifyConcatenation = (receivingItemList) => {
           </View>
 
             <Text style={styles.instructionText}> {statement} </Text>
+            <ProgressBar progress={porcentaje/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25}}
+                    />
 
 {/* 
             <View style={{ flexDirection: 'row',margin: 40 }}>
@@ -218,7 +240,7 @@ const verifyConcatenation = (receivingItemList) => {
             </View> */}
              <GestureHandlerRootView style={gestureRootViewStyle}>
             <DraxProvider>
-              <View style={styles.container}>
+              <View style={styles.AppContainer}>
                 <View style={styles.receivingContainer}>
                   {receivingItemList.map((item, index) => ReceivingZoneUIComponent({ item, index }))}
                 </View>
@@ -356,36 +378,36 @@ const styles = StyleSheet.create({
     height: 30,
   },
   receivingZone: {
-    height: 60,//(Dimensions.get('window').width / 4) - 12,
+    width: 60,//(Dimensions.get('window').width / 4) - 12,
+    height:50,// (Dimensions.get('window').width / 4) - 12,
     borderRadius: 10,
-    width: 90,//(Dimensions.get('window').width / 4) - 12,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 5
   },
   receiving: {
     borderColor: 'blue',
-    borderWidth: 0,
+    borderWidth: 2,
   },
   draggableBox: {
-    width: 90,//(Dimensions.get('window').width / 4) - 12,
-    height:60,// (Dimensions.get('window').width / 4) - 12,
+    width: 60,//(Dimensions.get('window').width / 4) - 12,
+    height:50,// (Dimensions.get('window').width / 4) - 12,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 5,
+    marginRight: 5
   },
     dragging: {
       opacity: 0.2,
     },
     hoverDragging: {
-      borderColor: '#2D5288',
-      borderWidth: 0,
+      borderColor: 'cyan',
+      borderWidth: 2,
     },
     receivingContainer: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
-      margin: 70
+      margin: 30
     },
     itemSeparator: {
       height: 15

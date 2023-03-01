@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#F5F5F8',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'center'
     },
     Title: {
       fontSize: 30,

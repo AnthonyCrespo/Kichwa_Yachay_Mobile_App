@@ -66,7 +66,7 @@ const L1A2Q1 = ({navigation}) => {
   const DragUIComponent = ({ item, index }) => {
     return (
       <DraxView
-        style={[styles.centeredContent, styles.draggableBox, { backgroundColor: "cyan" }]}
+        style={[styles.centeredContent, styles.draggableBox, { backgroundColor: item.background_color }]}
         draggingStyle={styles.dragging}
         dragReleasedStyle={styles.dragging}
         hoverDraggingStyle={styles.hoverDragging}
@@ -142,11 +142,11 @@ const verifyConcatenation = (receivingItemList) => {
   let statement, InitialDraggableItemList, retrieved_audio;
   let FirstReceivingItemList = [
     {
-      "id": 4,
+      "id": 5,
       "background_color": 'silver'
     },
     {
-      "id": 5,
+      "id": 6,
       "background_color": 'silver'
     }
   ];

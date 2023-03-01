@@ -24,7 +24,6 @@ let answer_state = 0;
 const L2A2Q1 = ({navigation}) => {
   app = getApp(); 
   const db = getFirestore();
-  //const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
   const [ questions, setQuestions ] = useState(null);
   const segundos = useCronometro();
   const [porcentaje, setPorcentaje] = useState(0);
@@ -208,16 +207,14 @@ const L2A2Q1 = ({navigation}) => {
             <DraxProvider>
               <View style={styles.AppContainer}>
                 
-                
-
                   <View style={styles.receivingContainer}> 
-                    <Text style={[styles.instructionText, {position: 'absolute', top: -10, left: -150 }]}> {statement1} </Text> 
-                    <Text style={[styles.instructionText, {position: 'absolute', top: -10, left: -30 }]}> {statement2} </Text>
-                    <Text style={[styles.instructionText, {position: 'absolute', top: -10, left: 80 }]}> {statement3} </Text>                   
-                    <View style={{ position: 'absolute', top: -15, left: -90 }}>
+                      <Text style={[styles.instructionText, {position: 'absolute', top: -10, left: -170 }]}> {statement1} </Text> 
+                      <Text style={[styles.instructionText, {position: 'absolute', top: -10, left: -40 }]}> {statement2} </Text>
+                      <Text style={[styles.instructionText, {position: 'absolute', top: -10, left: 100 }]}> {statement3} </Text>                   
+                    <View style={{ position: 'absolute', top: -15, left: -100 }}>
                       <ReceivingZoneUIComponent item={receivingItemList[0]} index={0} />
                     </View>
-                    <View style={{ position: 'absolute', top: -15, left: 20 }}>
+                    <View style={{ position: 'absolute', top: -15, left: 30 }}>
                       <ReceivingZoneUIComponent item={receivingItemList[1]} index={1} />
                     </View>
                   </View>
@@ -273,12 +270,7 @@ const L2A2Q1 = ({navigation}) => {
               <Text style = {styles.continueText}>Continuar</Text>
             </TouchableOpacity>
         </View>
-      </Modal>
-      
-          <StatusBar style="auto" />
-
-        
-         
+      </Modal>   
         <StatusBar style="auto" />
       </View>
       
@@ -371,7 +363,7 @@ const styles = StyleSheet.create({
   },
   receiving: {
     borderColor: 'blue',
-    borderWidth: 0,
+    borderWidth: 2,
   },
   draggableBox: {
     width: 50,//(Dimensions.get('window').width / 4) - 12,
@@ -502,4 +494,4 @@ const styles = StyleSheet.create({
 })
 
 
-  export default L2A2Q1 
+  export default L2A2Q1; 
