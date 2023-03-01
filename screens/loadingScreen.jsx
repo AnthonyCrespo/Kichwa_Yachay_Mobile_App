@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     loadingText:{
         //margin:20,
-        fontSize:25,
+        fontSize:20,
         //fontWeight:'bold',
     }
 })
