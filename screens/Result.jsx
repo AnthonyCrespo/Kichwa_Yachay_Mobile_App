@@ -72,7 +72,7 @@ const Result = ({route, navigation}) => {
       previous_score = userData.unidad[unidad].leccion[leccion].actividad[actividad].score; 
       previous_time = userData.unidad[unidad].leccion[leccion].actividad[actividad].time; 
       score = previous_score >= score ? previous_score: score  
-      time =  previous_score >= score ? previous_time: time      
+      tiempo =  previous_score >= score ? previous_time: tiempo  
 
       await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}.actividad.${actividad}`]: { question_status, score, tiempo } });
       console.log(`Actividad ${actividad} actualizada`);
