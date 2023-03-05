@@ -57,7 +57,7 @@ const Home = ({navigation}) => {
         console.log('Error al obtener los datos del usuario:', error);
       }
     } else {
-      console.log('El usuario no ha iniciado sesión');
+      //console.log('El usuario no ha iniciado sesión');
     }
   });
 
@@ -69,6 +69,8 @@ const Home = ({navigation}) => {
       await AsyncStorage.removeItem('usuario');
       // Redirige al usuario a la pantalla de inicio de sesión
       navigation.navigate('Login');
+      setSigninOut(1)
+      setSubscreen(0)
       //setSubscreen(0)
     } catch (error) {
       console.log('Error al cerrar la sesión:', error);
@@ -91,13 +93,16 @@ const Home = ({navigation}) => {
   const { height, width } = Dimensions.get('window');
   const topPadding = Platform.OS === 'ios' ? 0 : StatusBar.currentHeight;
   const [currentSubscreen, setSubscreen] = useState(0);
+  const [signinOut,setSigninOut] = useState(0)
 
   if (units === null) {
     return (
       <LoadingScreen/>
     );
   }
-    if (currentSubscreen===0)
+
+
+    if (currentSubscreen===0 && signinOut === 0)
     return (
       <View style={styles_home.container}>
         <View style={{ backgroundColor: '#383A45', width: '100%', height: 65, alignItems: 'center', justifyContent: 'center', paddingTop:topPadding}}>
