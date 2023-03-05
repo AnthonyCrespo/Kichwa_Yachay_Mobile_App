@@ -18,7 +18,7 @@ import ProgressBar from 'react-native-progress/Bar';
   let answer_state = 0; 
 
   
-  const L3A2Q1 = ({navigation}) => {
+  const L3A2 = ({navigation}) => {
     app = getApp(); 
     const db = getFirestore();
     const [ questions, setQuestions ] = useState(null);
@@ -531,4 +531,4 @@ import ProgressBar from 'react-native-progress/Bar';
          }
      })
   
-    export default L3A2Q1;
+    export default L3A2;

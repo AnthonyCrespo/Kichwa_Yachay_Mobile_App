@@ -9,17 +9,18 @@ import { getApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
-
+import audios from './soundsL1A2';
 
 const gestureRootViewStyle = { flex: 1 };
 let puntaje = 0;
 let currentQuestionIndex = 0
 let respuesta_correcta;
+let background_color='green'
+let background_color2='blue'
 
 let answer_state = 0;
 
-
-const L2A3Q1 = ({navigation}) => {
+const L1A2 = ({navigation}) => {
   app = getApp(); 
   const db = getFirestore();
   //const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
@@ -47,9 +48,9 @@ const L2A3Q1 = ({navigation}) => {
         navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
                                       time_taken: segundos, 
                                       unit:1,
-                                      lesson:2, 
-                                      activity:3,
-                                      subtitle:'Animales/Wiwakuna'});
+                                      lesson:1, 
+                                      activity:2,
+                                      subtitle:'Colores/Tullpukuna'});
         puntaje = 0;
         currentQuestionIndex = 0
       } else{
@@ -121,67 +122,42 @@ const L2A3Q1 = ({navigation}) => {
     answer_state = 0
   }
 
-   const verifyConcatenation = (receivingItemList) => {
-     let concatenatedString = '';
-     let itemCount = 0;
-     receivingItemList.forEach(item => {
-       concatenatedString += item.text;
-       itemCount++;
-  
-       if (itemCount < receivingItemList.length) {
-         concatenatedString += ' ';
-       }
-     });
-  
-     return concatenatedString === questions[currentQuestionIndex].correct_answer;
-   }
-  /* const verifyConcatenation = (receivingItemList) => {
-    let concatenatedString = '';
-    if (receivingItemList.length = 5) {
-       let result = '';
-        result += receivingItemList[0] + receivingItemList[1];
-        result += ' ';
-        result += receivingItemList[2] + receivingItemList[3];
-        result += ' ';
-        result += receivingItemList[4];
-      concatenatedString = result;
-    };
+
+const verifyConcatenation = (receivingItemList) => {
+  let concatenatedString = '';
+  let itemCount = 0;
+  receivingItemList.forEach(item => {
+    concatenatedString += item.text;
+    itemCount++;
+
+    if (itemCount < receivingItemList.length) {
+      concatenatedString += ' ';
+    }
+  });
 
   return concatenatedString === questions[currentQuestionIndex].correct_answer;
-} */
+}
 
 
 
 
-  let statement, InitialDraggableItemList, retrieved_audio,correct_answer;
+  let statement, InitialDraggableItemList, retrieved_audio;
   let FirstReceivingItemList = [
     {
+      "id": 5,
+      "background_color": '#DDDFEE'
+    },
+    {
       "id": 6,
-      "background_color": 'silver'
-    },
-    {
-      "id": 7,
-      "background_color": 'silver'
-    },
-    {
-      "id": 8,
-      "background_color": 'silver'
-    },
-    {
-      "id": 9,
-      "background_color": 'silver'
-    },
-    {
-      "id": 10,
-      "background_color": 'silver'
+      "background_color": '#DDDFEE'
     }
   ];
+    
   let [ receivingItemList, setReceivingItemList ]= useState(FirstReceivingItemList);
   let [ dragItemMiddleList, setDragItemMiddleList ] = useState(null);
- 
 
   async function getDocuments() {
-    const querySnapshot = await getDocs(collection(db, 'L2A3'));
+    const querySnapshot = await getDocs(collection(db, 'L1A2'));
     // Loop through the documents
     const docs = [];
     querySnapshot.forEach(doc => {
@@ -213,53 +189,53 @@ const L2A3Q1 = ({navigation}) => {
     retrieved_audio = questions[currentQuestionIndex].audio;
     
   }
+  
+  return (
+    <View style={styles.AppContainer}>
 
-    return (
-        <View style={styles.AppContainer}>
-            <View>
-          <Text style={styles.statementText}> Ordena la oración </Text>
-          </View>
+      <View>
+          <Text style={styles.statementText}> Traduce la oracion </Text>
+      </View>
 
-            <Text style={styles.instructionText}> {statement} </Text>
-            <ProgressBar progress={porcentaje/100} width={300} 
+      <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
                    borderWidth={0} style= {{borderRadius:25}}
                     />
-
-{/* 
-            <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.instructionText}> __________</Text>
-              <Text style={styles.instructionText}> __________ </Text>
-              <Text style={styles.instructionText}> __________ </Text>
+        
+      <View style={{ flexDirection: 'row',margin: 60}}>
+          <Text style={styles.instructionText}> {statement}</Text>
+          <TouchableOpacity onPress={() => {
+            let audioPath = (audios.find((audio) => audio.name === retrieved_audio)).path
+            playAudio(audioPath);
+          }} >
+          <Icon name="volume-up" style = {{ paddingHorizontal:10 }}size={30} color="black"/>
+          </TouchableOpacity>
+          
+      </View>
+          
+      <GestureHandlerRootView style={gestureRootViewStyle}>
+        <DraxProvider>
+          <View style={styles.AppContainer}>
+            <View style={styles.receivingContainer}>
+              {receivingItemList.map((item, index) => ReceivingZoneUIComponent({ item, index }))}
             </View>
+            <View style={styles.draxListContainer}>
+              <DraxList
+                data={dragItemMiddleList}
+                renderItemContent={DragUIComponent}
+                keyExtractor={(item, index) => index.toString()}
+                numColumns={4}
+                ItemSeparatorComponent={FlatListItemSeparator}
+                scrollEnabled={true}
+              />
+            </View>
+          </View>
+        </DraxProvider>
+      </GestureHandlerRootView>
+      <View>
 
-            <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.buttonSolution}>  kan </Text>
-              <Text style={styles.buttonSolution}>  Allkuka  </Text>
-              <Text style={styles.buttonSolution}>  yanami </Text>
-            </View> */}
-             <GestureHandlerRootView style={gestureRootViewStyle}>
-            <DraxProvider>
-              <View style={styles.AppContainer}>
-                <View style={styles.receivingContainer}>
-                  {receivingItemList.map((item, index) => ReceivingZoneUIComponent({ item, index }))}
-                </View>
-                <View style={styles.draxListContainer}>
-                  <DraxList
-                    data={dragItemMiddleList}
-                    renderItemContent={DragUIComponent}
-                    keyExtractor={(item, index) => index.toString()}
-                    numColumns={4}
-                    ItemSeparatorComponent={FlatListItemSeparator}
-                    scrollEnabled={true}
-                  />
-                </View>
-              </View>
-            </DraxProvider>
-          </GestureHandlerRootView>
 
-          <View>
-          <TouchableOpacity style={styles.buttonContainer} onPress={resetLists} >
+        <TouchableOpacity style={styles.buttonContainer} onPress={resetLists} >
           <Text style={styles.buttonText}> Reiniciar </Text> 
         </TouchableOpacity>
       </View>
@@ -294,18 +270,18 @@ const L2A3Q1 = ({navigation}) => {
               <Text style = {styles.continueText}>Continuar</Text>
             </TouchableOpacity>
         </View>
-      </Modal>          
-      <StatusBar style="auto" />
-        </View>
+      </Modal>
         
-    )
+      <StatusBar style="auto" />
+    </View>
+  )
+};
 
-}
 const styles = StyleSheet.create({
   AppContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     marginTop:30,
     paddingLeft:5,
@@ -378,138 +354,138 @@ const styles = StyleSheet.create({
     height: 30,
   },
   receivingZone: {
-    width: 60,//(Dimensions.get('window').width / 4) - 12,
-    height:50,// (Dimensions.get('window').width / 4) - 12,
+    height: 60,//(Dimensions.get('window').width / 4) - 12,
     borderRadius: 10,
+    width: 90,//(Dimensions.get('window').width / 4) - 12,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 5
   },
   receiving: {
     borderColor: 'blue',
-    borderWidth: 2,
+    borderWidth: 0,
   },
   draggableBox: {
-    width: 60,//(Dimensions.get('window').width / 4) - 12,
-    height:50,// (Dimensions.get('window').width / 4) - 12,
+    width: 90,//(Dimensions.get('window').width / 4) - 12,
+    height:60,// (Dimensions.get('window').width / 4) - 12,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 5
+    marginRight: 5,
   },
-    dragging: {
-      opacity: 0.2,
-    },
-    hoverDragging: {
-      borderColor: 'cyan',
-      borderWidth: 2,
-    },
-    receivingContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      margin: 30
-    },
-    itemSeparator: {
-      height: 15
-    },
-    draxListContainer: {
-      padding: 5,
-      height: 200
-    },
-    receivingZoneContainer: {
-      padding: 5,
-      height: 100,
-      margin: 70
-    },
-    textStyle: {
-      fontSize: 18,
-      //color:'white'
-    },
+  dragging: {
+    opacity: 0.2,
+  },
+  hoverDragging: {
+    borderColor: '#2D5288',
+    borderWidth: 0,
+  },
+  receivingContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    margin: 70
+  },
+  itemSeparator: {
+    height: 15
+  },
+  draxListContainer: {
+    padding: 5,
+    height: 200
+  },
+  receivingZoneContainer: {
+    padding: 5,
+    height: 100,
+    margin: 70
+  },
+  textStyle: {
+    fontSize: 18,
+    //color:'white'
+  },
+
+   // ------  Comprobar Button -----
+   comprobarButton_Enabled: {
+    width: 200,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "#82C0CC",
+    borderRadius: 20,
+  },
+  comprobarButton_Disabled: {
+    width: 200,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "#C3C3C3",
+    borderRadius: 20,
+    //opacity: 0
+  },
+
+
+  comprobarText:{
+    color: '#fff',
+    fontSize: 20
+  },
+
+   /* ------- Modal --------- */
+   modalContainer: {
+    position: 'absolute',
+    width:"100%",
+    bottom: 0,
+    backgroundColor: '#383A45',
+    //borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    //margin: 40,
+    marginHorizontal: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+
+
+  /* ------ Texto Modal -------- */
+  modalTextCorrecto:{
+    color: '#86D332',
+    fontWeight:'bold',
+    fontSize: 20
+  },
+
+  modalTextIncorrecto:{
+    color:'#EE5655',
+    fontWeight:'bold',
+    fontSize: 20,
+    //marginBottom:5
+  },
   
-     // ------  Comprobar Button -----
-     comprobarButton_Enabled: {
-      width: 200,
-      height: 40,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: "#82C0CC",
-      borderRadius: 20,
-    },
-    comprobarButton_Disabled: {
-      width: 200,
-      height: 40,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: "#C3C3C3",
-      borderRadius: 20,
-      //opacity: 0
-    },
+  /* ------ Button Continue -------- */
+  continueButton_Correct:{
+    width: 200,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "#86D332",
+    borderRadius: 20},
   
-  
-    comprobarText:{
+
+
+  continueButton_Incorrect:{
+    width: 200,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "#EE5655",
+    borderRadius: 20},
+
+  continueText:{
       color: '#fff',
       fontSize: 20
-    },
-  
-     /* ------- Modal --------- */
-     modalContainer: {
-      position: 'absolute',
-      width:"100%",
-      bottom: 0,
-      backgroundColor: '#383A45',
-      //borderRadius: 5,
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 20,
-      //margin: 40,
-      marginHorizontal: 'auto',
-      marginTop: 'auto',
-      marginBottom: 'auto',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    },
-  
-  
-    /* ------ Texto Modal -------- */
-    modalTextCorrecto:{
-      color: '#86D332',
-      fontWeight:'bold',
-      fontSize: 20
-    },
-  
-    modalTextIncorrecto:{
-      color:'#EE5655',
-      fontWeight:'bold',
-      fontSize: 20,
-      //marginBottom:5
-    },
-    
-    /* ------ Button Continue -------- */
-    continueButton_Correct:{
-      width: 200,
-      height: 40,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: "#86D332",
-      borderRadius: 20},
-    
-  
-  
-    continueButton_Incorrect:{
-      width: 200,
-      height: 40,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: "#EE5655",
-      borderRadius: 20},
-  
-    continueText:{
-        color: '#fff',
-        fontSize: 20
-      }
-  })
+    }
+})
 
-  export default L2A3Q1
+  export default L1A2;
