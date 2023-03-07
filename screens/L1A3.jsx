@@ -8,6 +8,8 @@ import ProgressBar from 'react-native-progress/Bar';
 import useCronometro from './functions/cronometer';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import audios from './soundsL1A3';
+import LoadingScreen from './loadingScreen';
+
 
 let answers = ['','',''];
 let puntaje = 0;
@@ -51,9 +53,7 @@ const L1A3 = ({ navigation }) => {
  
   if (questions === null) {
     return (
-      <View style={styles.AppContainer}>
-        <Text>Loading...</Text>
-      </View>
+      <LoadingScreen/>
     );
   }
   statement = questions[currentQuestionIndex].statement;

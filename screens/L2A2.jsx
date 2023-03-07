@@ -10,6 +10,7 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 import images from "./imagesL2A2";
+import LoadingScreen from './loadingScreen';
 
 const gestureRootViewStyle = { flex: 1 };
 
@@ -174,9 +175,7 @@ const L2A2 = ({navigation}) => {
   
     if (questions === null) {
       return (
-        <View style={styles.AppContainer}>
-          <Text>Loading...</Text>
-        </View>
+        <LoadingScreen/>
       );
     } else {
       statement1 = questions[currentQuestionIndex].statement1;

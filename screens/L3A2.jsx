@@ -9,7 +9,7 @@ import { getApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
- 
+import LoadingScreen from './loadingScreen';
   const gestureRootViewStyle = { flex: 1 };
   let puntaje = 0;
   let currentQuestionIndex = 0
@@ -171,9 +171,7 @@ import ProgressBar from 'react-native-progress/Bar';
   
     if (questions === null) {
       return (
-        <View style={styles.AppContainer}>
-          <Text>Loading...</Text>
-        </View>
+        <LoadingScreen/>
       );
     } else {
       statement1 = questions[currentQuestionIndex].statement1;

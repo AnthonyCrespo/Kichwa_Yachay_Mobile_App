@@ -101,8 +101,10 @@ const Home = ({navigation}) => {
     );
   }
 
-
-    if (currentSubscreen===0 && signinOut === 0)
+  /* -----------------------------------------------------------------------------  */
+  /* -------------------------------  Home ------------------------------------  */
+  /* -----------------------------------------------------------------------------  */
+    if (currentSubscreen===0)
     return (
       <View style={styles_home.container}>
         <View style={{ backgroundColor: '#383A45', width: '100%', height: 65, alignItems: 'center', justifyContent: 'center', paddingTop:topPadding}}>
@@ -137,7 +139,12 @@ const Home = ({navigation}) => {
         <StatusBar style="auto" />   
       </View>
     )
-    
+  
+
+  /* -----------------------------------------------------------------------------  */
+  /* ------------------------------- Profile ------------------------------------  */
+  /* -----------------------------------------------------------------------------  */
+  if (currentSubscreen===1)
   return (
     <View style={styles_perfil.container}>
       <Text style={styles_perfil.headerText}>Perfil</Text>

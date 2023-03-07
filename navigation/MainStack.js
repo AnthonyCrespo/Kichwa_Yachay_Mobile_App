@@ -11,58 +11,24 @@ import Result from '../screens/Result'
 
 // L1A1
 import L1A1 from '../screens/L1A1'
-/* import L1A1Q1 from '../screens/L1A1Q1'
-import L1A1Q2 from '../screens/L1A1Q2'
-import L1A1Q3 from '../screens/L1A1Q3' */
-
-
 // L1A2 
 import L1A2 from '../screens/L1A2'
-/* import L1A2Q2 from '../screens/Individual_Views/L1A2Q2'
-import L1A2Q3 from '../screens/Individual_Views/L1A2Q3' */
-
-
 // L1A3
 import L1A3 from '../screens/L1A3'
-/* import L1A3Q1 from '../screens/L1A3Q1'
-import L1A3Q2 from '../screens/L1A3Q2'
-import L1A3Q3 from '../screens/L1A3Q3' */
 
 
 // L2A1
 import L2A1 from '../screens/L2A1'
-import L2A1Q1 from '../screens/L2A1Q1'
-import L2A1Q2 from '../screens/L2A1Q2'
-
-
 /* L2A2*/
 import L2A2 from '../screens/L2A2'
-/* import L2A2Q2 from '../screens/L2A2Q2'
-import L2A2Q3 from '../screens/L2A2Q3'
-import L2A2Q4 from '../screens/L2A2Q4' */
-
 /* L2A3*/
 import L2A3 from '../screens/L2A3'
-/* import L2A3Q2 from '../screens/L2A3Q2'
-import L2A3Q3 from '../screens/L2A3Q3'
-import L2A3Q4 from '../screens/L2A3Q4' */
-
-
 
 // L3A1
 import L3A1 from '../screens/L3A1'
 
-/* import L3A1Q1 from '../screens/L3A1Q1'
-import L3A1Q2 from '../screens/L3A1Q2'
-import L3A1Q3 from '../screens/L3A1Q3'
-import L3A1Q4 from '../screens/L3A1Q4' */
-
-
 /* L3A2*/
 import L3A2 from '../screens/L3A2'
-/* import L3A2Q2 from '../screens/L3A2Q2'
-import L3A2Q3 from '../screens/L3A2Q3'
-import L3A2Q4 from '../screens/L3A2Q4' */
 
 /* L3A3*/
 import L3A3Q1 from '../screens/L3A3Q1'
@@ -101,70 +67,27 @@ const AppStack = () => {
                     name = 'L1A1'
                     component = {L1A1}/>
 
-{/*                 <Stack.Screen
-                    name = 'L1A1Q1'
-                    component = {L1A1Q1}/>
-                <Stack.Screen
-                    name = 'L1A1Q2'
-                    component = {L1A1Q2}/>
-                <Stack.Screen
-                    name = 'L1A1Q3'
-                    component = {L1A1Q3}/>
- */}
                 {/* L1A2*/}
                 <Stack.Screen
                     name = 'L1A2'
                     component = {L1A2}/>
-                {/* <Stack.Screen
-                    name = 'L1A2Q2'
-                    component = {L1A2Q2}/>
-                <Stack.Screen
-                    name = 'L1A2Q3'
-                    component = {L1A2Q3}/> */}
 
                 {/* L1A3*/}
                 <Stack.Screen
                     name = 'L1A3'
                     component = {L1A3}/>
-                {/* <Stack.Screen
-                    name = 'L1A3Q1'
-                    component = {L1A3Q1}/> 
-                <Stack.Screen
-                    name = 'L1A3Q2'
-                    component = {L1A3Q2}/>
-                <Stack.Screen
-                    name = 'L1A3Q3'
-                    component = {L1A3Q3}/> */}
-
-
-
 
                 {/* L2A1*/} 
                 <Stack.Screen
                     name = 'L2A1'
                     component = {L2A1}/>
-                {/* <Stack.Screen
-                    name = 'L2A1Q1'
-                    component = {L2A1Q1}/>
-                <Stack.Screen
-                    name = 'L2A1Q2'
-                    component = {L2A1Q2}/> */}
 
 
                 {/* L2A2*/}
                 <Stack.Screen
                     name = 'L2A2'
                     component = {L2A2}/>
-                {/* <Stack.Screen
-                    name = 'L2A2Q2'
-                    component = {L2A2Q2}/>
-                <Stack.Screen
-                    name = 'L2A2Q3'
-                    component = {L2A2Q3}/>
-                <Stack.Screen
-                    name = 'L2A2Q4'
-                    component = {L2A2Q4}/> */}
-
+ 
                 {/* L2A3*/}
                 <Stack.Screen
                     name = 'L2A3'

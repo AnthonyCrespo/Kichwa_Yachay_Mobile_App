@@ -6,6 +6,7 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import images from "./imagesL2A1";
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
+import LoadingScreen from './loadingScreen';
 
 let puntaje = 0;
 let answer;
@@ -71,9 +72,7 @@ const L2A1 = ({ navigation }) => {
  
   if (questions === null) {
     return (
-      <View style={styles.AppContainer}>
-        <Text>Loading...</Text>
-      </View>
+      <LoadingScreen/>
     );
   }
   statement = questions[currentQuestionIndex].statement;
@@ -83,7 +82,10 @@ const L2A1 = ({ navigation }) => {
     <View style= {styles.AppContainer}>
       
       <Text style={styles.statementText}>{statement}</Text>
-      <ProgressBar progress={porcentaje/100} width={ancho} height={20} color={'#89D630'} style ={{borderColor: "#383A45"}} />
+      <ProgressBar progress={porcentaje/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25}}
+                    />
 
       {options.map((option, index) => (
 

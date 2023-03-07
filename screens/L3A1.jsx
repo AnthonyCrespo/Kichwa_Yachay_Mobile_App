@@ -14,6 +14,8 @@ import ProgressBar from 'react-native-progress/Bar';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAuth } from 'firebase/auth';
 //import ProgressBarKichwa from './functions/ProgressBarKichwa'
+import LoadingScreen from './loadingScreen';
+
 
 let answer;
 let puntaje = 0;
@@ -143,9 +145,7 @@ const L3A1 = ({ navigation }) => {
   //if (questions === null  | imageUrls === null) {
   if (questions === null) {
     return (
-      <View style={styles.AppContainer}>
-        <Text>Cargando...</Text>
-      </View>
+      <LoadingScreen/>
     );
   }
   statement = questions[currentQuestionIndex].statement;

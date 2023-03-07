@@ -10,6 +10,8 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 import audios from './soundsL1A2';
+import LoadingScreen from './loadingScreen';
+
 
 const gestureRootViewStyle = { flex: 1 };
 let puntaje = 0;
@@ -178,9 +180,7 @@ const verifyConcatenation = (receivingItemList) => {
 
   if (questions === null) {
     return (
-      <View style={styles.AppContainer}>
-        <Text>Loading...</Text>
-      </View>
+      <LoadingScreen/>
     );
   } else {
     statement = questions[currentQuestionIndex].statement;
