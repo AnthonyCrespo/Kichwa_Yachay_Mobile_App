@@ -6,7 +6,7 @@ import { getAuth, signOut} from 'firebase/auth';
 import { getApp} from 'firebase/app'
 import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 'firebase/firestore';
 import LoadingScreen from './loadingScreen';
-
+import ProgressBar from 'react-native-progress/Bar';
 
 const Home = ({navigation}) => {
   const [name, setName] = useState("")
@@ -159,15 +159,13 @@ const Home = ({navigation}) => {
         />
       </View>
       <Text style={styles_perfil.progressHeader}>Progreso</Text>
-      <FlatList styles_perfil = {styles_perfil.contentContainer}
-        contentContainerStyle={styles_perfil.contentContainer}
-        data={[2.5,5,5]}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({item}) => <ProgressBar widthPct={item} />}
-      />
-
+      <Text style={styles_perfil.progressHeader}>UNIDAD 1</Text>
+      <ProgressBar progress={60/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25}}
+                    />
       <TouchableOpacity style = {{backgroundColor:'#C33E5B',borderRadius:25,paddingVertical:15,
-                                  paddingHorizontal:80,marginBottom:60}}
+                                  paddingHorizontal:80,marginBottom:100,position:"absolute", bottom: 0}}
                         onPress={handleSignOut}>
       <Text style={{color:'white', fontSize:15}}> Cerrar Sesión </Text>
       </TouchableOpacity>
@@ -188,7 +186,7 @@ const Home = ({navigation}) => {
 
 }
 const {width} = Dimensions.get('screen');
-const ProgressBar = ({widthPct}) => {
+/* const ProgressBar = ({widthPct}) => {
   const finalWidth = (width * widthPct) / 10;
   return (
     <View style={styles_perfil.unitContainer}>
@@ -196,7 +194,7 @@ const ProgressBar = ({widthPct}) => {
       <View style={[styles_perfil.progressBar, {width: finalWidth}]} />
     </View>
   );
-};
+}; */
 
 const styles_home = StyleSheet.create({
     unitText: {
@@ -327,8 +325,11 @@ const styles_home = StyleSheet.create({
       borderRadius: 50,
     },
     progressHeader: {
-      fontSize: 20,
+      fontSize: 25,
       marginTop: 20,
+      marginBottom:50,
+      fontWeight:"bold"
+
     },
     progressContainer: {
       marginTop: 10,
