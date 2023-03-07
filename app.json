@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "myapp1",
-    "slug": "myapp1",
+    "name": "Kichwa Yachay",
+    "slug": "Kichwa_Yachay",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,14 +25,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.anthonycr20.myapp1"
+      "package": "com.anthonycr20.kichwayachay"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "22ea2126-61c5-4226-aef1-7338712fb76e"
+        "projectId": "c1f06ff3-d020-4c41-8d04-0be6bb1c919b"
       }
     }
   }
