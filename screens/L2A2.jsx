@@ -343,19 +343,19 @@ const styles = StyleSheet.create({
   receivingContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    margin: 70
+    marginTop: 30
   },
   itemSeparator: {
     height: 15
   },
   draxListContainer: {
     padding: 5,
-    height: 200
+    height: 80
   },
   receivingZoneContainer: {
     padding: 5,
     height: 100,
-    margin: 70
+    margin: 10
   },
   textStyle: {
     fontSize: 18
@@ -386,9 +386,10 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   catImage:{
-    width: 140,
-    height: 100,
-    alignSelf:'center'
+    width: 210,
+    height: 170,
+    alignSelf:'center',
+    marginBottom:20
   },
 
    /* ------- Modal --------- */
