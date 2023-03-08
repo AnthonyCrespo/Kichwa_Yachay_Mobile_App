@@ -6,6 +6,7 @@ import { getAuth, signOut} from 'firebase/auth';
 import { getApp} from 'firebase/app'
 import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 'firebase/firestore';
 import LoadingScreen from './loadingScreen';
+import CerrandoSesion from './cerrandoSesion'
 import ProgressBar from 'react-native-progress/Bar';
 
 const Home = ({navigation}) => {
@@ -70,9 +71,7 @@ const Home = ({navigation}) => {
       // Redirige al usuario a la pantalla de inicio de sesión
       navigation.navigate('Login');
       setSigninOut(1)
-      setSubscreen(0)
-      //setSubscreen(0)
-    } catch (error) {
+      setSubscreen(0)    } catch (error) {
       console.log('Error al cerrar la sesión:', error);
       Alert.alert('Error', 'No se pudo cerrar la sesión. Por favor, inténtalo de nuevo más tarde.');
     }
@@ -100,6 +99,10 @@ const Home = ({navigation}) => {
       <LoadingScreen/>
     );
   }
+  if (signinOut  === 1) {
+    return (
+      <CerrandoSesion/>
+    );}
 
   /* -----------------------------------------------------------------------------  */
   /* -------------------------------  Home ------------------------------------  */
