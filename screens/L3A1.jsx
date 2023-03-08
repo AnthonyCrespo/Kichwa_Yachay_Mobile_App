@@ -156,10 +156,12 @@ const L3A1 = ({ navigation }) => {
     );
   }
   statement = questions[currentQuestionIndex].statement;
+  statement_esp = questions[currentQuestionIndex].statement_esp;
   options = questions[currentQuestionIndex].options;
   return (
     <View style={styles.AppContainer}>
       <Text style={styles.statementText}>{statement}</Text>
+      <Text style={styles.statementText && {fontSize:20, color:"#3259A1", fontWeight:"bold"}}>{statement_esp}</Text>
       <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
                    borderWidth={0} style= {{borderRadius:25}}
@@ -256,6 +258,7 @@ const styles = StyleSheet.create({
       },
 
         AppContainer: {
+          marginTop:30,
           flex: 1,
           backgroundColor: '#fff',
           paddingTop:10,
