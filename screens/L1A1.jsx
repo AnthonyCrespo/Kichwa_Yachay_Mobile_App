@@ -188,7 +188,9 @@ const styles = StyleSheet.create({
     paddingLeft:30,
     marginBottom:15,
     borderRadius: 20,
-    backgroundColor:'#4DB8FF'
+    borderWidth:2,
+    backgroundColor:'#CCEBFF',
+    borderColor: '#006BB3',
   },
   itemContainer:{
     flex:1,
