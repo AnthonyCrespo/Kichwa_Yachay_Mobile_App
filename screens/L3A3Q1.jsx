@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState } from 'react';
 import { Alert, StyleSheet, Button,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
-  
+import useCronometro from './functions/cronometer';
+import ProgressBar from 'react-native-progress/Bar';
+
 
 
 const L3A3Q1= ({navigation}) => {
@@ -14,9 +16,17 @@ const L3A3Q1= ({navigation}) => {
     const [Right, setRight] = useState([]);
     const [correctPairs, setCorrectPairs] = useState([]);
     const [incorrectPairs, setIncorrectPairs] = useState([]);
-  
 
+    const segundos = useCronometro();
   
+    const handleContinuePress = () => {
+        navigation.navigate("Result", {puntuation3: 100, 
+                                       time_taken: segundos,
+                                       unit:1, 
+                                       lesson:3, 
+                                       activity:3,
+                                       subtitle:' '});
+    }
     const handlePress = (type, item) => {
       if (type === 'left') {
         //setLeft([...Left, item])
@@ -155,10 +165,12 @@ const L3A3Q1= ({navigation}) => {
 
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-              >
-                <Text style={styles.buttonText}>Continuar</Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+            style={styles.continuarButton_Enabled}
+            onPress={handleContinuePress}
+          >
+            <Text style={styles.continuarText}>Continuar</Text>
+          </TouchableOpacity>
             </View>
 
   
@@ -222,7 +234,21 @@ const L3A3Q1= ({navigation}) => {
     },
     alerIncorrect:{
       backgroundColor: 'red'
-    }
+    },
+
+
+    continuarButton_Enabled: {
+      width: 200,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: "#82C0CC",
+      borderRadius: 20,
+    },
+    continuarText:{
+      color: '#fff',
+      fontSize: 20
+    },
   });
   export default L3A3Q1
 
