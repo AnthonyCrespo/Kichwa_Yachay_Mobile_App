@@ -159,45 +159,46 @@ const L3A1 = ({ navigation }) => {
                     />
 
       {options.map((option, index) => (
-        <View key={index}>
-          {/*  ---- Option Image ---- */}
-          {/* <Image style={styles.catImage} source={{uri: imageUrls[index]}  */}
-          {/* <Image style={styles.catImage} source={{uri: "file:///../assets/black-dog.jpeg"}} /> */}
-           {/* <Image style={styles.catImage} source={ image_test } /> */}
-           <Image style={styles.catImage} source={(images.find((image) => image.name === option.image)).path}/>
+        <TouchableOpacity
+        key={index}
+        onPress={() => {
+          setSelectedOption(index);
+          answer = option.text;
+        }}
+        >
+          <View 
+            style={selectedOption === index ? styles.selectedOptionContainer : styles.optionContainer}>  
 
-          {/*  ---- Option Icon-Text ---- */}
-          <View style={styles.optionContainer}>
-            {/* -------- Icon -------- */}
-              <TouchableOpacity
-                    style={styles.optionIcon}
-                    onPress={() => {
-                      let audioPath = (audios.find((audio) => audio.name === option.audio)).path
-                      playAudio(audioPath);
-                    }}
-                  >
-                    <Icon name="volume-up" size={20} color="black" />
-              </TouchableOpacity>
-              {/* --------  Text -------- */}
-              <TouchableOpacity
-                    onPress={() => {
-                      setSelectedOption(index);
-                      answer = option.text;
-                    }}
-                >
+              <View style={[styles.itemContainer, {flex:6}]}>
+                <Image 
+                  style={styles.imageContainer}
+                  resizeMode="contain"
+                  source={(images.find((image) => image.name === option['image'])).path}/>
 
-                  <Text style={selectedOption === index ? styles.selected_optionText : styles.optionText}>
-                    {option.text}
-                  </Text>
+                <View style={styles.audio_textContainer}>
 
-              </TouchableOpacity>
+                    <Text style={styles.optionText}>
+                      {option.text}
+                    </Text>
+                </View>
+              </View>
+
+              <View style={[styles.itemContainer, {flex:2}]}>
+                <TouchableOpacity
+                        style={styles.optionIcon}
+                        onPress={() => {
+                          let audioPath = (audios.find((audio) => audio.name === option.audio)).path
+                          playAudio(audioPath);
+                        }}
+                        >
+                  <Icon name="volume-up" size={30} color="black" />
+                </TouchableOpacity>
+              </View>
           </View>
-
-        </View>
+        </TouchableOpacity>
     ))}
       <View >
           <TouchableOpacity
-            //style={styles.continueButton}
             style={selectedOption === null ? styles.comprobarButton_Disabled : styles.comprobarButton_Enabled }
             disabled={selectedOption === null}
             onPress={handleComprobarPress}
@@ -206,16 +207,14 @@ const L3A1 = ({ navigation }) => {
           </TouchableOpacity>
       </View>
 
-            {/* Modal */}
+
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
+
         <View style={styles.modalContainer}>
-          {/* <View style={styles.modalContent}> */}
+
             <Text style={respuesta_correcta? styles.modalTextCorrecto: styles.modalTextIncorrecto}>
             {respuesta_correcta ? "¡Excelente!" : "Incorrecto"}
             </Text>
-{/*             <Text style = {{color:'white', paddingVertical:10, fontSize:17}}>
-            {!respuesta_correcta? `Respuesta correcta: ${questions[currentQuestionIndex].correct_answer}`: ''}
-            </Text> */}
 
             <Text style={{color: 'white', paddingVertical: 10, fontSize: 17, opacity: respuesta_correcta ? 0: 1}}>
               <Text style={{color: '#86D332'}}>Respuesta correcta: </Text>
@@ -226,7 +225,6 @@ const L3A1 = ({ navigation }) => {
               <Text style = {styles.continueText}>Continuar</Text>
             </TouchableOpacity>
 
-          {/* </View> */}
         </View>
       </Modal>
     </View>
@@ -259,29 +257,51 @@ const styles = StyleSheet.create({
           alignItems: 'center',
           alignContent: 'center'
         },
-
         statementText: {
           color: '#F18701',
           fontSize: 28,
           fontWeight: 'bold',
         },
-
-
         // ------  Options -----
         optionContainer: {
-          flexDirection: 'row',
-          justifyContent: 'space-between',
+          flexDirection:'row',
+          width:300,
+          height:160,
+          marginBottom:15,
+          borderRadius: 15,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        selectedOptionContainer: {
+          flexDirection:'row',
+          width:300,
+          height:160,
+          marginBottom:15,
+          borderRadius: 20,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth:2,
+          backgroundColor:'#CCEBFF',
+          borderColor: '#006BB3',
+        },
+        itemContainer:{
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        imageContainer:{
           alignItems: 'center',
           alignContent: 'center',
+          width:140,
+          height:100,
         },
-
-
-
+        audio_textContainer:{
+          flexDirection:'row',
+          justifyContent:'space-between',
+        },
         optionButton: {
           flexDirection: 'row',
           //alignContent: 'space-between',
         },
-
         optionText: {
           color: '#000',
           fontSize: 20,
@@ -289,15 +309,6 @@ const styles = StyleSheet.create({
           fontWeight: 'bold',
           alignSelf: 'center'
         },
-
-        selected_optionText: {
-          color: '#3259A1',
-          fontWeight: 'bold',
-          fontSize: 20,
-          marginLeft:20,
-          alignSelf: 'center'
-        },
-
 
         // ------  Comprobar Button -----
         comprobarButton_Enabled: {

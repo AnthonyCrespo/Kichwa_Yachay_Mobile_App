@@ -170,8 +170,6 @@ const styles = StyleSheet.create({
     width:300,
     height:120,
     justifyContent:'space-between',
-    paddingRight:50,
-    paddingLeft:30,
     marginBottom:15,
     borderRadius: 15,
   },
@@ -180,11 +178,11 @@ const styles = StyleSheet.create({
     width:300,
     height:120,
     justifyContent:'space-between',
-    paddingRight:50,
-    paddingLeft:30,
     marginBottom:15,
     borderRadius: 20,
-    backgroundColor:'#4DB8FF'
+    borderWidth:2,
+    backgroundColor:'#CCEBFF',
+    borderColor: '#006BB3',
   },
   optionText: {
     color: '#000',
