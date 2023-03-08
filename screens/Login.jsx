@@ -10,8 +10,6 @@ import {firebaseConfig} from '../firebase-config'
 
 
 
-
-
 const Login = ({navigation}) => {
   const [logged_user, setLoggedUser] = React.useState(1)
   const [email, setEmail] = React.useState('')
