@@ -6,7 +6,6 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 import LoadingScreen from './loadingScreen';
-import TopReturnButton from './functions/returnButtonIOS';
 import { playAudio } from './functions/playAudio';
 import soundsAnswers from './soundsAnswers';
 
@@ -96,13 +95,7 @@ const L1A1 = ({navigation}) => {
   return (
     <View style= {styles.AppContainer}>
 
-      <View style={styles.button_statementContainer}>
-        <View>
-          <TopReturnButton onPress={handleReturnPress} />
-        </View>
-
-        <Text style={styles.statementText}>{statement}</Text>
-      </View>
+      <Text style={styles.statementText}>{statement}</Text>
 
       <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
