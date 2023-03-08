@@ -15,12 +15,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAuth } from 'firebase/auth';
 //import ProgressBarKichwa from './functions/ProgressBarKichwa'
 import LoadingScreen from './loadingScreen';
+import soundsAnswers from './soundsAnswers';
 
 
 let answer;
 let puntaje = 0;
 let respuesta_correcta;
-
+let audioPath = null;
 const L3A1 = ({ navigation }) => {
   //const usuario =  AsyncStorage.getItem('usuario');
 
@@ -49,20 +50,26 @@ const L3A1 = ({ navigation }) => {
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Modal -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
-    const handleComprobarPress = () => {
-    stopAudio()
-    //console.log(porcentaje/100)
-    setPorcentaje(porcentaje+100/questions.length)
-    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
+  const handleComprobarPress = async () => {
+    await stopAudio(); // espera a que se detenga la reproducción del audio anterior
+    setPorcentaje(porcentaje+100/questions.length);
+    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer;
+    let p;
+    
     if (respuesta_correcta) {
+      p = soundsAnswers[0].path;
       puntaje = puntaje + 100/questions.length;
     }
+    else {
+      p = soundsAnswers[1].path;
+    }
+    
     setModalVisible(true);
+    await playAudio(p); // espera a que se complete la reproducción del nuevo audio
   };
 
 
   const handleContinuePress = () => {
-    
     setModalVisible(false);
     setSelectedOption(null);
 
@@ -187,7 +194,8 @@ const L3A1 = ({ navigation }) => {
                 <TouchableOpacity
                         style={styles.optionIcon}
                         onPress={() => {
-                          let audioPath = (audios.find((audio) => audio.name === option.audio)).path
+                          audioPath = (audios.find((audio) => audio.name === option.audio)).path
+                          //stopAudio()
                           playAudio(audioPath);
                         }}
                         >
