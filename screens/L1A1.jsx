@@ -158,12 +158,6 @@ const styles = StyleSheet.create({
     paddingLeft:5,
     paddingRight:5
   },
-  statementContainer: {
-    justifyContent:'center',
-    alignItems: 'center',
-    paddingBottom:15,
-    paddingTop:15
-  },
   statementText: {
     color: '#F18701',
     fontSize: 28,
