@@ -78,7 +78,7 @@ const L3A3Q1= ({navigation}) => {
           //Alert.alert('Respuesta correcta');
         }
         else {
-            Alert.alert('Respuesta incorrecta');
+            //Alert.alert('Respuesta incorrecta');
             setIncorrectPairs([...incorrectPairs, { left: selectedLeft, right: item }]);
         }
       }
@@ -215,14 +215,14 @@ const L3A3Q1= ({navigation}) => {
     },
 
     buttonSolution: {
-      backgroundColor: '#383A45',
+      backgroundColor: '#4063A4',
       padding: 10,
       borderRadius: 10,
       marginBottom: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      borderWidth: 1,
-      borderColor: 'gray',
+      //borderWidth: 1,
+      //borderColor: 'gray',
       width: '70%',
       height: 50,
     },
