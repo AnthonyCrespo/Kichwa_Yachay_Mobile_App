@@ -11,14 +11,13 @@ import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 import audios from './soundsL1A2';
 import LoadingScreen from './loadingScreen';
+import soundsAnswers from './soundsAnswers';
 
 
 const gestureRootViewStyle = { flex: 1 };
 let puntaje = 0;
 let currentQuestionIndex = 0
 let respuesta_correcta;
-let background_color='green'
-let background_color2='blue'
 
 let answer_state = 0;
 
@@ -33,14 +32,22 @@ const L1A2 = ({navigation}) => {
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Modal -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
-  const handleComprobarPress = () => {
-    stopAudio()
+  const handleComprobarPress = async () => {
+    await stopAudio(); // espera a que se detenga la reproducción del audio anterior
     setPorcentaje(porcentaje+100/questions.length)
     respuesta_correcta = verifyConcatenation(receivingItemList) 
+    let p;
+    
     if (respuesta_correcta) {
+      p = soundsAnswers[0].path;
       puntaje = puntaje + 100/questions.length;
     }
+    else {
+      p = soundsAnswers[1].path;
+    }
+    
     setModalVisible(true);
+    await playAudio(p); // espera a que se complete la reproducción del nuevo audio
   };
 
   
