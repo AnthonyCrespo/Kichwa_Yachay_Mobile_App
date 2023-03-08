@@ -4,7 +4,7 @@ import { Alert, StyleSheet, Button,Text, View, TextInput,Image, TouchableOpacity
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 
-
+let porcentaje = 0
 
 const L3A3Q1= ({navigation}) => {
 
@@ -18,9 +18,11 @@ const L3A3Q1= ({navigation}) => {
     const [incorrectPairs, setIncorrectPairs] = useState([]);
 
     const segundos = useCronometro();
+    const [porcentaje, setPorcentaje] = useState(0);
   
     const handleContinuePress = () => {
-        navigation.navigate("Result", {puntuation3: 100, 
+      setPorcentaje(100)
+      navigation.navigate("Result", {puntuation3: 100, 
                                        time_taken: segundos,
                                        unit:1, 
                                        lesson:3, 
@@ -41,7 +43,7 @@ const L3A3Q1= ({navigation}) => {
           setCorrectPairs([...correctPairs, { left: selectedLeft, right: item }]);
           setLeft([...Left, selectedLeft]);
           setRight([...Right, item]);
-          Alert.alert('Respuesta correcta');
+          //Alert.alert('Respuesta correcta');
 
         }
 
@@ -96,17 +98,21 @@ const L3A3Q1= ({navigation}) => {
 
     return (
       <View style={styles.container}>
-        <View style={{ margin: 20 }}>
+{/*         <View style={{ margin: 20 }}>
           <Text style={styles.Title}>Actividad 3/Rurana 3</Text>
-        </View>
-  
-        <Text style={styles.subTitle}>Relacione las palabras</Text>
+        </View> */}
+        <Text style={styles.Title}>Relacione las palabras</Text>
+
+        <ProgressBar progress={porcentaje/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25}}
+                    />
 
         
         <View style={{ flexDirection: 'row', margin: 40 }}>
 
           
-<View style={{ flex: 1, flexDirection: 'column', flexWrap: 'wrap' }}>
+<View style={{ flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignContent:"center" }}>
   {leftItems.map((item, index) => {
     const isCorrect = correctPairs.find((pair) => pair.left === item);
     const isIncorrect = incorrectPairs.find((pair) => pair.left === item);
@@ -124,7 +130,7 @@ const L3A3Q1= ({navigation}) => {
                   }}
         disabled={Left.includes(item)}
       >
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{item}</Text>
+        <Text style={{ fontSize: 18, color:"#fff" }}>{item}</Text>
       </TouchableOpacity>
     );
   })}
@@ -148,7 +154,7 @@ const L3A3Q1= ({navigation}) => {
         }}
         disabled={ Right.includes(item)}
       >
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{item}</Text>
+        <Text style={{ color: 'white', fontSize: 18 }}>{item}</Text>
       </TouchableOpacity>
     );
   })}
@@ -157,21 +163,22 @@ const L3A3Q1= ({navigation}) => {
   </View>
 
         
-          <View>
+{/*           <View>
             <TouchableOpacity style={styles.buttonContainer} onPress={resetActivity} >
               <Text style={styles.buttonText}> Reset </Text> 
             </TouchableOpacity>
-            </View>
+            </View> */}
 
 
-            <View style={styles.buttonContainer}>
+            {/* <View style={styles.buttonContainer}> */}
             <TouchableOpacity
-            style={styles.continuarButton_Enabled}
+            style={correctPairs.length !== 6 ? styles.continuarButton_Disabled  : styles.continuarButton_Enabled }
+            disabled={correctPairs.length !== 6}
             onPress={handleContinuePress}
           >
             <Text style={styles.continuarText}>Continuar</Text>
           </TouchableOpacity>
-            </View>
+           {/*  </View> */}
 
   
         <StatusBar style="auto" />
@@ -188,10 +195,11 @@ const L3A3Q1= ({navigation}) => {
     },
     Title: {
       fontSize: 30,
-      color: 'gray',
+      color: '#F2570A',
       fontWeight: 'bold',
-      translateX: 200,
-      translateY: 10
+      //translateX: 200,
+      //translateY: 10
+      marginBottom:30
     },
     subTitle: {
       fontSize: 25,
@@ -203,15 +211,11 @@ const L3A3Q1= ({navigation}) => {
       padding: 10,
       borderRadius: 10,
       marginTop: 30,
+      justifyContent: 'center'
     },
-    buttonText: {
-      color: 'black',
-      fontWeight: 'bold',
-      fontSize: 20,
-      textAlign: 'center',
-    },
+
     buttonSolution: {
-      backgroundColor: 'lightgray',
+      backgroundColor: '#383A45',
       padding: 10,
       borderRadius: 10,
       marginBottom: 10,
@@ -220,14 +224,13 @@ const L3A3Q1= ({navigation}) => {
       borderWidth: 1,
       borderColor: 'gray',
       width: '70%',
-      
       height: 50,
     },
     correctSolution: {
-      backgroundColor: 'green',
+      backgroundColor: '#89D630',
     },
     incorrectSolution: {
-      backgroundColor:'red',
+      backgroundColor:'#EE5655',
     }, 
     alertCorrect: { 
       backgroundColor: 'blue' 
@@ -249,6 +252,15 @@ const L3A3Q1= ({navigation}) => {
       color: '#fff',
       fontSize: 20
     },
+    continuarButton_Disabled: {
+      width: 200,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: "#C3C3C3",
+      borderRadius: 20,
+    }
+
   });
   export default L3A3Q1
 
