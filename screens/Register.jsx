@@ -153,16 +153,16 @@ const styles = StyleSheet.create({
       paddingStart: 30,
       width: '80%',
       height: 50,
-      marginTop: '5%',
+      marginTop: '6%',
       borderRadius: 10,
       backgroundColor: '#fff'
     },
   
     buttonContainer: {
       backgroundColor: "#721930",
-      marginTop: 25,
+      marginTop: 50,
       borderRadius: 10,
-      paddingVertical: 10,
+      paddingVertical: 15,
       paddingHorizontal: 110     },
 
     socialButtonsContainer: {

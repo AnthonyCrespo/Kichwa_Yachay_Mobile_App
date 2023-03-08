@@ -88,6 +88,7 @@ const Login = ({navigation}) => {
         <Image
                 source={require('../assets/logo.png')} 
                 style={styles.logoApp}
+                resizeMode="contain"
          />
 
         <Text style={styles.subTitle}>Ingresa tus datos </Text>
@@ -153,14 +154,14 @@ const styles = StyleSheet.create({
       paddingStart: 30,
       width: '80%',
       height: 50,
-      marginTop: '5%',
+      marginTop: '6%',
       borderRadius: 10,
       backgroundColor: '#fff'
     },
   
     buttonContainer: {
       backgroundColor: "#721930",
-      marginTop: 25,
+      marginTop: 30,
       borderRadius: 10,
       paddingVertical: 10,
       paddingHorizontal: 125
@@ -188,8 +189,8 @@ const styles = StyleSheet.create({
       borderRadius: 5,
     },
     logoApp: {
-      width: 200,
-      height: 70,
+      width: 240,
+      height: 110,
       marginBottom: 40
     },
   })
