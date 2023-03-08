@@ -110,7 +110,7 @@ const Register = ({navigation}) => {
           </Text>
           </View>
 
-          <View style={styles.socialButtonsContainer}> 
+{/*           <View style={styles.socialButtonsContainer}> 
             <TouchableOpacity>
               <Image
                 source={require('../assets/login_facebook.png')}
@@ -123,7 +123,7 @@ const Register = ({navigation}) => {
                 style={styles.socialButton}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
 
         <StatusBar style="auto" />
       </View>     

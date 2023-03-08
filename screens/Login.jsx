@@ -114,7 +114,7 @@ const Login = ({navigation}) => {
           </Text>
           </View>
 
-          <View style={styles.socialButtonsContainer}> 
+{/*           <View style={styles.socialButtonsContainer}> 
             <TouchableOpacity>
               <Image
                 source={require('../assets/login_facebook.png')}
@@ -127,7 +127,7 @@ const Login = ({navigation}) => {
                 style={styles.socialButton}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
 
         <StatusBar style="auto" />
       </View>     
