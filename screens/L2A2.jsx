@@ -286,13 +286,6 @@ const styles = StyleSheet.create({
     paddingLeft:5,
     paddingRight:5
   },
-  Title: {
-    fontSize: 30,
-    color: 'gray',
-    fontWeight: 'bold',
-    translateX: 200,
-    translateY: 10
-  },
   statementText: {
     color: '#F18701',
     fontSize: 28,
@@ -305,28 +298,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold'
   },
-  
-  textSolution: {
-    padding: 10,
-    paddingStart: 30,
-    width: '80%',
-    height: 60,
-    marginTop: '5%',
-    borderRadius: 10,
-    backgroundColor: '#D0C0C0',
-    marginRight: 20
-  },
 
-  buttonSolution: {
-    backgroundColor: "#B9B6B6",
-    marginTop: 25,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 9,
-    marginRight: 20,
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
   buttonContainer: {
     backgroundColor: "#666BCA",
     marginTop: 25,
@@ -334,24 +306,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 40
     },
-    buttonContainerBotton: {
-      backgroundColor: "#82C0CC",
-      marginTop: 25,
-      borderRadius: 10,
-      paddingVertical: 10,
-      paddingHorizontal: 50
-      },
+
   buttonText: {
     fontSize: 20,
     color: "white",
-    alignSelf: "center",
-    //fontWeight: 'bold'
+    alignSelf: "center"
   },
 
-  icon: {
-    width: 30,
-    height: 30,
-  },
   receivingZone: {
     height: 40,//(Dimensions.get('window').width / 4) - 12,
         borderRadius: 10,
@@ -397,8 +358,7 @@ const styles = StyleSheet.create({
     margin: 70
   },
   textStyle: {
-    fontSize: 18,
-    //color:'white'
+    fontSize: 18
   },
 
    // ------  Comprobar Button -----

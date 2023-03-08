@@ -275,13 +275,7 @@ import LoadingScreen from './loadingScreen';
         paddingLeft:5,
         paddingRight:5
       },
-      Title: {
-        fontSize: 30,
-        color: 'gray',
-        fontWeight: 'bold',
-        translateX: 200,
-        translateY: 10
-      },
+
       statementText: {
         color: '#F18701',
         fontSize: 28,
@@ -294,28 +288,9 @@ import LoadingScreen from './loadingScreen';
         color: 'black',
         fontWeight: 'bold'
       },
-      textSolution: {
-        padding: 10,
-        paddingStart: 30,
-        width: '80%',
-        height: 60,
-        marginTop: '5%',
-        borderRadius: 10,
-        backgroundColor: '#D0C0C0',
-        marginRight: 20
-      },
-      buttonSolution: {
-        backgroundColor: "#B9B6B6",
-        marginTop: 25,
-        borderRadius: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 9,
-        marginRight: 20,
-        fontWeight: 'bold',
-        fontSize: 20,
-      },
+      
       buttonContainer: {
-        backgroundColor: "#82C0CC",
+        backgroundColor: "#666BCA",
         marginTop: 25,
         borderRadius: 10,
         paddingVertical: 10,
@@ -324,71 +299,8 @@ import LoadingScreen from './loadingScreen';
       buttonText: {
         fontSize: 20,
         color: "white",
-        alignSelf: "center",
-        fontWeight: 'bold'
+        alignSelf: "center"
       },
-      buttonSolution: {
-        backgroundColor: "#B9B6B6",
-        marginTop: 25,
-        borderRadius: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 9,
-        marginRight: 20,
-        fontWeight: 'bold',
-        fontSize: 20,
-      },
-      bottomBar: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        backgroundColor: '#292D3E',
-        paddingHorizontal: 20,
-      },
-      icon: {
-        width: 30,
-        height: 30,
-      },
-      imagen: {
-          width: 150,
-          height: 150,
-        },
-        buttonContainer: {
-          backgroundColor: "#82C0CC",
-          marginTop: 25,
-          borderRadius: 10,
-          paddingVertical: 10,
-          paddingHorizontal: 40
-          },
-          buttonContainerBotton: {
-            backgroundColor: "#82C0CC",
-            marginTop: 25,
-            borderRadius: 10,
-            paddingVertical: 10,
-            paddingHorizontal: 50
-            },
-        buttonText: {
-          fontSize: 20,
-          color: "white",
-          alignSelf: "center",
-          fontWeight: 'bold'
-        },
-        bottomBar: {
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: 50,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          backgroundColor: '#292D3E',
-          paddingHorizontal: 20,
-        },
         receivingZone: {
           height: 50,//(Dimensions.get('window').width / 4) - 12,
           borderRadius: 10,

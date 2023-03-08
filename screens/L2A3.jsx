@@ -224,18 +224,6 @@ const L2A3 = ({navigation}) => {
                    borderWidth={0} style= {{borderRadius:25}}
                     />
 
-{/* 
-            <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.instructionText}> __________</Text>
-              <Text style={styles.instructionText}> __________ </Text>
-              <Text style={styles.instructionText}> __________ </Text>
-            </View>
-
-            <View style={{ flexDirection: 'row',margin: 40 }}>
-              <Text style={styles.buttonSolution}>  kan </Text>
-              <Text style={styles.buttonSolution}>  Allkuka  </Text>
-              <Text style={styles.buttonSolution}>  yanami </Text>
-            </View> */}
              <GestureHandlerRootView style={gestureRootViewStyle}>
             <DraxProvider>
               <View style={styles.AppContainer}>
@@ -309,13 +297,7 @@ const styles = StyleSheet.create({
     paddingLeft:5,
     paddingRight:5
   },
-  Title: {
-    fontSize: 30,
-    color: 'gray',
-    fontWeight: 'bold',
-    translateX: 200,
-    translateY: 10
-  },
+
   statementText: {
     color: '#F18701',
     fontSize: 28,
@@ -329,27 +311,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   
-  textSolution: {
-    padding: 10,
-    paddingStart: 30,
-    width: '80%',
-    height: 60,
-    marginTop: '5%',
-    borderRadius: 10,
-    backgroundColor: '#D0C0C0',
-    marginRight: 20
-  },
-
-  buttonSolution: {
-    backgroundColor: "#B9B6B6",
-    marginTop: 25,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 9,
-    marginRight: 20,
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
   buttonContainer: {
     backgroundColor: "#666BCA",
     marginTop: 25,
@@ -357,24 +318,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 40
     },
-    buttonContainerBotton: {
-      backgroundColor: "#82C0CC",
-      marginTop: 25,
-      borderRadius: 10,
-      paddingVertical: 10,
-      paddingHorizontal: 50
-      },
+
   buttonText: {
     fontSize: 20,
     color: "white",
-    alignSelf: "center",
-    //fontWeight: 'bold'
+    alignSelf: "center"
   },
 
-  icon: {
-    width: 30,
-    height: 30,
-  },
   receivingZone: {
     width: 60,//(Dimensions.get('window').width / 4) - 12,
     height:50,// (Dimensions.get('window').width / 4) - 12,
