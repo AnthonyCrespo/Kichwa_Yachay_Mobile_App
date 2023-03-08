@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import React,  { useState, useEffect } from 'react';
 import { playAudio, stopAudio } from './functions/playAudio';
 import { Modal, StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
 import { getApp } from 'firebase/app'
@@ -10,6 +9,7 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 import LoadingScreen from './loadingScreen';
+import soundsAnswers from './soundsAnswers';
 
 const gestureRootViewStyle = { flex: 1 };
 let puntaje = 0;
@@ -30,14 +30,22 @@ const L2A3 = ({navigation}) => {
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Modal -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
-  const handleComprobarPress = () => {
-    stopAudio()
+  const handleComprobarPress = async() => {
+    await stopAudio(); // espera a que se detenga la reproducción del audio anterior
     setPorcentaje(porcentaje+100/questions.length)
     respuesta_correcta = verifyConcatenation(receivingItemList) 
+    let p;
+    
     if (respuesta_correcta) {
+      p = soundsAnswers[0].path;
       puntaje = puntaje + 100/questions.length;
     }
+    else {
+      p = soundsAnswers[1].path;
+    }
+    
     setModalVisible(true);
+    await playAudio(p); // espera a que se complete la reproducción del nuevo audio
   };
 
   
