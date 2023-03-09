@@ -10,12 +10,16 @@ import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 import LoadingScreen from './loadingScreen';
 import soundsAnswers from './soundsAnswers';
+import Constants from 'expo-constants';
 
+
+
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
 const gestureRootViewStyle = { flex: 1 };
+
 let puntaje = 0;
 let currentQuestionIndex = 0
 let respuesta_correcta;
-
 let answer_state = 0;
 
 
@@ -222,15 +226,16 @@ const L2A3 = ({navigation}) => {
 
     return (
         <View style={styles.AppContainer}>
+          <ProgressBar progress={porcentaje/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25, marginVertical:20}}
+                    />
+      
             <View>
-          <Text style={styles.statementText}> Ordena la oración </Text>
-          </View>
+              <Text style={styles.statementText}> Ordena la oración </Text>
+            </View>
 
             <Text style={styles.instructionText}> {statement} </Text>
-            <ProgressBar progress={porcentaje/100} width={300} 
-                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
-                   borderWidth={0} style= {{borderRadius:25}}
-                    />
 
              <GestureHandlerRootView style={gestureRootViewStyle}>
             <DraxProvider>
@@ -301,7 +306,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:30,
+    marginTop:topMargin,
     paddingLeft:5,
     paddingRight:5
   },
