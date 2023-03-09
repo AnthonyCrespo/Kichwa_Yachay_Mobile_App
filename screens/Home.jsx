@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState , useEffect} from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Dimensions, BackHandler} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Dimensions} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signOut} from 'firebase/auth';
 import { getApp} from 'firebase/app'
@@ -8,6 +8,12 @@ import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 
 import LoadingScreen from './loadingScreen';
 import CerrandoSesion from './cerrandoSesion'
 import ProgressBar from 'react-native-progress/Bar';
+import Constants from 'expo-constants';
+
+
+
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
+
 
 const Home = ({navigation}) => {
   const [name, setName] = useState("")
@@ -116,7 +122,6 @@ const Home = ({navigation}) => {
       Alert.alert('Error', 'No se pudo cerrar la sesión. Por favor, inténtalo de nuevo más tarde.');
     }
   };
-
   const [units, setUnits] = useState(null);
   const [selectedLesson, setSelectedLesson] = useState(null);
   const handlePress = (unit, lesson,subtitle) => {
@@ -128,7 +133,6 @@ const Home = ({navigation}) => {
 
   const [currentUnit, setCurrentUnit] = useState(0);
   const { height, width } = Dimensions.get('window');
-  const topPadding = Platform.OS === 'ios' ? 0 : StatusBar.currentHeight;
   const [currentSubscreen, setSubscreen] = useState(0);
   const [signinOut,setSigninOut] = useState(0)
 
@@ -158,7 +162,7 @@ const Home = ({navigation}) => {
                        width:"70%", 
                        alignItems: 'center', 
                        justifyContent: 'center', 
-                       paddingTop:topPadding,
+                       paddingTop:10,
                        borderRadius:20
                       }}>
                         
@@ -182,7 +186,7 @@ const Home = ({navigation}) => {
               >
                 <Text style={{ color: 'white', 
                               fontWeight:'bold',  
-                              fontSize:20 ,
+                              fontSize:18 ,
                               }}>
                               {item.title}
                 </Text>
@@ -290,7 +294,7 @@ const styles_home = StyleSheet.create({
 
     container: {
       flex: 1,
-      paddingTop: 20, 
+      marginTop: topMargin,
       backgroundColor: '#F5F5F8',
       alignItems: 'center',
       justifyContent: 'center',
@@ -302,10 +306,9 @@ const styles_home = StyleSheet.create({
       alignSelf: "center"
     },
 
-  
     unit_button:  { 
-      width: 160, 
-      height: 160, 
+      width: 150, 
+      height: 150, 
       borderRadius: 100, 
       marginBottom:20, 
       backgroundColor: "#2196F3",//'#00bfff', 
@@ -339,7 +342,7 @@ const styles_home = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       backgroundColor: '#fff',
-      paddingTop: 20, 
+      marginTop: topMargin 
     },
 
     title_container:{
@@ -347,8 +350,7 @@ const styles_home = StyleSheet.create({
       width: '100%',
       alignContent:"center",
       alignItems:"center",
-      marginTop:15,
-      paddingVertical:20,},
+      paddingVertical:20},
 
     headerText: {
       fontSize: 25,
