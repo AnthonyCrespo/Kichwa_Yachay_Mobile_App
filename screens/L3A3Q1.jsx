@@ -3,6 +3,11 @@ import React,  { useState } from 'react';
 import { Alert, StyleSheet, Button,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
+import Constants from 'expo-constants';
+
+
+
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
 
 let porcentaje = 0
 
@@ -91,14 +96,12 @@ const L3A3Q1= ({navigation}) => {
 
     return (
       <View style={styles.container}>
-
-        <Text style={styles.Title}>Relacione las palabras</Text>
-
         <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
-                   borderWidth={0} style= {{borderRadius:25}}
+                   borderWidth={0} style= {{borderRadius:25, marginVertical:20}}
                     />
 
+        <Text style={styles.Title}>Relacione las palabras</Text>
         
         <View style={{ flexDirection: 'row', margin: 40 }}>
 
@@ -171,6 +174,7 @@ const L3A3Q1= ({navigation}) => {
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
+      marginTop: topMargin,
     },
     Title: {
       fontSize: 30,
