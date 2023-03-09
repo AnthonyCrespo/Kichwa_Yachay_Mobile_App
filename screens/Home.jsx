@@ -16,11 +16,10 @@ const Home = ({navigation}) => {
   const app = getApp();
   const auth = getAuth(app);
   const db = getFirestore(app);
-
  /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Database -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
-
+  const [user_progress, set_user_progress] = useState(null);
 
  
   async function getDocuments() {
@@ -36,9 +35,48 @@ const Home = ({navigation}) => {
     setUnits(docs);
   }
 
+  async function getDocumentWithUserId() {
+    const currentUser = auth.currentUser;
+    const userId = currentUser.uid;
+    const docRef = doc(getFirestore(), 'Users', userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log('Document data:', docSnap.data());
+      set_user_progress(docSnap.data);
+      // Aquí puedes hacer lo que necesites con los datos del documento
+    } else {
+      console.log('No such document!');
+    }
+  }  
+
+  
+/*   async function getDocumentWithUserId() {
+    const user = auth.currentUser;
+    if (user !== null) {
+      const userId = user.uid;
+      console.log("HOLAAA")
+      const docRef = doc(getFirestore(), 'Users', userId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        set_user_progress(docSnap)
+        // Aquí puedes hacer lo que necesites con los datos del documento
+      } else {
+        console.log('No such document!');
+      }
+    } else {
+      console.log('User is not authenticated!');
+    }
+  } */
+
   useEffect(() => {
     getDocuments();
   }, []);
+
+  
+/*   useEffect(() => {
+    getDocumentWithUserId();
+  }, []);
+ */
 
 
   auth.onAuthStateChanged(async function(currentUser) {
@@ -80,8 +118,6 @@ const Home = ({navigation}) => {
   };
 
   const [units, setUnits] = useState(null);
-
-
   const [selectedLesson, setSelectedLesson] = useState(null);
   const handlePress = (unit, lesson,subtitle) => {
     setSelectedLesson(lesson);
@@ -96,7 +132,7 @@ const Home = ({navigation}) => {
   const [currentSubscreen, setSubscreen] = useState(0);
   const [signinOut,setSigninOut] = useState(0)
 
-  if (units === null) {
+  if (units === null ) {
     return (
       <LoadingScreen/>
     );
@@ -112,24 +148,50 @@ const Home = ({navigation}) => {
     if (currentSubscreen===0)
     return (
       <View style={styles_home.container}>
-        <View style={{ backgroundColor: '#383A45', width: '100%', height: 65, alignItems: 'center', justifyContent: 'center', paddingTop:topPadding}}>
-          <Text style={{ color: 'white', fontSize:25, fontWeight: 'bold' }}>{units[currentUnit].title}</Text>
+
+      <View style={styles_perfil.title_container}>
+        <Text style={styles_perfil.headerText}>Unidades</Text>
+      </View>
+        <View style={{ backgroundColor: '#89D630', 
+                       marginVertical:20, 
+                       height: 50,
+                       width:"70%", 
+                       alignItems: 'center', 
+                       justifyContent: 'center', 
+                       paddingTop:topPadding,
+                       borderRadius:20
+                      }}>
+                        
+          <Text style={{ color: 'white', 
+                         fontSize:20, 
+                         fontWeight: 'bold' 
+                         }}>
+                          {units[currentUnit].title}
+          </Text>
         </View>
+
+
         <FlatList
           data={units[currentUnit].lessons}
           renderItem={({ item }) => (
-            <View style={{ alignItems: 'center' }}>
+            <View>
               <TouchableOpacity
                    onPress={() => handlePress(units[currentUnit].id, item.id, item.subtitle)
                 }
-                style={{ width: 130, height: 130, borderRadius: 65, marginVertical:25, backgroundColor: '#00bfff', padding: 20, alignItems: 'center', justifyContent: 'center'  }}
+                style={styles_home.unit_button}
               >
-                <Text style={{ color: 'white', fontWeight:'bold',  fontSize:18 }}>{item.title}</Text>
+                <Text style={{ color: 'white', 
+                              fontWeight:'bold',  
+                              fontSize:20 ,
+                              }}>
+                              {item.title}
+                </Text>
               </TouchableOpacity>
             </View>
           )}
           keyExtractor={item => item.id.toString()}
         />
+  
     
         {/* -----------Bottom Bar ---------------------------*/}
         <View style={styles_home.bottomBar}>
@@ -150,30 +212,52 @@ const Home = ({navigation}) => {
   /* ------------------------------- Profile ------------------------------------  */
   /* -----------------------------------------------------------------------------  */
   if (currentSubscreen===1)
+  console.log(user_progress)
   return (
     <View style={styles_perfil.container}>
-      <Text style={styles_perfil.headerText}>Perfil</Text>
+
+      <View style={styles_perfil.title_container}>
+        <Text style={styles_perfil.headerText}>Perfil</Text>
+      </View>
+
       <View style={styles_perfil.profileContainer}>
         <View style={styles_perfil.textContainer}>
           <Text style={styles_perfil.nameText}>{name}</Text>
           <Text style={styles_perfil.usernameText}>{username}</Text>
         </View>
+
         <Image
           source={require('../assets/user_photo.png')}
           style={styles_perfil.profileImage}
         />
       </View>
+
+    <View style={styles_perfil.progressContainer}>
       <Text style={styles_perfil.progressHeader}>Progreso</Text>
-      <Text style={styles_perfil.progressHeader}>UNIDAD 1</Text>
+      <Text style={styles_perfil.unitName}>Unidad 1</Text>
       <ProgressBar progress={60/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
-                   borderWidth={0} style= {{borderRadius:25}}
+                   borderWidth={0} style= {{borderRadius:25, marginBottom:20}}
                     />
-      <TouchableOpacity style = {{backgroundColor:'#C33E5B',borderRadius:25,paddingVertical:15,
-                                  paddingHorizontal:80,marginBottom:100,position:"absolute", bottom: 0}}
+      <Text style={styles_perfil.unitName}>Unidad 2</Text>
+      <ProgressBar progress={0/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25, marginBottom:20}}
+                    />
+      <Text style={styles_perfil.unitName}>Unidad 3</Text>
+      <ProgressBar progress={0/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25, marginBottom:20}}
+                    />
+
+
+
+    </View>
+
+    <TouchableOpacity style = {styles_perfil.signout_button}
                         onPress={handleSignOut}>
-      <Text style={{color:'white', fontSize:15}}> Cerrar Sesión </Text>
-      </TouchableOpacity>
+      <Text style={styles_perfil.signout_text}> Cerrar Sesión </Text>
+    </TouchableOpacity>
 
     <View style={styles_perfil.bottomBar}>
       <TouchableOpacity onPress={() => setSubscreen(0)}>
@@ -202,68 +286,35 @@ const {width} = Dimensions.get('screen');
 }; */
 
 const styles_home = StyleSheet.create({
+
+
+    container: {
+      flex: 1,
+      paddingTop: 20, 
+      backgroundColor: '#F5F5F8',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+
     unitText: {
       fontSize: 18,
       color: '292D3E',
       alignSelf: "center"
     },
 
-    container: {
-      flex: 1,
-      paddingTop: 50, 
-      backgroundColor: '#F5F5F8',
+  
+    unit_button:  { 
+      width: 160, 
+      height: 160, 
+      borderRadius: 100, 
+      marginBottom:20, 
+      backgroundColor: "#2196F3",//'#00bfff', 
+      //padding: 20, 
       alignItems: 'center',
       justifyContent: 'center',
-    },
+      borderWidth:0,
+      borderColor:"black"  },
 
-    subTitle: {
-      fontSize: 20,
-      color: 'gray'
-    },
-    textInput: {
-      padding: 10,
-      paddingStart: 30,
-      width: '80%',
-      height: 50,
-      marginTop: '5%',
-      borderRadius: 10,
-      backgroundColor: '#fff'
-    },
-  
-    buttonContainer: {
-      backgroundColor: "#82C0CC",
-      marginTop: 25,
-      borderRadius: 10,
-      paddingVertical: 10,
-      paddingHorizontal: 125
-      },
-
-    socialButtonsContainer: {
-        marginTop: 100
-      },
-      
-    messageContainer: {
-      marginTop: 10,
-      alignSelf: 'center'
-    },
-    
-    buttonText: {
-      fontSize: 18,
-      color: "#fff",
-      alignSelf: "center"
-    },
-    socialButton: {
-      width: 300,
-      height: 40,
-      marginTop: 10, 
-      marginHorizontal: 10,
-      borderRadius: 5,
-    },
-    logoApp: {
-      width: 200,
-      height: 70,
-      marginBottom: 40
-    },
     bottomBar: {
         position: 'absolute',
         left: 0,
@@ -283,75 +334,97 @@ const styles_home = StyleSheet.create({
   })
 
   const styles_perfil = StyleSheet.create({
-    contentContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      padding: 30,
-    },
-    barContainer: {
-      padding: 40,
-    },
-    progressBar: {
-      backgroundColor: '#B2C908',
-      height: 30,
-      borderRadius: 15,
-    },
+
     container: {
       flex: 1,
       alignItems: 'center',
       backgroundColor: '#fff',
+      paddingTop: 20, 
     },
+
+    title_container:{
+      backgroundColor: '#292D3E', 
+      width: '100%',
+      alignContent:"center",
+      alignItems:"center",
+      marginTop:15,
+      paddingVertical:20,},
+
     headerText: {
-      fontSize: 20,
-      marginTop: 30,
+      fontSize: 25,
+      color:"white"
     },
+
+
+    /*-------- Profile Container  ---------- */
     profileContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginTop: 20,
-      borderWidth: 1,
-      borderColor: 'gray',
-      padding: 40,
-      borderRadius: 15
+      justifyContent:'center',
+      marginTop: 0,
+      marginBottom: 20,
+      width:'100%',
+      borderTopWidth: 0,
+      borderBottomWidth: 0,
+      //borderColor: '#292D3E',
+      padding: 30,
+      //borderRadius: 15,
+      backgroundColor: "#F1F1F1"
     },
     textContainer: {
-      marginRight: 10,
+      marginRight: 25,
     },
     nameText: {
-      fontSize: 20,
+      fontSize: 22,
     },
     usernameText: {
       fontSize: 15,
       color: 'gray',
+      fontWeight:"bold"
     },
     profileImage: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
+      width: 115,
+      height: 130,
+      borderRadius: 45
     },
+
+
+    /* ---------- Progress Container ------- */
+    progressContainer: {
+      marginTop: 20,
+      alignItems:"center",
+      //justifyContent:"flex-start"
+    },
+
     progressHeader: {
       fontSize: 25,
-      marginTop: 20,
-      marginBottom:50,
-      fontWeight:"bold"
+      marginVertical:15,
+      fontWeight:"bold",
+      color:"#383A45"
 
     },
-    progressContainer: {
-      marginTop: 10,
+
+    unitName: {
+      fontSize: 20,
+      //marginVertical:15
     },
-    unitContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 10,
+
+    /* ------- Sign Out Button ------------ */
+    signout_button:{
+      backgroundColor:'#C33E5B',
+      borderRadius:35,
+      paddingVertical:12,
+      paddingHorizontal:40,
+      //marginBottom:100,
+      position:"absolute",
+      bottom: 80
     },
-    unitText: {
-      fontSize: 18,
-      marginRight: 10,
+
+    signout_text:{
+      color:'white', 
+      fontSize:18
     },
-    progressText: {
-      marginLeft: 10,
-      fontSize: 18,
-    },
+    /*  ---------  Bottom Bar --------- */
     bottomBar: {
       position: 'absolute',
       left: 0,

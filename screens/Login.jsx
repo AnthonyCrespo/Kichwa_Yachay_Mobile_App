@@ -8,8 +8,6 @@ import {getAuth,getReactNativePersistence,initializeAuth,signInWithEmailAndPassw
 import {initializeApp, getApps, getApp} from 'firebase/app'
 import {firebaseConfig} from '../firebase-config'
 
-
-
 const Login = ({navigation}) => {
   const [logged_user, setLoggedUser] = React.useState(1)
   const [email, setEmail] = React.useState('')
