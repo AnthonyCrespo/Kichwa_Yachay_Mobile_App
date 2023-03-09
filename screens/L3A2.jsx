@@ -59,7 +59,7 @@ const L3A2 = ({navigation}) => {
         navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
                                      time_taken: segundos,
                                      unit:1, 
-                                     lesson:1, 
+                                     lesson:3, 
                                      activity:1,
                                      subtitle:'Tullkupuna/Wiwakuna',
                                      subtitle_esp:'Colores/Animales'});

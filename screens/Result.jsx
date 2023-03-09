@@ -90,36 +90,37 @@ const Result = ({route, navigation}) => {
     return (
 
     <View style={styles.container}>
-<View style={styles.title_container}>
+{/* <View style={styles.title_container}>
 <Text style={{
       fontSize: 27,
       color:"white"
     }}>Resultado</Text>
-</View>
-{/*                 <Image
-                  style={{height:120, width:300, marginVertical:30}}
+</View> */}
+                <Image
+                  style={{height:200, width:200, position:"absolute",top:30}}
                   resizeMode="contain"
-                  source={require("../assets/logo.png")}></Image> */}
+                  source={require("../assets/results.png")}></Image>
       <View style={{ //backgroundColor: '#89D630', 
                        height: 70,
                        width:"70%", 
                        alignItems: 'center', 
                        justifyContent: 'center', 
                        //paddingVertical:10,
+                       marginVertical:10,
                        borderRadius:20
                       }}>
       <Text style={{fontSize:50,
-         //fontWeight: 'bold', 
-         color:"black"}}> Puntaje:  </Text>
+         fontWeight: 'bold', 
+         color:"#56AD5C"}}> Puntaje:  </Text>
       </View >
 
 
-      <Text style={{fontSize:80, 
-                    marginTop:20, 
-                    color: {puntuation3} >= 75  ? '#8FCD02' : {puntuation3} > 20 && {puntuation3} < 75 ? '#EF6639': "#EF5852",
-                    //fontWeight: 'bold'
+      <Text style={{fontSize:70, 
+                    //marginTop:20, 
+                    color: "black",//{puntuation3} >= 75  ? '#8FCD02' : {puntuation3} > 20 && {puntuation3} < 75 ? '#EF6639': "#EF5852",
+                    fontWeight: 'bold'
                     }}> {puntuation3} </Text>
-
+{/* 
       <View style={{ //backgroundColor: '#006EC5', 
                             height: 70,
                             width:"70%", 
@@ -127,13 +128,15 @@ const Result = ({route, navigation}) => {
                             justifyContent: 'center', 
                             //paddingVertical:10,
                             borderRadius:20
-                            }}>
-      <Text style={{fontSize:50, 
-                    //fontWeight: 'bold',
-                    color:"black"}}> Tiempo total:  </Text>
-      </View >
-      <Text style={{fontSize:80, marginTop:20, color: '#006EC5',
-      //fontWeight: 'bold'
+                            }}> */}
+      <Text style={{fontSize:55, 
+                    fontWeight: 'bold',
+                    color:"#2E7BB0"}}> Tiempo total:  </Text>
+{/*       </View > */}
+      <Text style={{fontSize:80, 
+      //marginTop:20, 
+      color: "black",//'#006EC5',
+      fontWeight: 'bold'
       }}> {time_taken}s </Text>
 
       <TouchableOpacity
@@ -161,6 +164,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: topMargin,
+      backgroundColor:"#EFE8DF"
     },
 
     subTitle: {
@@ -202,7 +206,7 @@ const styles = StyleSheet.create({
         height: 60,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "#C33E5B",
+        backgroundColor: "#A92A7B",
         marginTop:80,
         borderRadius: 50,
         position:"absolute",
