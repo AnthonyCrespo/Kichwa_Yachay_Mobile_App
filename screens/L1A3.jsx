@@ -10,10 +10,12 @@ import audios from './soundsL1A3';
 import LoadingScreen from './loadingScreen';
 import { playAudio } from './functions/playAudio';
 import soundsAnswers from './soundsAnswers';
+import Constants from 'expo-constants';
 
 let answer = '';
 let puntaje = 0;
 let respuesta_correcta;
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
 
 const L1A3 = ({ navigation }) => {
   app = getApp(); 
@@ -97,15 +99,14 @@ const L1A3 = ({ navigation }) => {
   
   return (
     <View style= {styles.AppContainer}>
+      <ProgressBar progress={porcentaje/100} width={300} 
+                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
+                   borderWidth={0} style= {{borderRadius:25, marginVertical:20}}
+                    />
 
       <View style={styles.statementContainer}>
         <Text style={styles.statementText}>Escuche y seleccione</Text>
       </View>
-
-      <ProgressBar progress={porcentaje/100} width={300} 
-                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
-                   borderWidth={0} style= {{borderRadius:25}}
-                    />
 
       <View style={styles.audioContainer}> 
         <TouchableOpacity
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     AppContainer: {
       flex: 1,
       backgroundColor: '#fff',
-      paddingTop:20,
+      narginTop:topMargin,
       paddingLeft:5,
       paddingRight:5,
       alignItems: 'center',
