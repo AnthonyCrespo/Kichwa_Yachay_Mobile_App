@@ -28,11 +28,12 @@ const L3A3Q1= ({navigation}) => {
     const handleContinuePress = () => {
       setPorcentaje(100)
       navigation.navigate("Result", {puntuation3: 100, 
-                                       time_taken: segundos,
-                                       unit:1, 
-                                       lesson:3, 
-                                       activity:3,
-                                       subtitle:' '});
+                                     time_taken: segundos,
+                                     unit:1, 
+                                     lesson:1, 
+                                     activity:1,
+                                     subtitle:'Tullkupuna/Wiwakuna',
+                                     subtitle_esp:'Colores/Animales'});
     }
     const handlePress = (type, item) => {
       if (type === 'left') {
