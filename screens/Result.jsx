@@ -1,12 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Button, FlatList, Dimensions   } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getApp } from 'firebase/app'
 import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import Constants from 'expo-constants';
+
+
+
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
+
+
 const Result = ({route, navigation}) => {
-    const {puntuation3, time_taken, unit, lesson, activity, subtitle} = route.params;
+    const {puntuation3, time_taken, unit, lesson, activity, subtitle, subtitle_esp} = route.params;
     const app = getApp(); 
     //const db = getFirestore(app);
     const auth = getAuth(app);
@@ -83,13 +90,54 @@ const Result = ({route, navigation}) => {
     return (
 
     <View style={styles.container}>
-      <Text style={{fontSize:40, fontWeight: 'bold'}}> Puntaje obtenido:  </Text>
-      <Text style={{fontSize:80, marginTop:20, color: '#A43074',fontWeight: 'bold'}}> {puntuation3} </Text>
-      <Text style={{fontSize:40, fontWeight: 'bold'}}> Tiempo total:  </Text>
-      <Text style={{fontSize:80, marginTop:20, color: '#A43074',fontWeight: 'bold'}}> {time_taken}s </Text>
+<View style={styles.title_container}>
+<Text style={{
+      fontSize: 27,
+      color:"white"
+    }}>Resultado</Text>
+</View>
+{/*                 <Image
+                  style={{height:120, width:300, marginVertical:30}}
+                  resizeMode="contain"
+                  source={require("../assets/logo.png")}></Image> */}
+      <View style={{ //backgroundColor: '#89D630', 
+                       height: 70,
+                       width:"70%", 
+                       alignItems: 'center', 
+                       justifyContent: 'center', 
+                       //paddingVertical:10,
+                       borderRadius:20
+                      }}>
+      <Text style={{fontSize:50,
+         //fontWeight: 'bold', 
+         color:"black"}}> Puntaje:  </Text>
+      </View >
+
+
+      <Text style={{fontSize:80, 
+                    marginTop:20, 
+                    color: {puntuation3} >= 75  ? '#8FCD02' : {puntuation3} > 20 && {puntuation3} < 75 ? '#EF6639': "#EF5852",
+                    //fontWeight: 'bold'
+                    }}> {puntuation3} </Text>
+
+      <View style={{ //backgroundColor: '#006EC5', 
+                            height: 70,
+                            width:"70%", 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            //paddingVertical:10,
+                            borderRadius:20
+                            }}>
+      <Text style={{fontSize:50, 
+                    //fontWeight: 'bold',
+                    color:"black"}}> Tiempo total:  </Text>
+      </View >
+      <Text style={{fontSize:80, marginTop:20, color: '#006EC5',
+      //fontWeight: 'bold'
+      }}> {time_taken}s </Text>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('Lessons', {unit, lesson, subtitle} )}
+        onPress={() => navigation.navigate('Lessons', {unit, lesson, subtitle,subtitle_esp} )}
         style={styles.continueButton}>
         <Text style={styles.continueText}>Continuar</Text>
       </TouchableOpacity>
@@ -109,10 +157,10 @@ const styles = StyleSheet.create({
 
     container: {
       flex: 1,
-      paddingTop: 50, 
       backgroundColor: '#F5F5F8',
       alignItems: 'center',
       justifyContent: 'center',
+      marginTop: topMargin,
     },
 
     subTitle: {
@@ -134,59 +182,31 @@ const styles = StyleSheet.create({
       marginTop: 25,
       borderRadius: 10,
       paddingVertical: 10,
-      paddingHorizontal: 125
+      paddingHorizontal: 125,
+      
       },
 
-    socialButtonsContainer: {
-        marginTop: 100
+      title_container:{
+        backgroundColor: '#292D3E', 
+        width: '100%',
+        alignContent:"center",
+        alignItems:"center",
+        paddingVertical:20,
+        position:"absolute",
+        top:0
+        
       },
-      
-    messageContainer: {
-      marginTop: 10,
-      alignSelf: 'center'
-    },
-    
-    buttonText: {
-      fontSize: 18,
-      color: "#fff",
-      alignSelf: "center"
-    },
-    socialButton: {
-      width: 300,
-      height: 40,
-      marginTop: 10, 
-      marginHorizontal: 10,
-      borderRadius: 5,
-    },
-    logoApp: {
-      width: 200,
-      height: 70,
-      marginBottom: 40
-    },
-    bottomBar: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        backgroundColor: '#292D3E',
-        paddingHorizontal: 20,
-      },
-      icon: {
-        width: 30,
-        height: 30,
-      },
+  
       continueButton: {
         width: 300,
-        height: 40,
+        height: 60,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "#82C0CC",
+        backgroundColor: "#C33E5B",
         marginTop:80,
-        borderRadius: 20,
+        borderRadius: 50,
+        position:"absolute",
+        bottom:50
       },
       continueText:{
         color: '#fff',

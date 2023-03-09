@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     
     buttonTittle: {
             fontSize: 22,
-            color: "#9ABA2E",
+            color: "#B5E61D",
             fontWeight: 'bold',
             alignSelf: "center",
             marginHorizontal: 40

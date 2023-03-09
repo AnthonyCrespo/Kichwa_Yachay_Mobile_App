@@ -174,7 +174,7 @@ const L3A3Q1= ({navigation}) => {
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-around',
       marginTop: topMargin,
     },
     Title: {

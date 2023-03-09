@@ -158,8 +158,8 @@ const Home = ({navigation}) => {
       </View>
         <View style={{ backgroundColor: '#89D630', 
                        marginVertical:20, 
-                       height: 50,
-                       width:"70%", 
+                       height: 65,
+                       width:"45%", 
                        alignItems: 'center', 
                        justifyContent: 'center', 
                        paddingVertical:10,
@@ -167,7 +167,7 @@ const Home = ({navigation}) => {
                       }}>
                         
           <Text style={{ color: 'white', 
-                         fontSize:20, 
+                         fontSize:25, 
                          fontWeight: 'bold',
                          alignSelf:"center" 
                          }}>
@@ -354,7 +354,7 @@ const styles_home = StyleSheet.create({
       paddingVertical:20},
 
     headerText: {
-      fontSize: 25,
+      fontSize: 27,
       color:"white"
     },
 
