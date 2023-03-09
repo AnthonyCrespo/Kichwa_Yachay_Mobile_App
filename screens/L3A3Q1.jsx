@@ -43,7 +43,6 @@ const L3A3Q1= ({navigation}) => {
           setCorrectPairs([...correctPairs, { left: selectedLeft, right: item }]);
           setLeft([...Left, selectedLeft]);
           setRight([...Right, item]);
-          //Alert.alert('Respuesta correcta');
 
         }
 
@@ -51,34 +50,28 @@ const L3A3Q1= ({navigation}) => {
           setCorrectPairs([...correctPairs, { left: selectedLeft, right: item }]);
           setLeft([...Left, selectedLeft]);
           setRight([...Right, item]);
-          //Alert.alert('Respuesta correcta');
         } 
         else if (selectedLeft === 'Es' && item === 'Kan') {
           setCorrectPairs([...correctPairs, { left: selectedLeft, right: item }]);
           setLeft([...Left, selectedLeft]);
           setRight([...Right, item]);
-          //Alert.alert('Respuesta correcta');
         }
         else if (selectedLeft === 'Gato' && item === 'Missi') {
           setCorrectPairs([...correctPairs, { left: selectedLeft, right: item }]);
           setLeft([...Left, selectedLeft]);
           setRight([...Right, item]);
-          //Alert.alert('Respuesta correcta');
         }
         else if (selectedLeft === 'Negro' && item === 'Yana') {
           setCorrectPairs([...correctPairs, { left: selectedLeft, right: item }]);
           setLeft([...Left, selectedLeft]);
           setRight([...Right, item]);
-          //Alert.alert('Respuesta correcta');
         }
         else if (selectedLeft === 'Blanco' && item === 'Yurak') {
           setCorrectPairs([...correctPairs, { left: selectedLeft, right: item }]);
           setLeft([...Left, selectedLeft]);
           setRight([...Right, item]);
-          //Alert.alert('Respuesta correcta');
         }
         else {
-            //Alert.alert('Respuesta incorrecta');
             setIncorrectPairs([...incorrectPairs, { left: selectedLeft, right: item }]);
         }
       }
@@ -98,9 +91,7 @@ const L3A3Q1= ({navigation}) => {
 
     return (
       <View style={styles.container}>
-{/*         <View style={{ margin: 20 }}>
-          <Text style={styles.Title}>Actividad 3/Rurana 3</Text>
-        </View> */}
+
         <Text style={styles.Title}>Relacione las palabras</Text>
 
         <ProgressBar progress={porcentaje/100} width={300} 
@@ -115,15 +106,13 @@ const L3A3Q1= ({navigation}) => {
 <View style={{ flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignContent:"center" }}>
   {leftItems.map((item, index) => {
     const isCorrect = correctPairs.find((pair) => pair.left === item);
-    const isIncorrect = incorrectPairs.find((pair) => pair.left === item);
+    //const isIncorrect = incorrectPairs.find((pair) => pair.left === item);
      return (
       <TouchableOpacity
         key={`left_${index}`}
         style={[
           styles.buttonSolution,
-          //Left.includes(item)&& styles.alertCorrect,
           isCorrect && styles.correctSolution,
-          //isIncorrect && styles.buttonSolution
 
       ]}
         onPress={() => {handlePress('left', item);         
@@ -139,13 +128,11 @@ const L3A3Q1= ({navigation}) => {
 <View style={{ flex: 1, flexDirection: 'column', flexWrap: 'wrap' }}>
   {rightItems.map((item, index) => {
      const isCorrect = correctPairs.find((pair) => pair.right === item);
-     //const isIncorrect = incorrectPairs.find((pair) => pair.right === item);
      return (
       <TouchableOpacity
         key={`right_${index}`}
         style={[
           styles.buttonSolution,
-          //Right.includes(item)  && styles.alertCorrect,
           isCorrect && styles.correctSolution,
 
         ]}
@@ -163,14 +150,8 @@ const L3A3Q1= ({navigation}) => {
   </View>
 
         
-{/*           <View>
-            <TouchableOpacity style={styles.buttonContainer} onPress={resetActivity} >
-              <Text style={styles.buttonText}> Reset </Text> 
-            </TouchableOpacity>
-            </View> */}
 
 
-            {/* <View style={styles.buttonContainer}> */}
             <TouchableOpacity
             style={correctPairs.length !== 6 ? styles.continuarButton_Disabled  : styles.continuarButton_Enabled }
             disabled={correctPairs.length !== 6}
@@ -178,8 +159,6 @@ const L3A3Q1= ({navigation}) => {
           >
             <Text style={styles.continuarText}>Continuar</Text>
           </TouchableOpacity>
-           {/*  </View> */}
-
   
         <StatusBar style="auto" />
       </View>
@@ -197,8 +176,6 @@ const L3A3Q1= ({navigation}) => {
       fontSize: 30,
       color: '#F2570A',
       fontWeight: 'bold',
-      //translateX: 200,
-      //translateY: 10
       marginBottom:30
     },
     subTitle: {
@@ -221,8 +198,6 @@ const L3A3Q1= ({navigation}) => {
       marginBottom: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      //borderWidth: 1,
-      //borderColor: 'gray',
       width: '70%',
       height: 50,
     },

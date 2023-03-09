@@ -23,7 +23,6 @@ const L2A1 = ({ navigation }) => {
 
   // ----- Barra de progreso ------
   const [porcentaje, setPorcentaje] = useState(0);
-  const ancho = 300
 
   const handleComprobarPress = () => {
     setPorcentaje(porcentaje+100/questions.length)

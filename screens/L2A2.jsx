@@ -361,11 +361,7 @@ const styles = StyleSheet.create({
     padding: 5,
     height: 80
   },
-  receivingZoneContainer: {
-    padding: 5,
-    height: 100,
-    margin: 10
-  },
+
   textStyle: {
     fontSize: 18
   },
@@ -445,8 +441,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: "#86D332",
     borderRadius: 20},
-  
-
 
   continueButton_Incorrect:{
     width: 200,

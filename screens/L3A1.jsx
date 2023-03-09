@@ -262,8 +262,6 @@ const styles = StyleSheet.create({
           flex: 1,
           backgroundColor: '#fff',
           paddingTop:10,
-          //paddingLeft:5,
-          //paddingRight:5,
           justifyContent:'space-around',
           alignItems: 'center',
           alignContent: 'center'
@@ -299,6 +297,7 @@ const styles = StyleSheet.create({
           alignItems: 'center',
           justifyContent: 'center',
         },
+
         imageContainer:{
           alignItems: 'center',
           alignContent: 'center',
@@ -309,10 +308,7 @@ const styles = StyleSheet.create({
           flexDirection:'row',
           justifyContent:'space-between',
         },
-        optionButton: {
-          flexDirection: 'row',
-          //alignContent: 'space-between',
-        },
+
         optionText: {
           color: '#000',
           fontSize: 20,
@@ -337,22 +333,12 @@ const styles = StyleSheet.create({
           justifyContent: 'center',
           backgroundColor: "#C3C3C3",
           borderRadius: 20,
-          //opacity: 0
         },
-
 
         comprobarText:{
           color: '#fff',
           fontSize: 20
         },
-
-
-        catImage:{
-          width: 140,
-          height: 80,
-          alignSelf:'center'
-        },
-
 
         /* ------- Modal --------- */
         modalContainer: {
@@ -360,11 +346,9 @@ const styles = StyleSheet.create({
           width:"100%",
           bottom: 0,
           backgroundColor: '#383A45',
-          //borderRadius: 5,
           alignItems: 'center',
           justifyContent: 'center',
           padding: 20,
-          //margin: 40,
           marginHorizontal: 'auto',
           marginTop: 'auto',
           marginBottom: 'auto',
@@ -398,8 +382,6 @@ const styles = StyleSheet.create({
           justifyContent: 'center',
           backgroundColor: "#86D332",
           borderRadius: 20},
-        
-
 
         continueButton_Incorrect:{
           width: 200,
@@ -413,43 +395,7 @@ const styles = StyleSheet.create({
             color: '#fff',
             fontSize: 20
           },
-  
-/*         serpentImage:{
-          width: 137,
-          height: 140,
-        },
-        pigImage:{
-          width: 107,
-          height: 102,
-        },
-        yellowfishImage:{
-          width: 150,
-          height: 101,
-        },
-        redfishImage:{
-          width: 175,
-          height: 83,
-        },
-        bullImage:{
-          width: 159,
-          height: 123,
-        },
-        whitedogImage:{
-          width: 139,
-          height: 106,
-        },
-        blackdogImage:{
-          width: 150,
-          height: 144,
-        },
-        henImage:{
-          width: 116,
-          height: 109,
-        },
-        cowImage:{
-          width: 159,
-          height: 112,
-        }, */
+
       });
       
 export default L3A1;
