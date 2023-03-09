@@ -9,10 +9,12 @@ import ProgressBar from 'react-native-progress/Bar';
 import LoadingScreen from './loadingScreen';
 import { playAudio } from './functions/playAudio';
 import soundsAnswers from './soundsAnswers';
+import Constants from 'expo-constants';
 
 let puntaje = 0;
 let answer;
 let respuesta_correcta;
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
 
 const L2A1 = ({ navigation }) => {
   app = getApp(); 
@@ -22,7 +24,7 @@ const L2A1 = ({ navigation }) => {
   const [ selectedOption, setSelectedOption ] = useState(null);
   const [ modalVisible, setModalVisible ] = useState(false);
   const segundos = useCronometro();
-
+  
   // ----- Barra de progreso ------
   const [porcentaje, setPorcentaje] = useState(0);
 
@@ -90,11 +92,12 @@ const L2A1 = ({ navigation }) => {
   return (
     <View style= {styles.AppContainer}>
       
-      <Text style={styles.statementText}>{statement}</Text>
       <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
-                   borderWidth={0} style= {{borderRadius:25}}
+                   borderWidth={0} style= {{borderRadius:25, marginVertical:20}}
                     />
+
+      <Text style={styles.statementText}>{statement}</Text>
 
       {options.map((option, index) => (
 
@@ -163,7 +166,7 @@ const styles = StyleSheet.create({
   AppContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop:20,
+    marginTop:topMargin,
     paddingLeft:5,
     paddingRight:5,
     justifyContent:'space-around',
