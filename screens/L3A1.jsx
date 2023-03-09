@@ -78,11 +78,12 @@ const L3A1 = ({ navigation }) => {
 
     if (currentQuestionIndex === questions.length-1) {
       navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
-                                     time_taken: segundos, 
+                                     time_taken: segundos,
                                      unit:1, 
-                                     lesson:3, 
-                                     activity:1, 
-                                     subtitle:' '});
+                                     lesson:1, 
+                                     activity:1,
+                                     subtitle:'Tullkupuna/Wiwakuna',
+                                     subtitle_esp:'Colores/Animales'});
       puntaje = 0;
     } else{
       setCurrentQuestionIndex(currentQuestionIndex + 1);
