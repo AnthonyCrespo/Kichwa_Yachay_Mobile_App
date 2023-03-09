@@ -11,16 +11,20 @@ import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 import LoadingScreen from './loadingScreen';
 import soundsAnswers from './soundsAnswers';
+import Constants from 'expo-constants';
 
-  const gestureRootViewStyle = { flex: 1 };
-  let puntaje = 0;
-  let currentQuestionIndex = 0
-  let respuesta_correcta;
-  
-  let answer_state = 0; 
+
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
+const gestureRootViewStyle = { flex: 1 };
+
+let puntaje = 0;
+let currentQuestionIndex = 0
+let respuesta_correcta;
+
+let answer_state = 0; 
 
   
-  const L3A2 = ({navigation}) => {
+const L3A2 = ({navigation}) => {
     app = getApp(); 
     const db = getFirestore();
     const [ questions, setQuestions ] = useState(null);
@@ -193,15 +197,14 @@ import soundsAnswers from './soundsAnswers';
     }
     return (
         <View style={styles.AppContainer}>
-            <View>
-            <Text style={styles.statementText}> Ordene la pregunta </Text>
-          </View>
-
-
-          <ProgressBar progress={porcentaje/100} width={300} 
+            <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
-                   borderWidth={0} style= {{borderRadius:25}}
+                   borderWidth={0} style= {{borderRadius:25, marginVertical:20}}
                     />
+      
+            <View>
+              <Text style={styles.statementText}> Ordene la pregunta </Text>
+            </View>
   
   
   <GestureHandlerRootView style={gestureRootViewStyle}>
@@ -281,7 +284,7 @@ import soundsAnswers from './soundsAnswers';
         backgroundColor: '#fff',
         justifyContent: 'space-around',
         alignItems: 'center',
-        marginTop:30,
+        marginTop:topMargin,
         paddingLeft:5,
         paddingRight:5
       },
