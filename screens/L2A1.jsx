@@ -198,7 +198,8 @@ const styles = StyleSheet.create({
   },
   optionText: {
     color: '#000',
-    fontSize: 20,
+    fontSize: 24,
+    fontWeight: 'bold',
   },
   itemContainer:{
     flex: 1,

@@ -124,10 +124,10 @@ const Home = ({navigation}) => {
   };
   const [units, setUnits] = useState(null);
   const [selectedLesson, setSelectedLesson] = useState(null);
-  const handlePress = (unit, lesson,subtitle) => {
+  const handlePress = (unit, lesson,subtitle, subtitle_esp ) => {
     setSelectedLesson(lesson);
     // navegar a la vista de actividades y pasar la lección seleccionada como parámetro
-    navigation.navigate('Lessons', {unit, lesson, subtitle});
+    navigation.navigate('Lessons', {unit, lesson, subtitle, subtitle_esp });
   };
 
 
@@ -162,13 +162,14 @@ const Home = ({navigation}) => {
                        width:"70%", 
                        alignItems: 'center', 
                        justifyContent: 'center', 
-                       paddingTop:10,
+                       paddingVertical:10,
                        borderRadius:20
                       }}>
                         
           <Text style={{ color: 'white', 
                          fontSize:20, 
-                         fontWeight: 'bold' 
+                         fontWeight: 'bold',
+                         alignSelf:"center" 
                          }}>
                           {units[currentUnit].title}
           </Text>
@@ -180,7 +181,7 @@ const Home = ({navigation}) => {
           renderItem={({ item }) => (
             <View>
               <TouchableOpacity
-                   onPress={() => handlePress(units[currentUnit].id, item.id, item.subtitle)
+                   onPress={() => handlePress(units[currentUnit].id, item.id, item.subtitle, item.subtitle_esp )
                 }
                 style={styles_home.unit_button}
               >

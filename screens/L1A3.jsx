@@ -182,9 +182,7 @@ const styles = StyleSheet.create({
     AppContainer: {
       flex: 1,
       backgroundColor: '#fff',
-      narginTop:topMargin,
-      paddingLeft:5,
-      paddingRight:5,
+      marginTop:topMargin,
       alignItems: 'center',
       justifyContent: 'space-around'
     },

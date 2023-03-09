@@ -8,6 +8,12 @@ import ProgressBar from 'react-native-progress/Bar';
 import LoadingScreen from './loadingScreen';
 import { playAudio } from './functions/playAudio';
 import soundsAnswers from './soundsAnswers';
+import Constants from 'expo-constants';
+
+
+
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
+
 
 let puntaje = 0;
 let answer;
@@ -94,13 +100,11 @@ const L1A1 = ({navigation}) => {
   
   return (
     <View style= {styles.AppContainer}>
-
-      <Text style={styles.statementText}>{statement}</Text>
-
       <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
-                   borderWidth={0} style= {{borderRadius:25}}
+                   borderWidth={0} style= {{borderRadius:25, marginVertical:20, top:0}}
                     />
+      <Text style={styles.statementText}>{statement}</Text>
 
       {options.map((option, index) => (
 
@@ -169,21 +173,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingTop:20,
-    paddingLeft:5,
-    paddingRight:5
+    marginTop:topMargin
   },
 
-  button_statementContainer: {
-    flexDirection:'row',
-    justifyContent:'flex-start',
-  },
-  returnButtonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
   statementText: {
-    color: '#F18701',
+    color: '#EF6639',
     fontSize: 28,
     fontWeight: 'bold',
   },
