@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { playAudio, stopAudio } from './functions/playAudio';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { StyleSheet, Modal, TouchableOpacity, View, Text } from 'react-native';
 import { getApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import ProgressBar from 'react-native-progress/Bar';
@@ -9,19 +8,21 @@ import useCronometro from './functions/cronometer';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import audios from './soundsL1A3';
 import LoadingScreen from './loadingScreen';
+import { playAudio } from './functions/playAudio';
+import soundsAnswers from './soundsAnswers';
 
-
-let answers = ['','',''];
+let answer = '';
 let puntaje = 0;
-let currentButtonText = 'Verificar';
+let respuesta_correcta;
 
 const L1A3 = ({ navigation }) => {
   app = getApp(); 
   const db = getFirestore();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [ questions, setQuestions ] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [showResult, setShowResult] = useState(false);
+  const [ selectedOption, setSelectedOption ] = useState(null);
+  const [ showResult, setShowResult ] = useState(false);
+  const [ modalVisible, setModalVisible ] = useState(false);
   const segundos = useCronometro();
 
   // ----- Barra de progreso ------
@@ -39,6 +40,40 @@ const L1A3 = ({ navigation }) => {
       docs.push(data);
     });
     setQuestions(docs);
+  }
+
+  const handleComprobarPress = async () => {
+    setPorcentaje(porcentaje+100/questions.length);
+    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer;
+    let p;
+    
+    if (respuesta_correcta) {
+      p = soundsAnswers[0].path;
+      puntaje = puntaje + 100/questions.length;
+    }
+    else {
+      p = soundsAnswers[1].path;
+    }
+    
+    setModalVisible(true);
+    await playAudio(p); // espera a que se complete la reproducción del nuevo audio
+  };
+
+  const handleContinuePress = () => {
+    setModalVisible(false);
+    setSelectedOption(null);
+
+    if (currentQuestionIndex === questions.length-1) {
+      navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
+                                     time_taken: segundos,
+                                     unit:1, 
+                                     lesson:1, 
+                                     activity:1,
+                                     subtitle:'Colores/Tullpukuna'});
+      puntaje = 0;
+    } else{
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
   }
  
   const verifyAnswer = () => {
@@ -89,30 +124,13 @@ const L1A3 = ({ navigation }) => {
 
       {options.map((option, index) =>(
         <View key = {index}
-              style = {[styles.colorContainer,
-              showResult &&
-              option['text'] === statement &&
-              selectedOption === index &&
-              styles.correctAnswer,
-              showResult &&
-              option['text'] !== statement &&
-              selectedOption === index &&
-              styles.wrongAnswer,
-              showResult &&
-              option['text'] === statement &&
-              selectedOption !== index &&
-              styles.correctAnswer,
-              showResult &&
-              option['text'] !== statement &&
-              selectedOption !== index &&
-              styles.colorContainer,
-         ]}>
+              style = {selectedOption === index ? styles.colorContainer : styles.colorContainer}>  
           <TouchableOpacity
             style = {(showResult === false && selectedOption === index) ? styles.selectedTouchOption : styles.touchOption}
             onPress={() => {
               if(showResult === false){
                 setSelectedOption(index);
-                answers[currentQuestionIndex] = option['text'];
+                answer = option['text'];
               }
             }}
           >
@@ -124,44 +142,34 @@ const L1A3 = ({ navigation }) => {
 
       </View>
 
-      <View style={styles.buttonContainer}>
-      <TouchableOpacity
-        style={styles.continueButton}
-        onPress={() => {
-          if (currentButtonText === 'Verificar'){
-            if (selectedOption !== null){
-              stopAudio()
-              verifyAnswer();
-              setPorcentaje(porcentaje+100/questions.length)
-              if (answers[currentQuestionIndex] === statement){
-                puntaje = puntaje + 100/questions.length;
-              }
-              currentButtonText = 'Continuar'
-            }
-          }
-          else if (currentButtonText === 'Continuar'){
-            verifyAnswer();
-            setSelectedOption(null);
-            currentButtonText = 'Verificar'
-            if (currentQuestionIndex === questions.length-1) {
-              navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
-                                             time_taken: segundos,
-                                             unit:1, 
-                                             lesson:1, 
-                                             activity:3, 
-                                             subtitle:'Colores/Tullpukuna'});
-              puntaje = 0;
-              answers = ['','','']
-            } else{
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-            }
-          }
-        }}
-      >
-        <Text style={styles.continueText}>{currentButtonText}</Text>
-      </TouchableOpacity>
-
+      <View style={{flex:1}}>
+          <TouchableOpacity
+            style={selectedOption === null ? styles.comprobarButton_Disabled : styles.comprobarButton_Enabled }
+            disabled={selectedOption === null}
+            onPress={handleComprobarPress}
+          >
+            <Text style={styles.comprobarText}>Comprobar</Text>
+          </TouchableOpacity>
       </View>
+
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <View style={styles.modalContainer}>
+
+            <Text style={respuesta_correcta? styles.modalTextCorrecto: styles.modalTextIncorrecto}>
+            {respuesta_correcta ? "¡Excelente!" : "Incorrecto"}
+            </Text>
+
+            <Text style={{color: 'white', paddingVertical: 10, fontSize: 17, opacity: respuesta_correcta ? 0: 1}}>
+              <Text style={{color: '#86D332'}}>Respuesta correcta: </Text>
+              {!respuesta_correcta ? questions[currentQuestionIndex].correct_answer : ''}
+            </Text>
+
+            <TouchableOpacity onPress={handleContinuePress} style={respuesta_correcta? styles.continueButton_Correct: styles.continueButton_Incorrect}>
+              <Text style = {styles.continueText}>Continuar</Text>
+            </TouchableOpacity>
+
+        </View>
+      </Modal>
 
       <StatusBar style="auto"/>
 
@@ -181,8 +189,7 @@ const styles = StyleSheet.create({
     },
     statementContainer: {
       flex:1,
-      flexDirection: 'column',
-      justifyContent:'flex-start',
+      justifyContent:'center',
       alignItems: 'center',
       paddingBottom:15,
       paddingTop:15
@@ -193,7 +200,6 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
     },
     audioContainer:{
-      flex:1,
       flexDirection: 'row',
       justifyContent:'center',
       alignContent: 'space-around',
@@ -209,6 +215,8 @@ const styles = StyleSheet.create({
     },
     optionsContainer: {
       flex: 4,
+      width: 350,
+      height: 150,
       flexDirection: 'row',
       marginTop: 50,
       justifyContent:'space-around',
@@ -239,30 +247,73 @@ const styles = StyleSheet.create({
       height: 95,
       borderRadius: 15,
     },
-    correctAnswer: {
-      borderRadius: 15,
-      backgroundColor: '#AAF0D1',
-    },
-    wrongAnswer: {
-      borderRadius: 15,
-      backgroundColor: '#FEC8D8',
-    },
-    buttonContainer:{
-      flex:2,
-      alignItems: 'center',
-    },
-    continueButton: {
-      width: 300,
+    comprobarButton_Enabled: {
+      width: 200,
       height: 40,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: "#82C0CC",
       borderRadius: 20,
     },
-    continueText:{
+    comprobarButton_Disabled: {
+      width: 200,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: "#C3C3C3",
+      borderRadius: 20,
+    },
+    comprobarText:{
       color: '#fff',
-      fontSize: 24
-    }
+      fontSize: 20
+    },
+    modalContainer: {
+      position: 'absolute',
+      width:"100%",
+      bottom: 0,
+      backgroundColor: '#383A45',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 20,
+      marginHorizontal: 'auto',
+      marginTop: 'auto',
+      marginBottom: 'auto',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    modalTextCorrecto:{
+      color: '#86D332',
+      fontWeight:'bold',
+      fontSize: 20
+    },
+    modalTextIncorrecto:{
+      color:'#EE5655',
+      fontWeight:'bold',
+      fontSize: 20,
+    },
+    continueButton_Correct:{
+      width: 200,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: "#86D332",
+      borderRadius: 20
+    },
+    continueButton_Incorrect:{
+      width: 200,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: "#EE5655",
+      borderRadius: 20
+    },
+    continueText:{
+        color: '#fff',
+        fontSize: 20
+    },
   });
 
 export default L1A3;
