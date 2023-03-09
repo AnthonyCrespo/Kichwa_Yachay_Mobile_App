@@ -59,7 +59,8 @@ const L1A1 = ({navigation}) => {
                                      unit:1, 
                                      lesson:1, 
                                      activity:1,
-                                     subtitle:'Colores/Tullpukuna'});
+                                     subtitle:'Tullpukuna',
+                                     subtitle_esp:'Colores'});
       puntaje = 0;
     } else{
       setCurrentQuestionIndex(currentQuestionIndex + 1);
