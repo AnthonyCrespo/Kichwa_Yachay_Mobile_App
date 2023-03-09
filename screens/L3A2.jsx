@@ -57,11 +57,12 @@ const L3A2 = ({navigation}) => {
     setModalVisible(false)
     if (currentQuestionIndex === questions.length-1) {
         navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
-                                      time_taken: segundos, 
-                                      unit:1,
-                                      lesson:3, 
-                                      activity:2,
-                                      subtitle:' '});
+                                     time_taken: segundos,
+                                     unit:1, 
+                                     lesson:1, 
+                                     activity:1,
+                                     subtitle:'Tullkupuna/Wiwakuna',
+                                     subtitle_esp:'Colores/Animales'});
         puntaje = 0;
         currentQuestionIndex = 0
       } else{
