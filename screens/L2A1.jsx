@@ -7,6 +7,8 @@ import images from "./imagesL2A1";
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 import LoadingScreen from './loadingScreen';
+import { playAudio } from './functions/playAudio';
+import soundsAnswers from './soundsAnswers';
 
 let puntaje = 0;
 let answer;
@@ -24,13 +26,21 @@ const L2A1 = ({ navigation }) => {
   // ----- Barra de progreso ------
   const [porcentaje, setPorcentaje] = useState(0);
 
-  const handleComprobarPress = () => {
-    setPorcentaje(porcentaje+100/questions.length)
-    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
+  const handleComprobarPress = async () => {
+    setPorcentaje(porcentaje+100/questions.length);
+    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer;
+    let p;
+    
     if (respuesta_correcta) {
+      p = soundsAnswers[0].path;
       puntaje = puntaje + 100/questions.length;
     }
+    else {
+      p = soundsAnswers[1].path;
+    }
+    
     setModalVisible(true);
+    await playAudio(p); // espera a que se complete la reproducción del nuevo audio
   };
 
   const handleContinuePress = () => {

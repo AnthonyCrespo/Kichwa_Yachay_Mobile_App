@@ -71,7 +71,9 @@ const Home = ({navigation}) => {
       // Redirige al usuario a la pantalla de inicio de sesión
       navigation.navigate('Login');
       setSigninOut(1)
-      setSubscreen(0)    } catch (error) {
+      setSubscreen(0)
+      setSigninOut(0)   
+     } catch (error) {
       console.log('Error al cerrar la sesión:', error);
       Alert.alert('Error', 'No se pudo cerrar la sesión. Por favor, inténtalo de nuevo más tarde.');
     }

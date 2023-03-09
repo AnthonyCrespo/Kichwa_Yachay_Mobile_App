@@ -6,6 +6,8 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import useCronometro from './functions/cronometer';
 import ProgressBar from 'react-native-progress/Bar';
 import LoadingScreen from './loadingScreen';
+import { playAudio } from './functions/playAudio';
+import soundsAnswers from './soundsAnswers';
 
 let puntaje = 0;
 let answer;
@@ -24,13 +26,21 @@ const L1A1 = ({navigation}) => {
   const [porcentaje, setPorcentaje] = useState(0);
   const ancho = 300
 
-  const handleComprobarPress = () => {
-    setPorcentaje(porcentaje+100/questions.length)
-    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer
+  const handleComprobarPress = async () => {
+    setPorcentaje(porcentaje+100/questions.length);
+    respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer;
+    let p;
+    
     if (respuesta_correcta) {
+      p = soundsAnswers[0].path;
       puntaje = puntaje + 100/questions.length;
     }
+    else {
+      p = soundsAnswers[1].path;
+    }
+    
     setModalVisible(true);
+    await playAudio(p); // espera a que se complete la reproducción del nuevo audio
   };
 
   const handleContinuePress = () => {
@@ -49,6 +59,10 @@ const L1A1 = ({navigation}) => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   }
+
+  const handleReturnPress = () => {
+    navigation.goBack();
+  };
 
   async function getDocuments() {
     const querySnapshot = await getDocs(collection(db, 'L1A1'));
@@ -82,6 +96,7 @@ const L1A1 = ({navigation}) => {
     <View style= {styles.AppContainer}>
 
       <Text style={styles.statementText}>{statement}</Text>
+
       <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
                    borderWidth={0} style= {{borderRadius:25}}
@@ -159,6 +174,14 @@ const styles = StyleSheet.create({
     paddingRight:5
   },
 
+  button_statementContainer: {
+    flexDirection:'row',
+    justifyContent:'flex-start',
+  },
+  returnButtonContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   statementText: {
     color: '#F18701',
     fontSize: 28,

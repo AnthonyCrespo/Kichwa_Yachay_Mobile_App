@@ -10,8 +10,6 @@ import {firebaseConfig} from '../firebase-config'
 
 
 
-
-
 const Login = ({navigation}) => {
   const [logged_user, setLoggedUser] = React.useState(1)
   const [email, setEmail] = React.useState('')
@@ -88,6 +86,7 @@ const Login = ({navigation}) => {
         <Image
                 source={require('../assets/logo.png')} 
                 style={styles.logoApp}
+                resizeMode="contain"
          />
 
         <Text style={styles.subTitle}>Ingresa tus datos </Text>
@@ -114,7 +113,7 @@ const Login = ({navigation}) => {
           </Text>
           </View>
 
-          <View style={styles.socialButtonsContainer}> 
+{/*           <View style={styles.socialButtonsContainer}> 
             <TouchableOpacity>
               <Image
                 source={require('../assets/login_facebook.png')}
@@ -127,7 +126,7 @@ const Login = ({navigation}) => {
                 style={styles.socialButton}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
 
         <StatusBar style="auto" />
       </View>     
@@ -153,14 +152,14 @@ const styles = StyleSheet.create({
       paddingStart: 30,
       width: '80%',
       height: 50,
-      marginTop: '5%',
+      marginTop: '6%',
       borderRadius: 10,
       backgroundColor: '#fff'
     },
   
     buttonContainer: {
       backgroundColor: "#721930",
-      marginTop: 25,
+      marginTop: 30,
       borderRadius: 10,
       paddingVertical: 10,
       paddingHorizontal: 125
@@ -188,8 +187,8 @@ const styles = StyleSheet.create({
       borderRadius: 5,
     },
     logoApp: {
-      width: 200,
-      height: 70,
+      width: 240,
+      height: 110,
       marginBottom: 40
     },
   })

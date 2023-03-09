@@ -110,7 +110,7 @@ const Register = ({navigation}) => {
           </Text>
           </View>
 
-          <View style={styles.socialButtonsContainer}> 
+{/*           <View style={styles.socialButtonsContainer}> 
             <TouchableOpacity>
               <Image
                 source={require('../assets/login_facebook.png')}
@@ -123,7 +123,7 @@ const Register = ({navigation}) => {
                 style={styles.socialButton}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
 
         <StatusBar style="auto" />
       </View>     
@@ -153,16 +153,16 @@ const styles = StyleSheet.create({
       paddingStart: 30,
       width: '80%',
       height: 50,
-      marginTop: '5%',
+      marginTop: '6%',
       borderRadius: 10,
       backgroundColor: '#fff'
     },
   
     buttonContainer: {
       backgroundColor: "#721930",
-      marginTop: 25,
+      marginTop: 50,
       borderRadius: 10,
-      paddingVertical: 10,
+      paddingVertical: 15,
       paddingHorizontal: 110     },
 
     socialButtonsContainer: {
