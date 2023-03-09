@@ -51,11 +51,12 @@ const L2A1 = ({ navigation }) => {
 
     if (currentQuestionIndex === questions.length-1) {
       navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
-                                    time_taken: segundos, 
-                                    unit: 1,
-                                    lesson:2, 
-                                    activity:1,
-                                    subtitle:'Animales/Wiwakuna'});
+                                     time_taken: segundos,
+                                     unit:1, 
+                                     lesson:1, 
+                                     activity:1,
+                                     subtitle:'Wiwakuna',
+                                     subtitle_esp:'Animales'});
       puntaje = 0;
     } else{
       setCurrentQuestionIndex(currentQuestionIndex + 1);
