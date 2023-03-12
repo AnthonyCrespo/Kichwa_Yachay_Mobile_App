@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React,  { useState, useEffect } from 'react';
 import { playAudio, stopAudio } from './functions/playAudio';
-import { Modal, StyleSheet,Text, View, TextInput,Image, TouchableOpacity, Linking } from 'react-native';
+import { Modal, StyleSheet,Text, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DraxProvider, DraxView, DraxList } from 'react-native-drax';
@@ -15,9 +15,10 @@ import soundsAnswers from './soundsAnswers';
 import Constants from 'expo-constants';
 
 
+/* Check if current platform is iOS or not  */
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;  
 
-const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
-
+/* Initialize components and variables */
 const gestureRootViewStyle = { flex: 1 };
 let puntaje = 0;
 let currentQuestionIndex = 0
@@ -25,10 +26,11 @@ let respuesta_correcta;
 
 let answer_state = 0;
 
+/* Start Dynamic View */
 const L1A2 = ({navigation}) => {
   app = getApp(); 
+  /* starting states */
   const db = getFirestore();
-  //const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
   const [ questions, setQuestions ] = useState(null);
   const segundos = useCronometro();
   const [porcentaje, setPorcentaje] = useState(0);
@@ -36,28 +38,30 @@ const L1A2 = ({navigation}) => {
   /*--------------------------------------------------------------------------------------------  */
   /*---------------------------------------- Modal -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
+  
+  /* Create Handler Press function for 'Comprobar' button */
   const handleComprobarPress = async () => {
-    await stopAudio(); // espera a que se detenga la reproducción del audio anterior
+    await stopAudio(); // wait for the previous audio to stop
     setPorcentaje(porcentaje+100/questions.length)
     respuesta_correcta = verifyConcatenation(receivingItemList) 
     let p;
     
     if (respuesta_correcta) {
       p = soundsAnswers[0].path;
-      puntaje = puntaje + 100/questions.length;
+      puntaje = puntaje + 100/questions.length;     //Update score
     }
     else {
       p = soundsAnswers[1].path;
     }
     
     setModalVisible(true);
-    await playAudio(p); // espera a que se complete la reproducción del nuevo audio
+    await playAudio(p); // wait for the new audio to complete playing
   };
 
-  
+    /* Create Handler Press function for 'Continuar' botton */
   const handleContinuePress = () => {
     setModalVisible(false)
-    if (currentQuestionIndex === questions.length-1) {
+    if (currentQuestionIndex === questions.length-1) {     // Last question
         navigation.navigate("Result", {puntuation3: Math.round(puntaje), 
                                      time_taken: segundos,
                                      unit:1, 
@@ -68,9 +72,7 @@ const L1A2 = ({navigation}) => {
         puntaje = 0;
         currentQuestionIndex = 0
       } else{
-        //setCurrentQuestionIndex(currentQuestionIndex + 1);
         currentQuestionIndex = currentQuestionIndex + 1
-        console.log(currentQuestionIndex)
         InitialDraggableItemList = questions[currentQuestionIndex].options;
         resetLists()
       }
@@ -78,10 +80,10 @@ const L1A2 = ({navigation}) => {
 
   
 
-
+/* Create a function for rendering a draggable box with some text inside it. */
   const DragUIComponent = ({ item, index }) => {
     return (
-      <DraxView
+      <DraxView                    // Draggable and droppable container
         style={[styles.centeredContent, styles.draggableBox, { backgroundColor: item.background_color }]}
         draggingStyle={styles.dragging}
         dragReleasedStyle={styles.dragging}
@@ -96,6 +98,8 @@ const L1A2 = ({navigation}) => {
     );
   }
 
+  /* Create a function thet represents a receiving zone 
+  where dragged elements can be dropped */
   const ReceivingZoneUIComponent = ({ item, index }) => {
     return (
       <DraxView
@@ -111,6 +115,7 @@ const L1A2 = ({navigation}) => {
           );
         }}
         key={index}
+        /*Handle the event when the dragged element is released */
         onReceiveDragDrop={(event) => {
           const draggedPayload = event.dragged.payload;
           const draggedItem = dragItemMiddleList[draggedPayload];
@@ -126,17 +131,18 @@ const L1A2 = ({navigation}) => {
     );
   }
   
+  /* Function to separate the flat list components */
   const FlatListItemSeparator = () => {
     return (<View style={styles.itemSeparator} />);
   }
-
+  /* Function to reset all components */
   const resetLists = () => {
     setReceivingItemList(FirstReceivingItemList);
     setDragItemMiddleList(InitialDraggableItemList);
     answer_state = 0
   }
 
-
+/* Function to verify the answer */
 const verifyConcatenation = (receivingItemList) => {
   let concatenatedString = '';
   let itemCount = 0;
@@ -153,8 +159,7 @@ const verifyConcatenation = (receivingItemList) => {
 }
 
 
-
-
+/* Initialize the components for drag and drop  */
   let statement, InitialDraggableItemList, retrieved_audio;
   let FirstReceivingItemList = [
     {
@@ -169,7 +174,9 @@ const verifyConcatenation = (receivingItemList) => {
     
   let [ receivingItemList, setReceivingItemList ]= useState(FirstReceivingItemList);
   let [ dragItemMiddleList, setDragItemMiddleList ] = useState(null);
+//----------------------
 
+/* Get Data from databases*/
   async function getDocuments() {
     const querySnapshot = await getDocs(collection(db, 'L1A2'));
     // Loop through the documents
@@ -209,22 +216,25 @@ const verifyConcatenation = (receivingItemList) => {
                    borderWidth={0} style= {{borderRadius:25, marginVertical:20}}
                     />
       <View>
-          <Text style={styles.statementText}> Traduce la oracion </Text>
+        {/* Title */}
+          <Text style={styles.statementText}> Traduce la oracion </Text>     
       </View>
 
 
         
       <View style={{ flexDirection: 'row',margin: 60}}>
           <Text style={styles.instructionText}> {statement}</Text>
+          {/* Play audio */}
           <TouchableOpacity onPress={() => {
             let audioPath = (audios.find((audio) => audio.name === retrieved_audio)).path
             playAudio(audioPath);
           }} >
-          <Icon name="volume-up" style = {{ paddingHorizontal:10 }}size={30} color="black"/>
+            {/* Audio icon */}
+          <Icon name="volume-up" style = {{ paddingHorizontal:10 }}size={30} color="black"/>   
           </TouchableOpacity>
           
       </View>
-          
+      {/* Start Drag and Drop zone */}
       <GestureHandlerRootView style={gestureRootViewStyle}>
         <DraxProvider>
           <View style={styles.AppContainer}>
@@ -246,7 +256,7 @@ const verifyConcatenation = (receivingItemList) => {
       </GestureHandlerRootView>
       <View>
 
-
+        {/* Reset all components */}
         <TouchableOpacity style={styles.buttonContainer} onPress={resetLists} >
           <Text style={styles.buttonText}> Reiniciar </Text> 
         </TouchableOpacity>
@@ -323,6 +333,8 @@ const styles = StyleSheet.create({
     color: "white",
     alignSelf: "center",
   },
+
+  /* --- Drag and Drop ---- */
   receivingZone: {
     height: 60,//(Dimensions.get('window').width / 4) - 12,
     borderRadius: 10,

@@ -6,13 +6,14 @@ import ProgressBar from 'react-native-progress/Bar';
 import Constants from 'expo-constants';
 
 
-
+/* Check if current platform is iOS or not  */
 const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
 
-let porcentaje = 0
+
 
 const L3A3Q1= ({navigation}) => {
-
+    
+    /* Start States and lists (Right and Left) */
     const [leftItems, setLeftItems] = useState(['Perro', 'Cuál', 'Es', 'Negro', 'Blanco', 'Gato']);
     const [rightItems, setRightItems] = useState(['Allku','Maykan', 'Yana', 'Missi', 'Yurak', 'Kan']);
     const [selectedLeft, setSelectedLeft] = useState([]);
@@ -22,9 +23,12 @@ const L3A3Q1= ({navigation}) => {
     const [correctPairs, setCorrectPairs] = useState([]);
     const [incorrectPairs, setIncorrectPairs] = useState([]);
 
+    /* Set time */
     const segundos = useCronometro();
     const [porcentaje, setPorcentaje] = useState(0);
   
+  
+    /* Create Handler Press function for 'Continuar' botton */
     const handleContinuePress = () => {
       setPorcentaje(100)
       navigation.navigate("Result", {puntuation3: 100, 
@@ -35,16 +39,20 @@ const L3A3Q1= ({navigation}) => {
                                      subtitle:'Tullkupuna/Wiwakuna',
                                      subtitle_esp:'Colores/Animales'});
     }
-    const handlePress = (type, item) => {
+
+ /* Create Handler Press function for left-hand side and right-hand side  buttons */
+     const handlePress = (type, item) => {
       if (type === 'left') {
-        //setLeft([...Left, item])
+      
         setSelectedLeft(item);
       } else {
         
         setSelectedRight(item);
       }
-      if (selectedLeft && type === 'right') {
-
+      /* Check if a button is selected in the Left hand-side */
+      if (selectedLeft && type === 'right') {   
+        
+        /* Check the correct pairs selected */
         if (selectedLeft === 'Perro' && item === 'Allku') {
           setCorrectPairs([...correctPairs, { left: selectedLeft, right: item }]);
           setLeft([...Left, selectedLeft]);
@@ -82,35 +90,23 @@ const L3A3Q1= ({navigation}) => {
         }
       }
     };
-    
-    const resetActivity = () => {
-      setLeftItems(['Perro', 'Cuál', 'Es', 'Negro', 'Blanco', 'Gato']);
-      setRightItems(['Allku','Maykan', 'Yana', 'Missi', 'Yurak', 'Kan']);
-      setSelectedLeft([]);
-      setSelectedRight([]);
-      setLeft([]);
-      setRight([]);
-      setCorrectPairs([]);
-      setIncorrectPairs([]);
-    };
-
 
     return (
       <View style={styles.container}>
+      {/* Progress bar */}
         <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
                    borderWidth={0} style= {{borderRadius:25, marginVertical:20}}
                     />
-
+        {/* Title */}
         <Text style={styles.Title}>Relacione las palabras</Text>
         
         <View style={{ flexDirection: 'row', margin: 40 }}>
 
-          
+{/* Left hand-side and right hand-side buttons */}
 <View style={{ flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignContent:"center" }}>
   {leftItems.map((item, index) => {
     const isCorrect = correctPairs.find((pair) => pair.left === item);
-    //const isIncorrect = incorrectPairs.find((pair) => pair.left === item);
      return (
       <TouchableOpacity
         key={`left_${index}`}
@@ -121,7 +117,8 @@ const L3A3Q1= ({navigation}) => {
       ]}
         onPress={() => {handlePress('left', item);         
                   }}
-        disabled={Left.includes(item)}
+        /* Disable the left selected button */
+        disabled={Left.includes(item)}     
       >
         <Text style={{ fontSize: 18, color:"#fff" }}>{item}</Text>
       </TouchableOpacity>
@@ -143,6 +140,7 @@ const L3A3Q1= ({navigation}) => {
         onPress={() => {
           handlePress('right', item);
         }}
+        /* Disable the right selected button */
         disabled={ Right.includes(item)}
       >
         <Text style={{ color: 'white', fontSize: 18 }}>{item}</Text>
@@ -152,10 +150,7 @@ const L3A3Q1= ({navigation}) => {
 </View>
 
   </View>
-
-        
-
-
+            {/* Button Continue*/}
             <TouchableOpacity
             style={correctPairs.length !== 6 ? styles.continuarButton_Disabled  : styles.continuarButton_Enabled }
             disabled={correctPairs.length !== 6}
@@ -196,6 +191,7 @@ const L3A3Q1= ({navigation}) => {
       justifyContent: 'center'
     },
 
+    /* -----Buttons Solution */
     buttonSolution: {
       backgroundColor: '#4063A4',
       padding: 10,
@@ -208,18 +204,9 @@ const L3A3Q1= ({navigation}) => {
     },
     correctSolution: {
       backgroundColor: '#89D630',
-    },
-    incorrectSolution: {
-      backgroundColor:'#EE5655',
     }, 
-    alertCorrect: { 
-      backgroundColor: 'blue' 
-    },
-    alerIncorrect:{
-      backgroundColor: 'red'
-    },
 
-
+       /* ------ Button Continue -------- */
     continuarButton_Enabled: {
       width: 200,
       height: 40,
