@@ -12,11 +12,20 @@ import { playAudio } from './functions/playAudio';
 import soundsAnswers from './soundsAnswers';
 import Constants from 'expo-constants';
 
+/* -------------------------------------------------------
+   Variable that stores the top margin parameter according 
+   to the device OS */
+const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
+
+/* -------------------------------------------------------
+   Variables that store question related data */
 let answer = '';
 let puntaje = 0;
 let respuesta_correcta;
-const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
 
+/* -------------------------------------------------------
+   Function that returns the activities corresponding to
+   Lesson #1/ Activity #3 */
 const L1A3 = ({ navigation }) => {
   app = getApp(); 
   const db = getFirestore();
@@ -25,25 +34,20 @@ const L1A3 = ({ navigation }) => {
   const [ selectedOption, setSelectedOption ] = useState(null);
   const [ showResult, setShowResult ] = useState(false);
   const [ modalVisible, setModalVisible ] = useState(false);
+  
+  /* -------------------------------------------------------
+     Starts timer when the view is presented*/
   const segundos = useCronometro();
 
-  // ----- Barra de progreso ------
+  /* -------------------------------------------------------
+     Progress Bar percentage variable and function to update
+     it */
   const [porcentaje, setPorcentaje] = useState(0);
   const ancho = 300
 
-  async function getDocuments() {
-    const querySnapshot = await getDocs(collection(db, 'L1A3'));
-    // Loop through the documents
-    const docs = [];
-    querySnapshot.forEach(doc => {
-      // Get the document data
-      const data = doc.data();
-      // Add the document data to the array
-      docs.push(data);
-    });
-    setQuestions(docs);
-  }
-
+  /* -------------------------------------------------------
+     Function that checks if the anwser of a question is 
+     correct or not */
   const handleComprobarPress = async () => {
     setPorcentaje(porcentaje+100/questions.length);
     respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer;
@@ -58,9 +62,13 @@ const L1A3 = ({ navigation }) => {
     }
     
     setModalVisible(true);
-    await playAudio(p); // espera a que se complete la reproducción del nuevo audio
+    await playAudio(p);
   };
 
+  /* -------------------------------------------------------
+     Function with two purposes: updates the question index
+     to be presented in the view, or navigate to the results
+     view to present the score and time of the activity */
   const handleContinuePress = () => {
     setModalVisible(false);
     setSelectedOption(null);
@@ -78,37 +86,66 @@ const L1A3 = ({ navigation }) => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   }
- 
-  const verifyAnswer = () => {
-    showResult === false ? setShowResult(true) : setShowResult(false);
-  };
+
+  /* -------------------------------------------------------
+     Fuction that retrieves the questions data from the 
+     database */
+  async function getDocuments() {
+    const querySnapshot = await getDocs(collection(db, 'L1A3'));
+    // Loop through the documents
+    const docs = [];
+    querySnapshot.forEach(doc => {
+      // Get the document data
+      const data = doc.data();
+      // Add the document data to the array
+      docs.push(data);
+    });
+    setQuestions(docs);
+  }
 
   useEffect(() => {
     getDocuments();
   }, []);
 
+  /* -------------------------------------------------------
+     Variables to store the statement and options of 
+     a question */
   let statement, retrieved_audio, options;
  
+  /* -------------------------------------------------------
+     A loading screen is presented in case the questions
+     data is still being downloaded */
   if (questions === null) {
     return (
       <LoadingScreen/>
     );
   }
+
+  /* -------------------------------------------------------
+     Loading the statement and options of a question based
+     on the current index and only after the questions have
+     been download */
   statement = questions[currentQuestionIndex].statement;
   retrieved_audio = questions[currentQuestionIndex].audio;
   options = questions[currentQuestionIndex].options;
   
   return (
+    /* -------------------------------------------------------
+       Main View */
     <View style= {styles.AppContainer}>
+
+      {/*Progress Bar*/}
       <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
                    borderWidth={0} style= {{borderRadius:25, marginVertical:20}}
                     />
 
+      {/*Question statement*/}
       <View style={styles.statementContainer}>
         <Text style={styles.statementText}>Escuche y seleccione</Text>
       </View>
-
+      
+      {/*Question audio*/}
       <View style={styles.audioContainer}> 
         <TouchableOpacity
           style={styles.audioButton} 
@@ -121,12 +158,24 @@ const L1A3 = ({ navigation }) => {
           <Text style={{fontSize:25, marginLeft:20}}>{statement}</Text>
         </TouchableOpacity>
       </View>
+      
 
+      {/*Container of the color square options*/}
       <View style={styles.optionsContainer}>  
 
+      {/*Mapping of each color option to a color square*/}
       {options.map((option, index) =>(
+
+        /* -------------------------------------------------------
+          Container for each color square. When the option
+           is selected the background and border color changes */
         <View key = {index}
-              style = {selectedOption === index ? styles.colorContainer : styles.colorContainer}>  
+              style = {selectedOption === index ? styles.colorContainer : styles.colorContainer}>
+
+          {/*Each color square option is wrapped into a Touchable Opacity 
+             component. When a color square option is pressed the answer
+             variable defined in the beggining is set to the corresponding
+             color option text.*/}
           <TouchableOpacity
             style = {(showResult === false && selectedOption === index) ? styles.selectedTouchOption : styles.touchOption}
             onPress={() => {
@@ -144,6 +193,8 @@ const L1A3 = ({ navigation }) => {
 
       </View>
 
+      {/*Comprobar button
+         When pressed the handleComprobarPress function is called*/}
       <View style={{flex:1}}>
           <TouchableOpacity
             style={selectedOption === null ? styles.comprobarButton_Disabled : styles.comprobarButton_Enabled }
@@ -153,7 +204,9 @@ const L1A3 = ({ navigation }) => {
             <Text style={styles.comprobarText}>Comprobar</Text>
           </TouchableOpacity>
       </View>
-
+      
+      {/*Modal that gives feedback to the user regarding if the
+         option selected is correct or not*/}
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
 
@@ -166,6 +219,7 @@ const L1A3 = ({ navigation }) => {
               {!respuesta_correcta ? questions[currentQuestionIndex].correct_answer : ''}
             </Text>
 
+            {/* Continue Button */}
             <TouchableOpacity onPress={handleContinuePress} style={respuesta_correcta? styles.continueButton_Correct: styles.continueButton_Incorrect}>
               <Text style = {styles.continueText}>Continuar</Text>
             </TouchableOpacity>
@@ -179,6 +233,8 @@ const L1A3 = ({ navigation }) => {
   );
 }
 
+/* -------------------------------------------------------
+   Styles used by the components */
 const styles = StyleSheet.create({
     AppContainer: {
       flex: 1,
