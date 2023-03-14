@@ -65,7 +65,8 @@ const Login = ({navigation}) => {
 
   /* ------- Function to sign in in the App ---------  */
   const handleSignIn = () => {
-    signInWithEmailAndPassword(auth, "anthony.crespoy@gmail.com", '123456')
+    signInWithEmailAndPassword(auth, email, password)
+    //signInWithEmailAndPassword(auth, "anthony.crespoy@gmail.com", '123456')
       .then((userCredential) => {
         const user = userCredential.user;
         //console.log(user.uid);
