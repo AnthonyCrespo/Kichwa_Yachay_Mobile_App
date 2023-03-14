@@ -14,6 +14,8 @@ const Login = ({navigation}) => {
   const [password, setPassword] = React.useState('')
   let app;
   let auth;
+
+  /* ----------- App Initialization ------------ */
   if (!getApps().length) {
     try {
     app = initializeApp(firebaseConfig);
@@ -28,7 +30,7 @@ const Login = ({navigation}) => {
     else{
     app = getApp();
     auth = getAuth();}
-
+  /* ----- Save session information to local storage -----*/
   const guardarSesion = async (usuario) => {
       try {
         await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
@@ -37,7 +39,8 @@ const Login = ({navigation}) => {
       }
     };
   
-      // función para verificar si hay una sesión iniciada en el almacenamiento local
+
+  /* Function to check if there is a session started in local storage */
   const verificarSesion = async () => {
     try {
       const usuario = await AsyncStorage.getItem('usuario');
@@ -60,14 +63,13 @@ const Login = ({navigation}) => {
     });
   }, []);
 
-
+  /* ------- Function to sign in in the App ---------  */
   const handleSignIn = () => {
     signInWithEmailAndPassword(auth, "anthony.crespoy@gmail.com", '123456')
       .then((userCredential) => {
         const user = userCredential.user;
         //console.log(user.uid);
-  
-        // Guardar información de sesión en el almacenamiento local
+        /* Save session information to local storage */
         guardarSesion(user.uid);
   
         navigation.navigate('Home');
@@ -77,16 +79,17 @@ const Login = ({navigation}) => {
       });
   };
 
+  
   if (logged_user===0){
     return (
         <View style={styles.container}>
-        {/* <SvgTop/> */}
+          {/*---------------- Kichwa Yachay Logo ----------------*/}
         <Image
                 source={require('../assets/logo.png')} 
                 style={styles.logoApp}
                 resizeMode="contain"
          />
-
+        {/*---------------- Login Form ----------------*/}
         <Text style={styles.subTitle}>Ingresa tus datos </Text>
         <TextInput style={styles.textInput} onChangeText={(text) => setEmail(text)}
         placeholder="Usuario o correo" 
@@ -95,7 +98,8 @@ const Login = ({navigation}) => {
         placeholder="Contraseña"
         secureTextEntry={true} 
         />
-        <TouchableOpacity style={styles.buttonContainer} onPress ={handleSignIn}/* onPress={() => navigation.navigate('Home')} */>
+        {/*---------------- Ingresar Button ----------------*/}
+        <TouchableOpacity style={styles.buttonContainer} onPress ={handleSignIn}>
           <Text style={styles.buttonText}> 
           Ingresar </Text> 
         </TouchableOpacity>
@@ -110,7 +114,7 @@ const Login = ({navigation}) => {
             </Text>
           </Text>
           </View>
-
+      {/* ------Social Buttons to login with Fb and Gmail ----- */}
 {/*           <View style={styles.socialButtonsContainer}> 
             <TouchableOpacity>
               <Image

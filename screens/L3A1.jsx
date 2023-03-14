@@ -3,17 +3,12 @@ import { Modal, StyleSheet, StatusBar, TouchableOpacity, View, Text, Image } fro
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-//import { getStorage, ref, listAll,  getDownloadURL } from 'firebase/storage';
-//import ListPictures from './images';
 import useCronometro from './functions/cronometer';
 import {playAudio, stopAudio} from './functions/playAudio';
-//import BarraProgreso from './functions/BarraProgreso';
 import images from './imagesL3A1'
 import audios from './soundsL3A1';
 import ProgressBar from 'react-native-progress/Bar';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAuth } from 'firebase/auth';
-//import ProgressBarKichwa from './functions/ProgressBarKichwa'
 import LoadingScreen from './loadingScreen';
 import soundsAnswers from './soundsAnswers';
 import Constants from 'expo-constants';
@@ -26,16 +21,10 @@ let audioPath = null;
 const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
 
 const L3A1 = ({ navigation }) => {
-  //const usuario =  AsyncStorage.getItem('usuario');
 
   const app = getApp(); 
   const db = getFirestore(app);
   const auth = getAuth(app);
-
-  //const currentUser = auth.currentUser;
-  //const userId = currentUser.uid;
-  //console.log(`El UID del usuario actual es: ${userId}`);
-
 
   const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
   const [ questions, setQuestions ] = useState(null);
@@ -45,7 +34,7 @@ const L3A1 = ({ navigation }) => {
   // ----- Timer -------
   const segundos = useCronometro();
 
-  // ----- Barra de progreso ------
+  // ----- Progress Bar  ------
 
   const [porcentaje, setPorcentaje] = useState(0);
 
@@ -54,7 +43,7 @@ const L3A1 = ({ navigation }) => {
   /*---------------------------------------- Modal -----------------------------------------  */
   /*--------------------------------------------------------------------------------------------*/
   const handleComprobarPress = async () => {
-    await stopAudio(); // espera a que se detenga la reproducción del audio anterior
+    await stopAudio(); // waits the previous audio to stop
     setPorcentaje(porcentaje+100/questions.length);
     respuesta_correcta = answer === questions[currentQuestionIndex].correct_answer;
     let p;
@@ -68,7 +57,7 @@ const L3A1 = ({ navigation }) => {
     }
     
     setModalVisible(true);
-   //await playAudio(p); // espera a que se complete la reproducción del nuevo audio
+   //await playAudio(p);
   };
 
 
@@ -114,46 +103,8 @@ const L3A1 = ({ navigation }) => {
     getDocuments();
   }, []);
 
-
-
-  
-
-/*   async function getImages(){
-    if (questions.length === 0) {
-      return; // no hay preguntas cargadas aún, salir de la función
-    }
-  
-    // Initialize the Firebase app and get the storage reference
-    const storage = getStorage();
-    const imagesRef = ref(storage, 'images/');
-  
-    // Filter the list of items to download
-    const imagesToDownload = questions[currentQuestionIndex].options.map((option) => option.image);
-    //const imagesToDownload = questions.map(question => question.options.map(option => option.image)).flat();
-    console.log(imagesToDownload)
-    // Get the download URLs of the selected images in the storage bucket
-    listAll(imagesRef).then((result) => {
-      const urls = result.items
-        .filter((item) => imagesToDownload.includes(item.name))
-        .map((item) => getDownloadURL(item));
-      Promise.all(urls).then((downloadUrls) => setImageUrls(downloadUrls));
-    })
-  
-  }
- */
-
-
-
-/*   useEffect(() => {
-    getImages();
-  }, [questions,currentQuestionIndex]);
- */
-
-  let statement, options //, correctAnswer;
-  
-
-
-  //if (questions === null  | imageUrls === null) {
+  let statement, options 
+  /* If questions are not loaded yet show Loading Screen */
   if (questions === null) {
     return (
       <LoadingScreen/>
@@ -164,12 +115,15 @@ const L3A1 = ({ navigation }) => {
   options = questions[currentQuestionIndex].options;
   return (
     <View style={styles.AppContainer}>
+
+      {/* --------- Percentage bar --------- */}
       <ProgressBar progress={porcentaje/100} width={300} 
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
                    borderWidth={0} style= {{borderRadius:25, marginVertical:20}}
                     />
-    
+      {/* --------- Statement in Kichwa --------- */}
       <Text style={styles.statementText}>{statement}</Text>
+      {/* --------- Statement in Spanish --------- */}
       <Text style={styles.statementText && {fontSize:20, color:"#3259A1", fontWeight:"bold"}}>{statement_esp}</Text>
 
       {options.map((option, index) => (
@@ -184,13 +138,14 @@ const L3A1 = ({ navigation }) => {
             style={selectedOption === index ? styles.selectedOptionContainer : styles.optionContainer}>  
 
               <View style={[styles.itemContainer, {flex:6}]}>
+                {/* --------- Option Image --------- */}
                 <Image 
                   style={styles.imageContainer}
                   resizeMode="contain"
                   source={(images.find((image) => image.name === option['image'])).path}/>
 
+                 {/* --------- Option Text --------- */}
                 <View style={styles.audio_textContainer}>
-
                     <Text style={styles.optionText}>
                       {option.text}
                     </Text>
@@ -198,11 +153,11 @@ const L3A1 = ({ navigation }) => {
               </View>
 
               <View style={[styles.itemContainer, {flex:2}]}>
+                {/* --------- Option Icon --------- */}
                 <TouchableOpacity
                         style={styles.optionIcon}
                         onPress={() => {
                           audioPath = (audios.find((audio) => audio.name === option.audio)).path
-                          //stopAudio()
                           playAudio(audioPath);
                         }}
                         >
@@ -212,6 +167,7 @@ const L3A1 = ({ navigation }) => {
           </View>
         </TouchableOpacity>
     ))}
+      {/* --------- Comprobar Button --------- */}
       <View >
           <TouchableOpacity
             style={selectedOption === null ? styles.comprobarButton_Disabled : styles.comprobarButton_Enabled }
@@ -222,7 +178,7 @@ const L3A1 = ({ navigation }) => {
           </TouchableOpacity>
       </View>
 
-
+      {/* --------- Modal after touch Comprobar button  --------- */}
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
 
         <View style={styles.modalContainer}>

@@ -15,24 +15,22 @@ const topMargin = Platform.OS === 'ios' ? 0 : Constants.statusBarHeight;
 const Result = ({route, navigation}) => {
     const {puntuation3, time_taken, unit, lesson, activity, subtitle, subtitle_esp} = route.params;
     const app = getApp(); 
-    //const db = getFirestore(app);
     const auth = getAuth(app);
-
-
     const currentUser = auth.currentUser;
     const userId = currentUser.uid;
-     useEffect(()=>{ 
+/*      useEffect(()=>{ 
     console.log(`El UID del usuario actual es: ${userId}`);
        },[])
-
-    //const userDoc = doc(db, 'Users', userId )    console.log(userDoc.data())
-
-    async function updateUserData(userId, unidad, leccion, actividad, score, tiempo, completado) {
+ */
+    /* ---------------------------------------------------- -------------------------- */ 
+    /* -------------------------- Save Data in Firebase --------------------------- */
+    /* ---------------------------------------------------- -------------------------- */ 
+    async function updateUserData(userId, unidad, leccion, actividad, score, tiempo) {
       const db = getFirestore();
       const userDocRef = doc(db, 'Users', userId);
       const userDoc = await getDoc(userDocRef);
       let question_status
-      // Si el documento no existe, lo creamos y agregamos la primera unidad
+      /* If the document does not exist, we create it and add the first unit  */
       question_status = score > 50 ? "Aprobado": "Reprobado"
       if (!userDoc.exists()) {
         await setDoc(userDocRef, { unidad: { unidad: { leccion: { leccion: { actividad: { actividad: { question_status , score, tiempo } } } } } } });
@@ -42,35 +40,35 @@ const Result = ({route, navigation}) => {
       
       const userData = userDoc.data();
       
-      // Si el campo "unidades" no existe, lo creamos y agregamos la primera unidad
+      /* If the "units" field does not exist, we create it and add the first unit  */
       if (!userData.unidad) {
         await updateDoc(userDocRef, { unidad: { [unidad]: { leccion: { [leccion]: { actividad: { [actividad]: { question_status , score, tiempo  } } } } } } });
         console.log('Campo "unidad" creado con la primera unidad');
         return;
       }
       
-      // Si la unidad no existe, la creamos y agregamos la primera lección
+      /* If the unit does not exist, we create it and add the first lesson */
       if (!userData.unidad[unidad]) {
         await updateDoc(userDocRef, { [`unidad.${unidad}`]: { leccion: { [leccion]: { actividad: { [actividad]: { question_status , score, tiempo } } } } } });
         console.log(`Unidad ${unidad} creada con la primera lección`);
         return;
       }
       
-      // Si la lección no existe, la creamos y agregamos la primera actividad
+      /* If the lesson does not exist, we create it and add the first activity */ 
       if (!userData.unidad[unidad].leccion[leccion]) {
         await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}`]: { actividad: { [actividad]: { question_status , score, tiempo  } } } });
         console.log(`Lección ${leccion} creada con la primera actividad`);
         return;
       }
       
-      // Si la actividad no existe, la creamos
+      /* If the activity does not exist, create it */
       if (!userData.unidad[unidad].leccion[leccion].actividad[actividad]) {
         await updateDoc(userDocRef, { [`unidad.${unidad}.leccion.${leccion}.actividad.${actividad}`]: { question_status , score, tiempo  } });
         console.log(`Actividad ${actividad} creada`);
         return;
       }
       
-      // Si la actividad ya existe, la actualizamos con los nuevos datos
+      /* If the activity already exists, we update it with the new data */
       question_status = userData.unidad[unidad].leccion[leccion].actividad[actividad].question_status;
       //console.log(question_status)
       question_status = question_status === "Aprobado" ? "Aprobado": 
@@ -94,12 +92,10 @@ const Result = ({route, navigation}) => {
         style={{height:200, width:200, position:"absolute",top:30}}
         resizeMode="contain"
         source={require("../assets/results.png")}></Image>
-      <View style={{ //backgroundColor: '#89D630', 
-                       height: 70,
+      <View style={{   height: 70,
                        width:"70%", 
                        alignItems: 'center', 
                        justifyContent: 'center', 
-                       //paddingVertical:10,
                        marginVertical:10,
                        borderRadius:20
                       }}>

@@ -3,7 +3,7 @@ import {Dimensions, FlatList, View, StyleSheet, Text, Image, TouchableOpacity, S
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signOut} from 'firebase/auth';
 import { getApp} from 'firebase/app'
-import { getFirestore,updateDoc,setDoc,  collection, getDocs,getDoc, doc } from 'firebase/firestore';
+import { getFirestore,getDoc, doc } from 'firebase/firestore';
 
 const {width} = Dimensions.get('screen');
 
@@ -17,18 +17,18 @@ const Profile= ({navigation}) => {
   const userDocRef = doc(db, 'Users', userId);
   
   const userDoc = getDoc(userDocRef);
-  const username = userDoc.data().username;
-  const name = userDoc.data().name;
-  console.log('Username:', username);
-  console.log('Name:', name);
-  //const db = getFirestore(app);
+  //const username = userDoc.data().username;
+  //const name = userDoc.data().name;
+  //console.log('Username:', username);
+  //console.log('Name:', name);
+
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      // Elimina la información de sesión del almacenamiento local
+      /* Remove session information from local storage */
       await AsyncStorage.removeItem('usuario');
-      // Redirige al usuario a la pantalla de inicio de sesión
+     /*  Redirects the user to the login screen */
       navigation.navigate('Login');
     } catch (error) {
       console.log('Error al cerrar la sesión:', error);

@@ -2,10 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import React,  { useState} from 'react';
 import { StyleSheet, Text, View, TextInput,Image, TouchableOpacity, Linking, Alert  } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import {getAuth,getReactNativePersistence,initializeAuth,createUserWithEmailAndPassword} from 'firebase/auth'
 import {initializeApp, getApps, getApp} from 'firebase/app'
-import { getFirestore, collection, doc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import {firebaseConfig} from '../firebase-config'
 
 const Register = ({navigation}) => {
@@ -16,6 +15,7 @@ const Register = ({navigation}) => {
   let app;
   let auth;
   let db;
+  
   if (!getApps().length) {
     try {
     app = initializeApp(firebaseConfig);
@@ -32,24 +32,20 @@ const Register = ({navigation}) => {
     auth = getAuth();
     db = getFirestore();
 
-
+    /*------------- Create Account ----------- */
   const handleCreateAccount = () =>{
     createUserWithEmailAndPassword(auth,email,password)
     .then((userCredential) => {
       Alert.alert('Account created')
       const user = userCredential.user
       console.log(user.uid)
-      //console.log(user)
       const userDoc = {
         name: name,
         email: email,
         username: username,
-        //password: password
       };
       setDoc(doc(db, 'Users', user.uid), userDoc);
       Alert.alert('Account created');
-      //console.log(user);
-
       navigation.navigate('Home')
     })
     .catch(error => {
@@ -60,15 +56,14 @@ const Register = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-        {/* <SvgTop/> */}
+        {/* ----------  Kichwa Yachay logo ---------- */}
         <Image
                 source={require('../assets/logo.png')} 
                 style={styles.logoApp}
          />
 
         <Text style={styles.subTitle}> Regístrate </Text>
-        {/* <Text style={styles.subTitle}>REGISTRO: Ingresa tus datos </Text> */}
-
+        {/* ----------  Register Form ---------- */}
         <TextInput 
         style={styles.textInput}
         placeholder="Nombre" onChangeText={(text) =>setName(text)}
@@ -89,10 +84,6 @@ const Register = ({navigation}) => {
         secureTextEntry={true}
         />
 
-{/*         <TextInput style={styles.textInput}
-        placeholder="Fecha de Nacimiento"
-        /> */}
-
         <TouchableOpacity onPress ={handleCreateAccount} style={styles.buttonContainer}>
           <Text style={styles.buttonText}>  
           Registrarse 
@@ -109,7 +100,7 @@ const Register = ({navigation}) => {
             </Text>
           </Text>
           </View>
-
+  {/* --------- Social Buttons for register --------- */}
 {/*           <View style={styles.socialButtonsContainer}> 
             <TouchableOpacity>
               <Image

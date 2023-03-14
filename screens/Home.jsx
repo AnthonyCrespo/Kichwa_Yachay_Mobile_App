@@ -40,49 +40,26 @@ const Home = ({navigation}) => {
     });
     setUnits(docs);
   }
-
+/* 
   async function getDocumentWithUserId() {
     const currentUser = auth.currentUser;
     const userId = currentUser.uid;
     const docRef = doc(getFirestore(), 'Users', userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log('Document data:', docSnap.data());
+      //console.log('Document data:', docSnap.data());
       set_user_progress(docSnap.data);
-      // Aquí puedes hacer lo que necesites con los datos del documento
     } else {
       console.log('No such document!');
     }
   }  
-
-  
-/*   async function getDocumentWithUserId() {
-    const user = auth.currentUser;
-    if (user !== null) {
-      const userId = user.uid;
-      console.log("HOLAAA")
-      const docRef = doc(getFirestore(), 'Users', userId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        set_user_progress(docSnap)
-        // Aquí puedes hacer lo que necesites con los datos del documento
-      } else {
-        console.log('No such document!');
-      }
-    } else {
-      console.log('User is not authenticated!');
-    }
-  } */
+ */
 
   useEffect(() => {
     getDocuments();
   }, []);
 
   
-/*   useEffect(() => {
-    getDocumentWithUserId();
-  }, []);
- */
 
 
   auth.onAuthStateChanged(async function(currentUser) {
@@ -94,8 +71,6 @@ const Home = ({navigation}) => {
         const userDoc = await getDoc(userDocRef);
         const username = userDoc.data().username;
         const name = userDoc.data().name;
-/*         console.log('Username:', username);
-        console.log('Name:', name); */
         setName(name)
         setUsername(username, username)
       } catch (error) {
@@ -110,9 +85,9 @@ const Home = ({navigation}) => {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      // Elimina la información de sesión del almacenamiento local
+      /* Remove session information from local storage */
       await AsyncStorage.removeItem('usuario');
-      // Redirige al usuario a la pantalla de inicio de sesión
+      /*  Redirects the user to the login screen */
       navigation.navigate('Login');
       setSigninOut(1)
       setSubscreen(0)
@@ -126,21 +101,22 @@ const Home = ({navigation}) => {
   const [selectedLesson, setSelectedLesson] = useState(null);
   const handlePress = (unit, lesson,subtitle, subtitle_esp ) => {
     setSelectedLesson(lesson);
-    // navegar a la vista de actividades y pasar la lección seleccionada como parámetro
+    /* Navigate to activity view and pass selected lesson information as parameters */
     navigation.navigate('Lessons', {unit, lesson, subtitle, subtitle_esp });
   };
 
 
   const [currentUnit, setCurrentUnit] = useState(0);
-  const { height, width } = Dimensions.get('window');
   const [currentSubscreen, setSubscreen] = useState(0);
   const [signinOut,setSigninOut] = useState(0)
 
+  /* If units has not been loaded yet, show Loading Screen */
   if (units === null ) {
     return (
       <LoadingScreen/>
     );
   }
+   /* If user is signing Out show Cerrando Sesion Screen */
   if (signinOut  === 1) {
     return (
       <CerrandoSesion/>
@@ -198,7 +174,7 @@ const Home = ({navigation}) => {
         />
   
     
-        {/* -----------Bottom Bar ---------------------------*/}
+        {/*------------------ Bottom Bar ----------------------------------- */}
         <View style={styles_home.bottomBar}>
         <TouchableOpacity onPress={() => setSubscreen(0)}>
           <Image style={styles_home.icon} source={require('../assets/home_icon.png')} />
@@ -237,6 +213,7 @@ const Home = ({navigation}) => {
         />
       </View>
 
+    {/* -------------- Progress Bars ------------------------   */}
     <View style={styles_perfil.progressContainer}>
       <Text style={styles_perfil.progressHeader}>Progreso</Text>
       <Text style={styles_perfil.unitName}>Unidad 1</Text>
@@ -244,26 +221,15 @@ const Home = ({navigation}) => {
                    height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
                    borderWidth={0} style= {{borderRadius:25, marginBottom:20}}
                     />
-      <Text style={styles_perfil.unitName}>Unidad 2</Text>
-      <ProgressBar progress={0/100} width={300} 
-                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
-                   borderWidth={0} style= {{borderRadius:25, marginBottom:20}}
-                    />
-      <Text style={styles_perfil.unitName}>Unidad 3</Text>
-      <ProgressBar progress={0/100} width={300} 
-                   height={25} color={'#89D630'} unfilledColor={'#C8C8C8'}
-                   borderWidth={0} style= {{borderRadius:25, marginBottom:20}}
-                    />
-
-
-
     </View>
 
+    {/*------------------ Sign Out Button ----------------------------------- */}
     <TouchableOpacity style = {styles_perfil.signout_button}
                         onPress={handleSignOut}>
       <Text style={styles_perfil.signout_text}> Cerrar Sesión </Text>
     </TouchableOpacity>
 
+    {/*------------------ Bottom Bar ----------------------------------- */}
     <View style={styles_perfil.bottomBar}>
       <TouchableOpacity onPress={() => setSubscreen(0)}>
         <Image style={styles_perfil.icon} source={require('../assets/home_icon.png')} />
@@ -279,16 +245,6 @@ const Home = ({navigation}) => {
   );
 
 }
-const {width} = Dimensions.get('screen');
-/* const ProgressBar = ({widthPct}) => {
-  const finalWidth = (width * widthPct) / 10;
-  return (
-    <View style={styles_perfil.unitContainer}>
-      <Text style={styles_perfil.unitText}>Unidad X</Text>
-      <View style={[styles_perfil.progressBar, {width: finalWidth}]} />
-    </View>
-  );
-}; */
 
 const styles_home = StyleSheet.create({
 
