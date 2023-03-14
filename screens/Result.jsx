@@ -90,16 +90,10 @@ const Result = ({route, navigation}) => {
     return (
 
     <View style={styles.container}>
-{/* <View style={styles.title_container}>
-<Text style={{
-      fontSize: 27,
-      color:"white"
-    }}>Resultado</Text>
-</View> */}
-                <Image
-                  style={{height:200, width:200, position:"absolute",top:30}}
-                  resizeMode="contain"
-                  source={require("../assets/results.png")}></Image>
+      <Image
+        style={{height:200, width:200, position:"absolute",top:30}}
+        resizeMode="contain"
+        source={require("../assets/results.png")}></Image>
       <View style={{ //backgroundColor: '#89D630', 
                        height: 70,
                        width:"70%", 
@@ -116,26 +110,15 @@ const Result = ({route, navigation}) => {
 
 
       <Text style={{fontSize:70, 
-                    //marginTop:20, 
-                    color: "black",//{puntuation3} >= 75  ? '#8FCD02' : {puntuation3} > 20 && {puntuation3} < 75 ? '#EF6639': "#EF5852",
+                    color: "black",
                     fontWeight: 'bold'
                     }}> {puntuation3} </Text>
-{/* 
-      <View style={{ //backgroundColor: '#006EC5', 
-                            height: 70,
-                            width:"70%", 
-                            alignItems: 'center', 
-                            justifyContent: 'center', 
-                            //paddingVertical:10,
-                            borderRadius:20
-                            }}> */}
       <Text style={{fontSize:55, 
                     fontWeight: 'bold',
                     color:"#2E7BB0"}}> Tiempo total:  </Text>
-{/*       </View > */}
+
       <Text style={{fontSize:80, 
-      //marginTop:20, 
-      color: "black",//'#006EC5',
+      color: "black",
       fontWeight: 'bold'
       }}> {time_taken}s </Text>
 
@@ -144,8 +127,6 @@ const Result = ({route, navigation}) => {
         style={styles.continueButton}>
         <Text style={styles.continueText}>Continuar</Text>
       </TouchableOpacity>
-
-
       <StatusBar style="auto" />   
     </View>
   )
@@ -160,11 +141,10 @@ const styles = StyleSheet.create({
 
     container: {
       flex: 1,
-      backgroundColor: '#F5F5F8',
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: topMargin,
-      backgroundColor:"#EFE8DF"
+      backgroundColor:"#fff"
     },
 
     subTitle: {

@@ -68,7 +68,7 @@ const L3A1 = ({ navigation }) => {
     }
     
     setModalVisible(true);
-    await playAudio(p); // espera a que se complete la reproducción del nuevo audio
+   //await playAudio(p); // espera a que se complete la reproducción del nuevo audio
   };
 
 

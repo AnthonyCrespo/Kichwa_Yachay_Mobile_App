@@ -53,7 +53,7 @@ const L2A3 = ({navigation}) => {
     }
     
     setModalVisible(true);
-    await playAudio(p); // wait for the new audio to complete playing
+    //await playAudio(p); // wait for the new audio to complete playing
   };
 
   /* Create Handler Press function for 'Continuar' botton */
