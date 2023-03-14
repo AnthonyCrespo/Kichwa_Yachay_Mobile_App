@@ -193,7 +193,7 @@ const Home = ({navigation}) => {
   /* ------------------------------- Profile ------------------------------------  */
   /* -----------------------------------------------------------------------------  */
   if (currentSubscreen===1)
-  console.log(user_progress)
+  //console.log(user_progress)
   return (
     <View style={styles_perfil.container}>
 

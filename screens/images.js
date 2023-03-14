@@ -14,7 +14,7 @@ const [sampleImage, setSampleImage] = useState([]);
 const getSampleImage = async () => {
     const storage = getStorage();
     const imageRefs = ref(storage, 'images/');
-    console.log(imageRefs)
+    //console.log(imageRefs)
     //const urls = await Promise.all(imageRefs.items.map((ref) => ref.getDownloadURL()));
     //setSampleImage(urls);
 }

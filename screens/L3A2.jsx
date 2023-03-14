@@ -73,7 +73,7 @@ const L3A2 = ({navigation}) => {
         currentQuestionIndex = 0
       } else{
         currentQuestionIndex = currentQuestionIndex + 1
-        console.log(currentQuestionIndex)
+        //console.log(currentQuestionIndex)
         InitialDraggableItemList = questions[currentQuestionIndex].options;
         resetLists()
       }
