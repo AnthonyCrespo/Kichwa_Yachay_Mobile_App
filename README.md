@@ -41,8 +41,11 @@ expo start --android
 ## Contact
 
 Anthony Crespo - brian.crespo@yachaytech.edu.ec
+
 Mateo Coello - mateo.coello@yachaytech.edu.ec
+
 Santiago Ajala - santiago.ajala@yachaytech.edu.ec
+
 Saire Conejo - saire.conejo@yachaytech.edu.ec
 
 <br>
